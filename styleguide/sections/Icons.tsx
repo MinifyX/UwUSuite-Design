@@ -1,4 +1,6 @@
 import { Bell, Heart, Settings } from "lucide-react";
+import { useEffect, useState } from "react";
+import { macMasterSvg, trayTemplateSvg } from "../../bin/mac-icon.mjs";
 import { Icon, ICON_SIZES, ICONS, IconButton, SUITE_ICON_NODES, type IconSize } from "../../src";
 import { Panel, Rules, Section, Sub } from "./ui";
 
@@ -224,6 +226,82 @@ export function AppIcons() {
           [false, "Keine Kachel in der Taskleiste und im Tray, kein Gesicht und keine Wangen unter 24 px."],
         ]}
       />
+      <MacIcons />
     </Section>
+  );
+}
+
+const svgUrl = (svg: string) => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+
+/** An SVG from public/apps, turned into another SVG and served as a data URL. */
+function useDerivedSvg(file: string, derive: (svg: string) => string) {
+  const [url, setUrl] = useState<string>();
+  useEffect(() => {
+    let live = true;
+    fetch(`./apps/${file}`)
+      .then((response) => response.text())
+      .then((svg) => live && setUrl(svgUrl(derive(svg))))
+      .catch(() => undefined);
+    return () => {
+      live = false;
+    };
+  }, [file, derive]);
+  return url;
+}
+
+const master = (svg: string) => macMasterSvg(svg, "preview");
+const template = (svg: string) => trayTemplateSvg(svg);
+
+function MacIcons() {
+  const dock = useDerivedSvg("uwumirror-app-icon.svg", master);
+  const tray = useDerivedSvg("uwumirror-symbol-mono.svg", template);
+  return (
+    <Sub title="macOS: Dock und Menüleiste">
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Panel className="flex flex-col gap-3">
+          <div className="flex items-end justify-center gap-5 rounded-control bg-[#d9d9de] px-4 py-3 dark:bg-[#3a3a40]">
+            <figure className="flex flex-col items-center gap-1">
+              <img src="./apps/uwumirror-app-icon.svg" alt="" width={72} height={72} />
+              <figcaption className="text-caption text-[#3a3a40] dark:text-[#d9d9de]">randlos ✗</figcaption>
+            </figure>
+            <figure className="flex flex-col items-center gap-1">
+              {dock && <img src={dock} alt="" width={72} height={72} />}
+              <figcaption className="text-caption text-[#3a3a40] dark:text-[#d9d9de]">Apple-Raster ✓</figcaption>
+            </figure>
+          </div>
+          <p className="text-meta text-muted">
+            Im Dock steht jedes Icon im Raster von Apple: die Kachel 824 von 1024 px, Apples abgerundetes Quadrat,
+            darunter ein weicher Schatten. <code>uwu-icons</code> setzt das App-Icon dafür selbst ins Raster.
+          </p>
+        </Panel>
+        <Panel className="flex flex-col gap-3">
+          <div className="flex flex-col overflow-hidden rounded-control border border-hairline">
+            {[
+              ["bg-[#f4f4f6] text-black", ""],
+              ["bg-[#2b2b30] text-white", "invert"],
+            ].map(([bar, filter]) => (
+              <div key={bar} className={`flex h-7 items-center justify-end gap-4 px-3 text-[13px] ${bar}`}>
+                {tray && <img src={tray} alt="" width={18} height={18} className={filter} />}
+                <span>Mo. 9:41</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-meta text-muted">
+            Das Menüleisten-Icon ist ein Template: schwarz auf transparent, macOS färbt es für helle und dunkle Leisten.
+            Es kommt aus <code>symbol-mono.svg</code> mit 1,5-fach dicken Linien, nie die farbige Nyu.
+          </p>
+        </Panel>
+      </div>
+      <Rules
+        items={[
+          [true, "Dock-Icon im Apple-Raster (824/1024, Superellipse, Schatten), erzeugt von uwu-icons."],
+          [
+            true,
+            "Menüleiste: tray-template.png (36 px, 18 pt @2x) mit iconAsTemplate. Windows/Linux behalten tray.png.",
+          ],
+          [false, "Keine randlose Kachel im Dock, keine farbige Nyu in der Menüleiste."],
+        ]}
+      />
+    </Sub>
   );
 }

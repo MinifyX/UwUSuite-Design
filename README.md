@@ -10,24 +10,25 @@ UwURDP, UwUAuth and the servers' web UIs into one family. It takes its design
 from UwUMail, adds the stage, title bar and state colours from UwUMirror, and
 the high-contrast theme from UwULock.
 
-| What                                                                | Where                        | Rules                                                      |
-| ------------------------------------------------------------------- | ---------------------------- | ---------------------------------------------------------- |
-| Tokens (light, dark, high contrast), Tailwind v4 theme, base styles | `src/css/`                   | [color](docs/color.md)                                     |
-| UwU Sans (bundled, OFL) + JetBrains Mono, font picker               | `fonts/`, `src/lib/fonts.ts` | [typography](docs/typography.md)                           |
-| `<Icon>`, the `ICONS` vocabulary (Lucide), suite icons              | `src/icons/`                 | [icons](docs/icons.md)                                     |
-| App icon tile, template, `uwu-icons` generator                      | `brand/`, `bin/`             | [app-icons](docs/app-icons.md)                             |
-| Nyu: the catalogue of every app's shell, face kit, motion           | `src/nyu/`, `nyu.css`        | [nyu](docs/nyu.md)                                         |
-| React components (Button … Dialog, Toaster, TitleBar)               | `src/components/`            | [components](docs/components.md), [window](docs/window.md) |
-| Motion tokens and keyframes                                         | `motion.css`                 | [motion](docs/motion.md)                                   |
-| Tone of voice, copy, i18n                                           |                              | [tone](docs/tone.md)                                       |
-| Names, wordmark, licence                                            |                              | [brand](docs/brand.md)                                     |
-| Moving an app onto the package                                      |                              | [migration](docs/migration.md)                             |
+| What                                                                  | Where                                    | Rules                                                      |
+| --------------------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------------------- |
+| Tokens (light, dark, high contrast), Tailwind v4 theme, base styles   | `src/css/`                               | [color](docs/color.md)                                     |
+| UwU Sans (bundled, OFL) + JetBrains Mono, font picker                 | `fonts/`, `src/lib/fonts.ts`             | [typography](docs/typography.md)                           |
+| `<Icon>`, the `ICONS` vocabulary (Lucide), suite icons                | `src/icons/`                             | [icons](docs/icons.md)                                     |
+| App icon tile, template, `uwu-icons` generator                        | `brand/`, `bin/`                         | [app-icons](docs/app-icons.md)                             |
+| Nyu: the catalogue of every app's shell, face kit, motion             | `src/nyu/`, `nyu.css`                    | [nyu](docs/nyu.md)                                         |
+| React components (Button … Dialog, Toaster, TitleBar)                 | `src/components/`                        | [components](docs/components.md), [window](docs/window.md) |
+| Motion tokens and keyframes                                           | `motion.css`                             | [motion](docs/motion.md)                                   |
+| Tone of voice, copy, i18n                                             |                                          | [tone](docs/tone.md)                                       |
+| Names, wordmark, licence                                              |                                          | [brand](docs/brand.md)                                     |
+| macOS: menu bar, shortcuts, closing and quitting, Dock and tray icons | `src/tauri/`, `crates/uwu-macos`, `bin/` | [macos](docs/macos.md)                                     |
+| Moving an app onto the package                                        |                                          | [migration](docs/migration.md)                             |
 
 ## Use it
 
 ```jsonc
 // package.json: the release tarball, no registry needed
-"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.1.0/uwusuite-design-1.1.0.tgz"
+"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.2.0/uwusuite-design-1.2.0.tgz"
 ```
 
 ```css
@@ -39,7 +40,7 @@ the high-contrast theme from UwULock.
 
 ```tsx
 import { Button, Icon, ICONS, Nyu, Wordmark, useAppearance, applyUiFont } from "@uwusuite/design";
-import { useTauriWindow } from "@uwusuite/design/tauri";
+import { useTauriWindow, setMacMenu, onMacQuit } from "@uwusuite/design/tauri";
 import { nyuSvg } from "@uwusuite/design/nyu-svg"; // no React needed
 ```
 
@@ -56,6 +57,7 @@ import { nyuSvg } from "@uwusuite/design/nyu-svg"; // no React needed
 pnpm install
 pnpm styleguide        # live styleguide on http://localhost:5173
 pnpm lint && pnpm typecheck && pnpm test && pnpm build
+cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace   # crates/uwu-macos
 ```
 
 The tests check WCAG contrast for every token pair in all four themes, the
@@ -63,7 +65,8 @@ icon rules, the Nyu catalogue and the components. They run in about 3 seconds.
 
 ## Release
 
-1. Bump `version` in `package.json`.
+1. Bump `version` in `package.json` and in `Cargo.toml` (the crate and the
+   `tag` in its comment; a test checks they match).
 2. Add a `## <version>` section to `CHANGELOG.md`.
 3. Run `pnpm release`. It runs the checks, then tags and pushes. The release
    workflow packs `uwusuite-design-<version>.tgz` and publishes it as a GitHub

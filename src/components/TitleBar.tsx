@@ -2,6 +2,9 @@ import { clsx } from "clsx";
 import type { ReactNode } from "react";
 import { useLabels } from "../lib/labels";
 
+/** The desktop platform, for chrome decisions: title bar, menus, shortcut text. */
+export type Platform = "windows" | "linux" | "mac";
+
 export interface WindowControls {
   maximized: boolean;
   minimize: () => void;
@@ -22,7 +25,7 @@ export interface TitleBarProps {
    * "mac" renders nothing: on macOS the app keeps the native title bar and menu bar
    * (docs/window.md). Pass the result of detectPlatform().
    */
-  platform?: "windows" | "linux" | "mac";
+  platform?: Platform;
   className?: string;
 }
 
@@ -107,8 +110,8 @@ export function TitleBarAction({
 }
 
 /** The desktop platform from the user agent: good enough for chrome decisions, not for security. */
-export function detectPlatform(userAgent = typeof navigator === "undefined" ? "" : navigator.userAgent) {
-  if (/Mac OS X|Macintosh/.test(userAgent) && !/iPhone|iPad/.test(userAgent)) return "mac" as const;
-  if (/Windows/.test(userAgent)) return "windows" as const;
-  return "linux" as const;
+export function detectPlatform(userAgent = typeof navigator === "undefined" ? "" : navigator.userAgent): Platform {
+  if (/Mac OS X|Macintosh/.test(userAgent) && !/iPhone|iPad/.test(userAgent)) return "mac";
+  if (/Windows/.test(userAgent)) return "windows";
+  return "linux";
 }

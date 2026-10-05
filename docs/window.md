@@ -6,15 +6,17 @@
 | macOS          | Native title bar (`tauri.macos.conf.json`: `"decorations": true`, `"titleBarStyle": "Visible"`), native menu bar | No `TitleBar` (it renders nothing with `platform="mac"`); the menus live in the system menu bar |
 
 ```tsx
-import { detectPlatform, TitleBar, TitleBarAction, Wordmark, Icon, ICONS } from "@uwusuite/design";
+import { detectPlatform, TitleBar, TitleBarAction, Wordmark, Icon, ICONS, withShortcut } from "@uwusuite/design";
 import { useTauriWindow } from "@uwusuite/design/tauri";
 
+const platform = detectPlatform();
+
 <TitleBar
-  platform={detectPlatform()}
+  platform={platform}
   controls={useTauriWindow()}
   brand={<Wordmark product="Mirror" shell="mirror" />}
   actions={
-    <TitleBarAction label="Einstellungen (Strg+,)" onClick={openSettings}>
+    <TitleBarAction label={withShortcut("Einstellungen", "CmdOrCtrl+,", platform)} onClick={openSettings}>
       <Icon icon={ICONS.settings} size="md" />
     </TitleBarAction>
   }
@@ -40,12 +42,15 @@ From UwUMirror:
 
 ## macOS
 
-- Use the native title bar and traffic lights, and the native menu bar (app
-  menu, Ablage, Bearbeiten, Darstellung, Fenster, Hilfe).
-- Write shortcuts in Mac style (⌘, ⌥, ⇧) in menus and tooltips. Use ⌘, for
-  settings.
-- Quitting from the Dock saves first.
-- Don't draw a second title bar and don't fake traffic lights.
+The full rules and code are in [macos.md](macos.md). In short:
+
+- Use the native title bar and traffic lights. Don't draw a second title bar
+  and don't fake traffic lights.
+- The title bar's actions move into the menu bar (`setMacMenu()`): the gear
+  becomes App → Einstellungen … (⌘,).
+- Shortcuts in Mac style (⌘, ⌥, ⇧) in menus and tooltips (`shortcutText()`).
+- ⌘W hides the window and the app stays in the Dock; ⌘Q, the Dock and logging
+  out save first (`uwu-macos`, `onMacQuit()`).
 
 ## Sizes
 

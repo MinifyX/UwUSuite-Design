@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Button, ICONS, Icon, keepKaomojiTogether, Nyu, TitleBar, TitleBarAction, Wordmark } from "../../src";
+import { macShortcut } from "../../src/lib/shortcuts";
+import { macMenuSpec } from "../../src/tauri/mac-menu";
 import { Code, Panel, Rules, Section, Sub } from "./ui";
 
 export function Window() {
@@ -50,10 +52,7 @@ export function Window() {
             true,
             "Fensterknöpfe 46 px breit, Schließen wird beim Hover pink-solid. Doppelklick auf die leere Leiste maximiert.",
           ],
-          [
-            true,
-            "macOS: native Titelleiste und Menüleiste, Mac-Kürzel (⌘) in Menüs und Tooltips. Das Dock-Beenden speichert vorher.",
-          ],
+          [true, "macOS: native Titelleiste mit Ampel und die System-Menüleiste, siehe unten."],
           [true, "Mindestgröße 640 × 440. Unter 700 px Breite gilt das Telefon-Layout (Variante phone:)."],
           [false, "Keine nachgebauten Ampel-Knöpfe auf Windows/Linux, keine Windows-Knöpfe auf dem Mac."],
           [
@@ -62,7 +61,95 @@ export function Window() {
           ],
         ]}
       />
+      <MacWindow />
     </Section>
+  );
+}
+
+/** The shortcuts AppKit gives its own items, for the preview. */
+const SYSTEM_KEYS: Record<string, string> = {
+  Hide: "⌘H",
+  HideOthers: "⌥⌘H",
+  Quit: "⌘Q",
+  CloseWindow: "⌘W",
+  Undo: "⌘Z",
+  Redo: "⇧⌘Z",
+  Cut: "⌘X",
+  Copy: "⌘C",
+  Paste: "⌘V",
+  SelectAll: "⌘A",
+  Minimize: "⌘M",
+  Fullscreen: "⌃⌘F",
+};
+
+const noop = () => {};
+const PREVIEW = macMenuSpec({
+  appName: "UwUMirror",
+  onSettings: noop,
+  app: [{ text: "Nach Updates suchen …", action: noop }],
+  file: [{ text: "Neue Verbindung …", accelerator: "CmdOrCtrl+N", action: noop }],
+  view: [{ text: "Seitenleiste", accelerator: "CmdOrCtrl+Alt+S", checked: true, action: noop }],
+  menus: [{ text: "Verbindung", items: [{ text: "Trennen", accelerator: "CmdOrCtrl+Shift+D", action: noop }] }],
+  help: [{ text: "UwUMirror-Website", action: noop }],
+});
+
+function MacWindow() {
+  return (
+    <Sub title="macOS">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {PREVIEW.map((menu) => (
+          <Panel key={menu.text} className="flex flex-col gap-1 p-3">
+            <strong className="px-2 text-meta">{menu.text}</strong>
+            <ul className="flex flex-col text-[13px]">
+              {menu.items.map((item, at) => {
+                if ("item" in item && item.item === "Separator")
+                  return <li key={at} aria-hidden="true" className="mx-2 my-1 border-t border-hairline" />;
+                const key =
+                  "item" in item ? (typeof item.item === "string" ? SYSTEM_KEYS[item.item] : undefined) : undefined;
+                const accelerator = "accelerator" in item && item.accelerator ? macShortcut(item.accelerator) : key;
+                return (
+                  <li key={at} className="flex justify-between gap-3 rounded-md px-2 py-0.5">
+                    <span>
+                      {"checked" in item && item.checked ? "✓ " : ""}
+                      {item.text}
+                    </span>
+                    {accelerator && <span className="text-muted">{accelerator}</span>}
+                  </li>
+                );
+              })}
+              {menu.role === "help" && <li className="px-2 py-0.5 text-muted">(Suchfeld von macOS)</li>}
+            </ul>
+          </Panel>
+        ))}
+      </div>
+      <Code>{`import { hideWindowOnClose, onMacQuit, setMacMenu } from "@uwusuite/design/tauri";
+
+await setMacMenu({ appName: "UwUMirror", onSettings: openSettings,
+  file: [{ text: "Neue Verbindung …", accelerator: "CmdOrCtrl+N", action: newConnection }] });
+await hideWindowOnClose();          // ⌘W: Fenster weg, App bleibt im Dock
+await onMacQuit(() => saveAll());   // ⌘Q, Dock, Abmelden: erst speichern
+
+// src-tauri: uwu-macos (Crate in diesem Repo) + RunEvent::Reopen, siehe docs/macos.md`}</Code>
+      <Rules
+        items={[
+          [
+            true,
+            "Einstellungen stehen im App-Menü unter „Einstellungen …“ (⌘,), Über/Ausblenden/Beenden ebenfalls dort. Das Zahnrad der Titelleiste gibt es auf dem Mac nicht.",
+          ],
+          [
+            true,
+            "Menüs in Apples Reihenfolge: App, Ablage, Bearbeiten, Darstellung, eigene Menüs, Fenster, Hilfe. Standardeinträge sind die von macOS.",
+          ],
+          [true, "Kürzel als Accelerator schreiben (CmdOrCtrl+N), angezeigt als ⌘N: shortcutText() in Tooltips."],
+          [
+            true,
+            "⌘W und die rote Ampel schließen nur das Fenster; die App bleibt im Dock, ein Klick aufs Dock-Icon holt es zurück.",
+          ],
+          [true, "⌘Q, Beenden im Dock und Abmelden speichern vorher (uwu-macos + onMacQuit)."],
+          [false, "Keine eigene Titelleiste, keine nachgebauten Ampeln, kein Menü im Fenster auf dem Mac."],
+        ]}
+      />
+    </Sub>
   );
 }
 

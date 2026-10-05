@@ -40,6 +40,12 @@ jobs:
           \`\`\`json
           "@uwusuite/design": "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/uwusuite-design-${VERSION}.tgz"
           \`\`\`
+
+          macOS lifecycle crate for the app's \`src-tauri/Cargo.toml\`:
+
+          \`\`\`toml
+          uwu-macos = { git = "https://github.com/${GITHUB_REPOSITORY}", tag = "v${VERSION}" }
+          \`\`\`
           NOTES
           sha256sum "uwusuite-design-$VERSION.tgz" > SHA256SUMS.txt
           prerelease=""; case "$VERSION" in *-*) prerelease="--prerelease";; esac

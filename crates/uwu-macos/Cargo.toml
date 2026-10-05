@@ -1,0 +1,11 @@
+[package]
+name = "uwu-macos"
+description = "macOS app lifecycle for UwUSuite Tauri apps: quitting from the Dock saves first."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6"

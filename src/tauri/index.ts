@@ -42,3 +42,8 @@ export function useTauriWindow(): WindowControls {
     [maximized],
   );
 }
+
+export { hideWindowOnClose, MAC_QUIT_EVENT, onMacQuit } from "./mac-lifecycle";
+export type { MacQuitOptions } from "./mac-lifecycle";
+export { MAC_MENU_LABELS, macMenuSpec, setMacMenu } from "./mac-menu";
+export type { MacMenuEntry, MacMenuOptions, MacSubmenuSpec } from "./mac-menu";

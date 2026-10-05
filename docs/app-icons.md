@@ -2,13 +2,13 @@
 
 Every app has five files in its `brand/` folder:
 
-| File                           | What                                                                       | Used for                                                                              |
-| ------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `<app>-app-icon.svg`           | Nyu, slightly tilted, on the pastel tile, with props                       | macOS Dock (`icon.icns`), Windows Store tiles, Android, iOS, website, GitHub, favicon |
-| `<app>-taskbar-icon.svg`       | Nyu alone, upright, no tile, white die-cut edge                            | Windows taskbar, window icon, Linux menus (`icon.ico`, `icon.png`, `32…256` PNGs)     |
-| `<app>-taskbar-icon-small.svg` | Simplified cut: thicker outlines, no blush, no inner ears, no face details | The 16 and 24 px ICO frames, the tray (`tray.png`)                                    |
-| `<app>-symbol.svg`             | Nyu alone with edge, for the app's UI and docs                             | About pages, README                                                                   |
-| `<app>-symbol-mono.svg`        | Outlines only in `currentColor`, stroke about 9 on the 256 grid            | Monochrome places: notifications, print, embossing                                    |
+| File                           | What                                                                       | Used for                                                                                                     |
+| ------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `<app>-app-icon.svg`           | Nyu, slightly tilted, on the pastel tile, with props                       | macOS Dock (`icon.icns`, set into Apple's grid), Windows Store tiles, Android, iOS, website, GitHub, favicon |
+| `<app>-taskbar-icon.svg`       | Nyu alone, upright, no tile, white die-cut edge                            | Windows taskbar, window icon, Linux menus (`icon.ico`, `icon.png`, `32…256` PNGs)                            |
+| `<app>-taskbar-icon-small.svg` | Simplified cut: thicker outlines, no blush, no inner ears, no face details | The 16 and 24 px ICO frames, the tray (`tray.png`)                                                           |
+| `<app>-symbol.svg`             | Nyu alone with edge, for the app's UI and docs                             | About pages, README                                                                                          |
+| `<app>-symbol-mono.svg`        | Outlines only in `currentColor`, stroke about 9 on the 256 grid            | Monochrome places: notifications, print, embossing, the macOS menu bar (`tray-template.png`)                 |
 
 ## The tile
 
@@ -42,14 +42,17 @@ In the Tauri app folder (it needs `@tauri-apps/cli`):
 pnpm exec uwu-icons --brand ../../brand --name uwumirror --tray --mobile
 ```
 
-| Source       | Output                                                                                                       |
-| ------------ | ------------------------------------------------------------------------------------------------------------ |
-| app icon     | `icon.icns`, `StoreLogo.png`, `Square{30…310}x…Logo.png`, and with `--mobile` the `android/` and `ios/` sets |
-| taskbar icon | `icon.ico`, `icon.png`, `32x32.png`, `64x64.png`, `128x128.png`, `128x128@2x.png`                            |
-| small cut    | the ICO's 16 and 24 px frames, and with `--tray` `tray.png` (32 px)                                          |
+| Source                   | Output                                                                                                 |
+| ------------------------ | ------------------------------------------------------------------------------------------------------ |
+| app icon                 | `StoreLogo.png`, `Square{30…310}x…Logo.png`, and with `--mobile` the `android/` and `ios/` sets        |
+| app icon in Apple's grid | `icon.icns` (16 to 1024 px) and `macos/icon-1024.png` to look at                                       |
+| taskbar icon             | `icon.ico`, `icon.png`, `32x32.png`, `64x64.png`, `128x128.png`, `128x128@2x.png`                      |
+| small cut                | the ICO's 16 and 24 px frames, and with `--tray` `tray.png` (32 px)                                    |
+| mono symbol              | with `--tray` `tray-template.png` (36 px), the macOS menu bar template; `<app>-tray-template.svg` wins |
 
 A missing taskbar or small file falls back to the next bigger one, with a
-warning. Commit the generated files. CI does not regenerate them.
+warning. Why the Dock icon and the menu bar icon are made differently on a Mac,
+and the rules for a Liquid Glass icon on macOS 26: [macos.md](macos.md). Commit the generated files. CI does not regenerate them.
 
 ## Web
 

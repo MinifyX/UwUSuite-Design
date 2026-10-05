@@ -6,7 +6,7 @@ with no release of its own: the change ships with the app's next release.
 ## Steps for every app
 
 1. **Add the dependency** in the app's `package.json`:
-   `"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.1.0/uwusuite-design-1.1.0.tgz"`.
+   `"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.2.0/uwusuite-design-1.2.0.tgz"`.
 2. **CSS:**
    - Replace the app's `tokens.css`, `fonts.css`, the base layer, the Nyu edge
      and blink CSS and the keyframes with
@@ -43,8 +43,19 @@ with no release of its own: the change ships with the app's next release.
      package.
    - Rename the logo hop class `animate-nyu-hop` to `nyu-logo-hop`.
 8. **Window:** use `TitleBar` + `useTauriWindow()` with native macOS chrome.
+   On macOS ([macos.md](macos.md)):
+   - Move the title bar's actions into `setMacMenu()`; settings go to ⌘,.
+   - `hideWindowOnClose()` and `RunEvent::Reopen`, so ⌘W keeps the app in the
+     Dock.
+   - The `uwu-macos` crate and `onMacQuit()`, so quitting saves first.
+     UwUNotes has this already (`quit.rs`, `menu.rs`); it can move to the
+     crate and `setMacMenu()` when it migrates.
+   - Tooltips through `withShortcut()`.
 9. **Icons script:** replace `scripts/icons.mjs` with
-   `pnpm exec uwu-icons --brand ../../brand --name <app> [--tray] [--mobile]`.
+   `pnpm exec uwu-icons --brand ../../brand --name <app> [--tray] [--mobile]`,
+   regenerate and commit the icons. The Dock icon shrinks into Apple's grid
+   (UwUNotes has that since 0.6), and apps with a tray get `tray-template.png`
+   for the macOS menu bar.
 10. **Docs:** cut `docs/design.md` down to what is special about the app, and
     link here for the rest.
 

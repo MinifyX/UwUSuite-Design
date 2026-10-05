@@ -20,6 +20,8 @@ if (out("git", ["rev-parse", "--abbrev-ref", "HEAD"]) !== "main") throw new Erro
 if (out("git", ["tag", "--list", `v${version}`])) throw new Error(`v${version} exists already`);
 
 for (const script of ["lint", "typecheck", "test", "build"]) run("pnpm", ["run", script]);
+run("cargo", ["clippy", "--workspace", "--all-targets", "--locked", "--", "-D", "warnings"]);
+run("cargo", ["test", "--workspace", "--locked"]);
 run("git", ["tag", "-a", `v${version}`, "-m", `UwUSuite Design ${version}`]);
 run("git", ["push", "origin", "main", `v${version}`]);
 console.log(`tagged v${version}; the release workflow publishes uwusuite-design-${version}.tgz`);

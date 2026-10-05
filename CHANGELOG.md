@@ -1,5 +1,36 @@
 # Changelog
 
+## 1.2.0
+
+macOS: the apps now get what a Mac app needs (docs/macos.md).
+
+- **Menu bar:** `setMacMenu()` in `@uwusuite/design/tauri` sets the suite's
+  menu bar in Apple's order: app menu (About, Einstellungen … ⌘,, Services,
+  hide, quit), Ablage, Bearbeiten, Darstellung, the app's own menus, Fenster,
+  Hilfe. The standard items are AppKit's own, the Window and Help menus are
+  marked for macOS. German and English. `macMenuSpec()` returns the same as
+  data. The title bar's actions move here on a Mac; the gear becomes ⌘,.
+- **Shortcuts:** `shortcutText()`, `macShortcut()` and `withShortcut()` show
+  one accelerator the platform's way: `⇧⌘S`, `Strg+Umschalt+S`,
+  `Ctrl+Shift+S`. New type `Platform`.
+- **Closing and quitting:** `hideWindowOnClose()` keeps the app in the Dock on
+  ⌘W, `onMacQuit()` saves before ⌘Q, the Dock or a logout ends the app. The
+  Rust side is the new crate `uwu-macos` in this repo (from UwUNotes 0.6),
+  taken as a git dependency at the release tag; the Dock reopen is a
+  `RunEvent::Reopen` snippet in the docs.
+- **Dock icon:** `uwu-icons` sets the app icon into Apple's grid (824 of 1024,
+  superellipse, soft shadow) and writes `icon.icns` itself, 16 to 1024 px,
+  checked after writing. Until now the Dock got the full-bleed tile, a size
+  too big next to other apps. Also `macos/icon-1024.png` to look at.
+- **Menu bar icon:** `uwu-icons --tray` also writes `tray-template.png`
+  (36 px) from the mono symbol with 1.5 times thicker outlines, or from a
+  hand-drawn `<app>-tray-template.svg`.
+- **Liquid Glass:** rules for a macOS 26 `.icon` from Icon Composer: tile as
+  background fill, Nyu and props as layers, no baked shadow.
+- Styleguide: a macOS part under Fenster (the menu bar, rendered from
+  `macMenuSpec()`) and under App-Icons (Dock grid and menu bar template,
+  rendered with the same code as `uwu-icons`).
+
 ## 1.1.0
 
 - UwU Sans 1.100 drops the `:3` → Nyu and `<3` → heart ligatures. They

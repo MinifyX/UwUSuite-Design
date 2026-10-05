@@ -28,7 +28,7 @@ export type { AvatarColor, AvatarProps } from "./components/Avatar";
 export { Wordmark } from "./components/Wordmark";
 export type { WordmarkProps } from "./components/Wordmark";
 export { TitleBar, TitleBarAction, detectPlatform } from "./components/TitleBar";
-export type { TitleBarProps, WindowControls } from "./components/TitleBar";
+export type { Platform, TitleBarProps, WindowControls } from "./components/TitleBar";
 
 // Icons
 export { Icon, ICON_SIZES } from "./icons/Icon";
@@ -58,5 +58,6 @@ export {
 export type { FontChoice } from "./lib/fonts";
 export { LABELS_DE, LABELS_EN, UwuLabels, useLabels } from "./lib/labels";
 export type { Labels } from "./lib/labels";
+export { macShortcut, shortcutText, withShortcut } from "./lib/shortcuts";
 export { keepKaomojiTogether } from "./lib/text";
 export { cx } from "./lib/cx";
