@@ -7,10 +7,11 @@ import { defineConfig } from "vite";
 const here = dirname(fileURLToPath(import.meta.url));
 
 // The styleguide is a static page with relative paths, so it works under /design/ on the website
-// and opened from any folder.
+// and opened from any folder. Nothing is inlined (no data: fonts, no inline scripts), so it runs
+// under the website's strict Content-Security-Policy.
 export default defineConfig({
   root: here,
   base: "./",
   plugins: [react(), tailwindcss()],
-  build: { outDir: join(here, "../dist-styleguide"), emptyOutDir: true },
+  build: { outDir: join(here, "../dist-styleguide"), emptyOutDir: true, assetsInlineLimit: 0 },
 });

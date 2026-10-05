@@ -10,19 +10,7 @@
     />
     <title>UwUSuite Design</title>
     <link rel="icon" type="image/svg+xml" href="./apps/uwusuite-app-icon.svg" />
-    <script>
-      (function () {
-        try {
-          var s = JSON.parse(localStorage.getItem("uwusuite-design.settings") || "{}");
-          var m = function (q) {
-            return matchMedia(q).matches;
-          };
-          var r = document.documentElement;
-          var t = s.theme || "system";
-          r.dataset.theme = t === "system" ? (m("(prefers-color-scheme: dark)") ? "dark" : "light") : t;
-        } catch (e) {}
-      })();
-    </script>
+    <script src="./boot.js"></script>
   </head>
   <body>
     <div id="root"></div>

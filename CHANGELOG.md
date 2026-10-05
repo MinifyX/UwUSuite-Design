@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1
+
+- The styleguide runs under a strict Content-Security-Policy: the theme boot
+  script is a file and fonts are no longer inlined as `data:` URIs. Fixes the
+  blocked fonts and the flash of the wrong theme on uwu.minifyx.de/design.
+- docs/color.md: how to load `bootScript()` under a CSP.
+
 ## 1.0.0
 
 The first UwUSuite design package, built from UwUMail and UwUMirror.

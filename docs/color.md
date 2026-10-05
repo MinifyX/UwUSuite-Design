@@ -84,7 +84,9 @@ UwURDP's tabs, `StatusDot state="connecting"`).
 
 "System" follows `prefers-color-scheme`, `prefers-contrast: more` and
 `prefers-reduced-motion`. Put `bootScript(key)` into `index.html` so a dark app
-never flashes white. Tailwind's `dark:` follows `data-theme`, and
+never flashes white. Under a strict Content-Security-Policy (`script-src 'self'`,
+as on uwu.minifyx.de or in a Tauri app with a CSP) write it to a file such as
+`public/boot.js` and load it with `<script src>` instead of inlining it. Tailwind's `dark:` follows `data-theme`, and
 `contrast-high:` and `motion-reduced:` are variants too.
 
 High contrast (from UwULock) is black on white or white on black, 7:1 for

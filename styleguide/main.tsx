@@ -13,6 +13,7 @@ import {
   type MotionSetting,
   type ThemeSetting,
 } from "../src";
+import { version } from "../package.json";
 import { Colors } from "./sections/Colors";
 import { Components } from "./sections/Components";
 import { AppIcons, Icons } from "./sections/Icons";
@@ -74,7 +75,7 @@ function App() {
         <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
           <a href="#top" className="text-[19px]">
             <Wordmark product="Suite" shell="box" />
-            <span className="ml-2 align-middle text-meta font-semibold text-muted">Design 1.0</span>
+            <span className="ml-2 align-middle text-meta font-semibold text-muted">Design {version}</span>
           </a>
           <div className="ml-auto flex flex-wrap items-center gap-2">
             <Segmented
