@@ -14,8 +14,10 @@ UwU Sans is Atkinson Hyperlegible Next with its letters untouched, plus:
 - Nyu (U+E000)
 - a heart (U+2665)
 - arrows (U+2190–2193)
-- `calt` ligatures that turn `:3` into Nyu and `<3` into a heart, never next
-  to a letter or digit. `10:30`, `x<3` and `1<35` stay as typed.
+
+It has no ligatures: `:3` and `<3` stay as typed. Nyu and the heart only show
+where their code point is used. (Until 1.0.1 a `calt` feature turned `:3` into
+Nyu and `<3` into a heart. It changed what people wrote, so 1.1.0 dropped it.)
 
 The license is SIL OFL 1.1. The source and build are in
 [`fonts/uwu-sans-source`](../fonts/uwu-sans-source). Every app gets the font
@@ -66,11 +68,10 @@ Counts, dates and times use `tabular-nums`.
 
 ## Rules
 
-- `base.css` turns the ligatures off where people type or read code (`input`,
-  `textarea`, `select`, `[contenteditable]`, `code`, `pre`, `kbd`, `samp`,
-  `.uwu-mono`).
-- The body sets `font-feature-settings: "calt" 1` because Blink drops
-  contextual alternates when letter-spacing is not 0.
+- Nyu and the heart are characters, not ligatures: write U+E000 or U+2665
+  where you want them, never rely on `:3` or `<3` turning into a picture.
+- `base.css` keeps JetBrains Mono's code ligatures off (`code`, `pre`, `kbd`,
+  `samp`, `.uwu-mono`), so `->`, `!=` and `=>` look the way they were typed.
 - Don't use italics for styling. UwU Sans has no italic, so the browser would
   slant it.
 - Don't use serif fonts, and don't let the engine's Times show anywhere. Frames

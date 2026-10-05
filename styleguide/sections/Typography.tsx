@@ -25,7 +25,7 @@ export function Typography() {
       }
     >
       <Panel className="flex flex-col gap-4">
-        <p className="text-[56px] leading-none font-extrabold tracking-[-0.02em]">Hallo, ich bin Nyu :3</p>
+        <p className="text-[56px] leading-none font-extrabold tracking-[-0.02em]">Hallo, ich bin Nyu {"\uE000"}</p>
         <p className="text-reading">
           Franz jagt im komplett verwahrlosten Taxi quer durch Bayern. <span className="tabular-nums">0123456789</span>{" "}
           · äöü ß ÄÖÜ · „Zitat“ – Gedankenstrich … ← ↑ → ↓ ♥
@@ -49,24 +49,20 @@ export function Typography() {
           ))}
         </div>
       </Sub>
-      <Sub title="Ligaturen">
+      <Sub title="Nyu und Herz">
         <div className="grid gap-3 sm:grid-cols-2">
           <Panel className="flex flex-col gap-2">
-            <p className="text-section">Bis gleich :3 und danke &lt;3</p>
+            <p className="text-section">Nyu {"\uE000"} · Herz ♥ · Pfeile ← ↑ → ↓</p>
             <p className="text-meta text-muted">
-              In Text werden <code>:3</code> zu Nyu und <code>&lt;3</code> zu einem Herz, aber nie neben Buchstaben oder
-              Ziffern. Uhrzeiten wie <span className="tabular-nums">10:30</span> und <span>x&lt;3</span> bleiben stehen.
+              Nyu und das Herz gibt es nur als eigene Zeichen: <code>U+E000</code> und <code>U+2665</code>. Wer sie
+              zeigen will, setzt genau diese Zeichen.
             </p>
           </Panel>
           <Panel className="flex flex-col gap-2">
-            <input
-              className="h-11 rounded-control border border-control/60 bg-surface px-3.5"
-              defaultValue="Hier bleibt :3 wie getippt <3"
-              aria-label="Beispiel-Eingabe"
-            />
+            <p className="text-section">Bis gleich :3 und danke &lt;3</p>
             <p className="text-meta text-muted">
-              Wo getippt oder Code gelesen wird (Eingaben, Editoren, <code>code</code>, <code>pre</code>), sind die
-              Ligaturen aus. Das erledigt base.css.
+              UwU Sans hat keine Ligaturen. <code>:3</code> und <code>&lt;3</code> bleiben, wie sie getippt wurden, denn
+              ein Bild statt der Zeichen würde ihre Bedeutung ändern.
             </p>
           </Panel>
         </div>

@@ -6,13 +6,17 @@ with no release of its own: the change ships with the app's next release.
 ## Steps for every app
 
 1. **Add the dependency** in the app's `package.json`:
-   `"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.0.0/uwusuite-design-1.0.0.tgz"`.
+   `"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.1.0/uwusuite-design-1.1.0.tgz"`.
 2. **CSS:**
    - Replace the app's `tokens.css`, `fonts.css`, the base layer, the Nyu edge
      and blink CSS and the keyframes with
      `@import "tailwindcss"; @import "@uwusuite/design/tailwind.css";`. Add
      `font-picker.css` if the app has a font picker.
    - Delete the app's copy of `UwUSans[wght].woff2`.
+   - Delete the app's `font-variant-ligatures: no-contextual` and `"calt"`
+     rules that were there for UwU Sans's `:3`/`<3` ligatures. Since 1.1.0 the
+     font has none; text that showed Nyu or a heart through them now shows
+     `:3`/`<3`, so put U+E000 or U+2665 where the picture is wanted.
    - Remove `@fontsource-variable/*` from the app.
 3. **Tokens that changed:**
    - Text in a state colour moves to `-ink`: `text-danger` → `text-danger-ink`,
