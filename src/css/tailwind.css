@@ -1,0 +1,121 @@
+/*
+ * The UwUSuite Tailwind v4 theme. In the app's stylesheet:
+ *
+ *   @import "tailwindcss";
+ *   @import "@uwusuite/design/tailwind.css";
+ *
+ * It brings tokens, fonts, base styles, motion, Nyu and the title bar, maps every token to a
+ * Tailwind name (bg-surface, text-muted, border-line, rounded-control, shadow-float, animate-pop…),
+ * makes dark: follow <html data-theme="dark"> and lets Tailwind see the package's components.
+ */
+@import "./tokens.css";
+@import "./fonts.css";
+@import "./base.css";
+@import "./motion.css";
+@import "./nyu.css";
+@import "./titlebar.css";
+
+@source "../";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant contrast-high (&:where([data-contrast="high"], [data-contrast="high"] *));
+@custom-variant motion-reduced (&:where([data-motion="reduced"], [data-motion="reduced"] *));
+@custom-variant phone (@media (max-width: 699px));
+
+@theme inline {
+  --font-sans: var(--font-ui);
+  --font-mono: var(--uwu-mono);
+
+  --color-canvas: var(--uwu-canvas);
+  --color-surface: var(--uwu-surface);
+  --color-elevated: var(--uwu-elevated);
+  --color-ink: var(--uwu-ink);
+  --color-muted: var(--uwu-muted);
+  --color-faint: var(--uwu-faint);
+  --color-hairline: var(--uwu-hairline);
+  --color-line: var(--uwu-border);
+  --color-control: var(--uwu-control);
+
+  --color-pink: var(--uwu-pink);
+  --color-pink-solid: var(--uwu-pink-solid);
+  --color-pink-solid-hover: var(--uwu-pink-solid-hover);
+  --color-on-pink: var(--uwu-on-pink);
+  --color-pink-ink: var(--uwu-pink-ink);
+  --color-pink-tint: var(--uwu-pink-tint);
+  --color-pink-tint-strong: var(--uwu-pink-tint-strong);
+
+  --color-danger: var(--uwu-danger);
+  --color-danger-ink: var(--uwu-danger-ink);
+  --color-danger-tint: var(--uwu-danger-tint);
+  --color-success: var(--uwu-success);
+  --color-success-ink: var(--uwu-success-ink);
+  --color-success-tint: var(--uwu-success-tint);
+  --color-warning: var(--uwu-warning);
+  --color-warning-ink: var(--uwu-warning-ink);
+  --color-warning-tint: var(--uwu-warning-tint);
+  --color-offline: var(--uwu-offline);
+
+  --color-account-pink: var(--uwu-account-pink);
+  --color-account-violet: var(--uwu-account-violet);
+  --color-account-sky: var(--uwu-account-sky);
+  --color-account-mint: var(--uwu-account-mint);
+  --color-account-amber: var(--uwu-account-amber);
+  --color-account-coral: var(--uwu-account-coral);
+
+  --color-avatar-pink: var(--uwu-avatar-pink);
+  --color-avatar-pink-ink: var(--uwu-avatar-pink-ink);
+  --color-avatar-violet: var(--uwu-avatar-violet);
+  --color-avatar-violet-ink: var(--uwu-avatar-violet-ink);
+  --color-avatar-sky: var(--uwu-avatar-sky);
+  --color-avatar-sky-ink: var(--uwu-avatar-sky-ink);
+  --color-avatar-mint: var(--uwu-avatar-mint);
+  --color-avatar-mint-ink: var(--uwu-avatar-mint-ink);
+  --color-avatar-amber: var(--uwu-avatar-amber);
+  --color-avatar-amber-ink: var(--uwu-avatar-amber-ink);
+  --color-avatar-coral: var(--uwu-avatar-coral);
+  --color-avatar-coral-ink: var(--uwu-avatar-coral-ink);
+
+  --color-toast: var(--uwu-toast);
+  --color-toast-ink: var(--uwu-toast-ink);
+  --color-toast-accent: var(--uwu-toast-accent);
+  --color-toast-danger: var(--uwu-toast-danger);
+
+  --color-stage: var(--uwu-stage);
+  --color-stage-ink: var(--uwu-stage-ink);
+  --color-stage-muted: var(--uwu-stage-muted);
+  --color-stage-overlay: var(--uwu-stage-overlay);
+  --color-stage-border: var(--uwu-stage-border);
+
+  --color-plum: var(--uwu-plum);
+  --color-plum-soft: var(--uwu-plum-soft);
+
+  --shadow-float: var(--uwu-shadow-float);
+  --shadow-primary: var(--uwu-shadow-primary);
+  --shadow-focus: var(--uwu-focus);
+  --drop-shadow-nyu: var(--uwu-shadow-nyu);
+
+  --radius-small: var(--uwu-radius-small);
+  --radius-control: var(--uwu-radius-control);
+  --radius-card: var(--uwu-radius-card);
+  --radius-dialog: var(--uwu-radius-dialog);
+
+  --text-badge: var(--uwu-text-badge);
+  --text-caption: var(--uwu-text-caption);
+  --text-meta: var(--uwu-text-meta);
+  --text-body: var(--uwu-text-body);
+  --text-reading: var(--uwu-text-reading);
+  --text-section: var(--uwu-text-section);
+  --text-title: var(--uwu-text-title);
+
+  --ease-uwu: var(--uwu-ease-out);
+  --ease-pop: var(--uwu-ease-pop);
+  --ease-spring: var(--uwu-ease-spring);
+
+  --animate-pop: uwu-pop 180ms var(--uwu-ease-pop);
+  --animate-fade: uwu-fade 160ms ease-out;
+  --animate-slide-up: uwu-slide-up var(--uwu-duration-enter) var(--uwu-ease-out);
+  --animate-drawer: uwu-drawer var(--uwu-duration-enter) var(--uwu-ease-out);
+  --animate-screen-in: uwu-screen-in var(--uwu-duration-enter) var(--uwu-ease-out);
+  --animate-wiggle: uwu-wiggle 600ms ease-in-out;
+  --animate-pulse-soft: uwu-pulse 1s ease-in-out infinite;
+}

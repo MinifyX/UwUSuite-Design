@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="UwU app icon template">
+  <title>UwU app icon template</title>
+  <!--
+    Start every UwU app icon from this file (rules: docs/app-icons.md).
+
+    1. Keep the tile as it is: 512 × 512, rx 116, the pastel gradient #FFF3F8 → #FFD3E5.
+       Never a saturated pink tile (reads as a telecom app), never another colour.
+    2. Put the app's Nyu (its shell from the catalogue, with the white die-cut edge) into the
+       "nyu" group: centred a little below the middle, tilted -6° to -8°, filling the guide
+       circle (about 330 px wide). Keep the drop shadow filter on her.
+    3. Add two or three props from the palette: sparkles (#FFD66E), a heart (#FF6FA6), the app's
+       thing (a phone, a key, a letter). Arrange them differently from the other apps.
+    4. Delete the "guides" group, save as brand/<app>-app-icon.svg and run uwu-icons.
+  -->
+  <defs>
+    <linearGradient id="uwu-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF3F8"/>
+      <stop offset="1" stop-color="#FFD3E5"/>
+    </linearGradient>
+    <filter id="uwu-shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#C2306F" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <style>.nyu-edge,.nyu-edge *{fill:#fff;stroke:#fff}.nyu-edge *{stroke-width:inherit}.nyu-edge [fill="none"],.nyu-edge [fill="none"] *{fill:none}.nyu-edge .no-edge{display:none}</style>
+  <rect width="512" height="512" rx="116" fill="url(#uwu-bg)"/>
+  <g id="guides" fill="none" stroke="#C2306F" stroke-width="2" stroke-dasharray="8 8" opacity="0.5">
+    <circle cx="256" cy="268" r="168"/>
+    <rect x="48" y="48" width="416" height="416" rx="84"/>
+  </g>
+  <g id="nyu" filter="url(#uwu-shadow)"/>
+  <g id="props"/>
+</svg>

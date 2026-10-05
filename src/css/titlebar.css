@@ -1,0 +1,95 @@
+/*
+ * The suite's own title bar for Windows and Linux (docs/window.md). The window has no system frame
+ * there ("decorations": false); on macOS the app keeps the native title bar and menu bar and does
+ * not render this at all. From UwUMirror.
+ */
+.uwu-titlebar {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  height: var(--uwu-titlebar-height);
+  flex: none;
+  padding: 0 0 0 14px;
+  border-bottom: 1px solid var(--uwu-hairline);
+  background: var(--uwu-surface);
+  color: var(--uwu-ink);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.uwu-titlebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--uwu-text-body);
+}
+
+.uwu-titlebar-spacer {
+  flex: 1;
+}
+
+.uwu-titlebar-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-right: 6px;
+}
+
+.uwu-titlebar-action {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--uwu-radius-pill);
+  background: transparent;
+  color: var(--uwu-muted);
+  cursor: default;
+  transition:
+    background-color var(--uwu-duration-fast),
+    color var(--uwu-duration-fast);
+}
+
+.uwu-titlebar-action:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--uwu-pink-tint) 60%, transparent);
+  color: var(--uwu-ink);
+}
+
+.uwu-window-controls {
+  display: flex;
+}
+
+.uwu-window-control {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--uwu-ink);
+  cursor: default;
+}
+
+.uwu-window-control svg {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+
+.uwu-window-control:hover:not(:disabled) {
+  background: var(--uwu-elevated);
+}
+
+.uwu-window-control[data-kind="close"]:hover:not(:disabled) {
+  background: var(--uwu-pink-solid);
+  color: var(--uwu-on-pink);
+}
+
+.uwu-window-control:focus-visible {
+  box-shadow: inset var(--uwu-focus);
+}

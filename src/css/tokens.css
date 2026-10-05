@@ -1,0 +1,290 @@
+/*
+ * UwUSuite design tokens. One file for every app: UwUMail, UwUMirror, UwUNotes, UwULock, UwUSSH,
+ * UwURDP, UwUAuth and the servers' web UIs. Taken from UwUMail; UwUMirror added the always-dark
+ * stage and the state colours, UwULock the control outline and high contrast.
+ *
+ * Rules (docs/color.md):
+ * - Components never use raw hex values. A missing colour becomes a token here.
+ * - Two pinks: white text on --uwu-pink reaches only 3.1:1, so anything with text on a pink fill
+ *   uses --uwu-pink-solid (4.5:1). --uwu-pink is for dots, badges, selection, focus and the logo.
+ * - The same split for every state colour: the plain token for dots, icons and fills, the -ink
+ *   token for text. tests/contrast.test.ts checks every text pair against WCAG AA.
+ * - --uwu-pink reaches 3:1 on --uwu-surface, not on --uwu-canvas. On the canvas it is decoration
+ *   (logo, sparkles, a dot next to bold text); a mark that alone carries a state uses pink-solid.
+ * - Pink means "selected" or "focus". It never means "online" or "ok" — that is --uwu-success.
+ *
+ * Themes: <html data-theme="light|dark">, <html data-contrast="high">, <html data-motion="reduced">,
+ * set by applyAppearance() (src/lib/appearance.ts).
+ */
+
+:root {
+  /* Surfaces and text */
+  --uwu-canvas: #f8f4f6;
+  --uwu-surface: #ffffff;
+  --uwu-elevated: #fcf8fa;
+  --uwu-ink: #1c1420;
+  --uwu-muted: #716672;
+  --uwu-faint: #a69ba5;
+  --uwu-hairline: #f2e8ee;
+  --uwu-border: #e9dde4;
+  /* The outline of what takes input (fields, selects, switches off): 3:1 against the page
+     (WCAG 1.4.11). --uwu-border stays for cards and dividers. */
+  --uwu-control: #8a7d8b;
+
+  /* Brand */
+  --uwu-pink: #ff4d8d;
+  --uwu-pink-solid: #e11d74;
+  --uwu-pink-solid-hover: #c8165f;
+  --uwu-on-pink: #ffffff;
+  --uwu-pink-ink: #a3154f;
+  --uwu-pink-tint: #ffe4ef;
+  --uwu-pink-tint-strong: #ffd0e2;
+
+  /* States: plain for dots, icons and fills; -ink for text; -tint for backgrounds. */
+  --uwu-danger: #d92d44;
+  --uwu-danger-ink: #b4233a;
+  --uwu-danger-tint: #fde4e7;
+  --uwu-success: #12a06d;
+  --uwu-success-ink: #17796a;
+  --uwu-success-tint: #d8f5e8;
+  --uwu-warning: #b86e00;
+  --uwu-warning-ink: #8e5510;
+  --uwu-warning-tint: #fdf0d6;
+  --uwu-offline: #b3a8b3;
+
+  /* Accounts, profiles, spaces: a fixed, contrast-checked set, the same in both themes. */
+  --uwu-account-pink: #ff4d8d;
+  --uwu-account-violet: #8b5cf6;
+  --uwu-account-sky: #0ea5e9;
+  --uwu-account-mint: #10b981;
+  --uwu-account-amber: #f59e0b;
+  --uwu-account-coral: #f97360;
+
+  /* Avatars and account chips: a tint with readable initials per account colour. */
+  --uwu-avatar-pink: #ffe4ef;
+  --uwu-avatar-pink-ink: #a3154f;
+  --uwu-avatar-violet: #ede5ff;
+  --uwu-avatar-violet-ink: #5b32c7;
+  --uwu-avatar-sky: #dff3fc;
+  --uwu-avatar-sky-ink: #0b6591;
+  --uwu-avatar-mint: #d8f5e8;
+  --uwu-avatar-mint-ink: #0b6e4c;
+  --uwu-avatar-amber: #fdf0d6;
+  --uwu-avatar-amber-ink: #8a5606;
+  --uwu-avatar-coral: #fde6e2;
+  --uwu-avatar-coral-ink: #a8392a;
+
+  /* The toast is inverted: dark on a light app, light on a dark app. */
+  --uwu-toast: #1c1420;
+  --uwu-toast-ink: #ffffff;
+  --uwu-toast-accent: #ff7fac;
+  --uwu-toast-danger: #ff8096;
+
+  /* Behind modal dialogs. */
+  --uwu-backdrop: rgb(28 20 32 / 0.35);
+
+  /* The stage (a mirrored phone, a remote desktop, a terminal) is dark in both themes. */
+  --uwu-stage: #0c0a0d;
+  --uwu-stage-ink: #f8f2f6;
+  --uwu-stage-muted: #b3a8b3;
+  --uwu-stage-overlay: rgb(28 23 31 / 0.92);
+  --uwu-stage-border: #3a3040;
+
+  /* Brand art: the app icon tile, installers, the website. Fixed, never themed. */
+  --uwu-tile-from: #fff3f8;
+  --uwu-tile-to: #ffd3e5;
+  --uwu-plum: #4b1d3f;
+  --uwu-plum-soft: #7a5670;
+
+  /* Shape */
+  --uwu-radius-small: 8px;
+  --uwu-radius-control: 10px;
+  --uwu-radius-card: 16px;
+  --uwu-radius-dialog: 22px;
+  --uwu-radius-pill: 999px;
+
+  /* Elevation: shadows only for what floats (menus, dialogs, toasts, popovers). */
+  --uwu-shadow-float: 0 12px 32px rgb(28 20 32 / 0.12), 0 2px 8px rgb(28 20 32 / 0.06);
+  --uwu-shadow-primary: 0 2px 10px rgb(225 29 116 / 0.25);
+  --uwu-shadow-nyu: 0 6px 10px rgb(194 48 111 / 0.12);
+  --uwu-focus: 0 0 0 3px rgb(255 77 141 / 0.35);
+
+  /* Space: one 4 px scale. A value that is not on it is a mistake, not a style. */
+  --uwu-space-1: 4px;
+  --uwu-space-2: 8px;
+  --uwu-space-3: 12px;
+  --uwu-space-4: 16px;
+  --uwu-space-5: 20px;
+  --uwu-space-6: 24px;
+  --uwu-space-8: 32px;
+  --uwu-space-10: 40px;
+
+  /* Type (docs/typography.md). --font-ui and --tracking-ui are set by applyUiFont(). */
+  --font-ui: "UwU Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif;
+  --tracking-ui: -0.008em;
+  --uwu-font: var(--font-ui);
+  --uwu-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --uwu-text-badge: 11px;
+  --uwu-text-caption: 12px;
+  --uwu-text-meta: 13px;
+  --uwu-text-body: 14px;
+  --uwu-text-reading: 16px;
+  --uwu-text-section: 18px;
+  --uwu-text-title: 22px;
+  --uwu-leading: 1.45;
+  --uwu-leading-reading: 1.55;
+  --uwu-leading-tight: 1.25;
+
+  /* Motion (docs/motion.md) */
+  --uwu-duration-fast: 150ms;
+  --uwu-duration-base: 200ms;
+  --uwu-duration-enter: 220ms;
+  --uwu-ease-out: cubic-bezier(0.2, 0.9, 0.3, 1);
+  --uwu-ease-pop: cubic-bezier(0.2, 0.9, 0.3, 1.3);
+  --uwu-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Layers. Modal dialogs use the browser's top layer and sit above all of these. */
+  --uwu-z-sticky: 30;
+  --uwu-z-menu: 40;
+  --uwu-z-cameo: 45;
+  --uwu-z-toast: 50;
+  --uwu-z-tooltip: 60;
+
+  /* Window chrome (docs/window.md) */
+  --uwu-titlebar-height: 38px;
+  --uwu-titlebar-mac-inset: 78px;
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --uwu-canvas: #141016;
+  --uwu-surface: #1c171f;
+  --uwu-elevated: #241e28;
+  --uwu-ink: #f8f2f6;
+  --uwu-muted: #b3a8b3;
+  --uwu-faint: #7d717d;
+  --uwu-hairline: #2c2430;
+  --uwu-border: #3a3040;
+  --uwu-control: #7d7185;
+
+  --uwu-pink: #ff7fac;
+  --uwu-pink-solid: #ff7fac;
+  --uwu-pink-solid-hover: #ff9dbf;
+  --uwu-on-pink: #1c1420;
+  --uwu-pink-ink: #ffa3c4;
+  --uwu-pink-tint: #3a1a2a;
+  --uwu-pink-tint-strong: #4d2338;
+
+  --uwu-danger: #ff6b7e;
+  --uwu-danger-ink: #ff8a99;
+  --uwu-danger-tint: #3d1a20;
+  --uwu-success: #3ddc97;
+  --uwu-success-ink: #5cc7ac;
+  --uwu-success-tint: #123a2a;
+  --uwu-warning: #f5b94a;
+  --uwu-warning-ink: #d8a25c;
+  --uwu-warning-tint: #3a2a0c;
+  --uwu-offline: #6d6474;
+
+  --uwu-avatar-pink: #3a1a2a;
+  --uwu-avatar-pink-ink: #ffa3c4;
+  --uwu-avatar-violet: #2a2142;
+  --uwu-avatar-violet-ink: #c4b1ff;
+  --uwu-avatar-sky: #10293a;
+  --uwu-avatar-sky-ink: #8fd6f8;
+  --uwu-avatar-mint: #123a2a;
+  --uwu-avatar-mint-ink: #6ee7b7;
+  --uwu-avatar-amber: #3a2a0c;
+  --uwu-avatar-amber-ink: #f5c453;
+  --uwu-avatar-coral: #3d1d18;
+  --uwu-avatar-coral-ink: #ffab9d;
+
+  --uwu-toast: #f8f2f6;
+  --uwu-toast-ink: #1c1420;
+  --uwu-toast-accent: #a3154f;
+  --uwu-toast-danger: #b4233a;
+
+  --uwu-backdrop: rgb(0 0 0 / 0.5);
+
+  --uwu-shadow-float: 0 12px 32px rgb(0 0 0 / 0.45), 0 2px 8px rgb(0 0 0 / 0.3);
+  --uwu-shadow-primary: 0 2px 10px rgb(255 127 172 / 0.2);
+  --uwu-focus: 0 0 0 3px rgb(255 127 172 / 0.4);
+
+  color-scheme: dark;
+}
+
+/*
+ * High contrast (Settings → Darstellung → Kontrast, or prefers-contrast: more): black on white and
+ * white on black, text and borders at 7:1 or more, an accent dark or light enough to be text.
+ * `html:root[…]` outranks an admin's accent colour (branding.css), so high contrast always wins.
+ */
+html:root[data-contrast="high"] {
+  --uwu-canvas: #ffffff;
+  --uwu-surface: #ffffff;
+  --uwu-elevated: #eeeeee;
+  --uwu-ink: #000000;
+  --uwu-muted: #333333;
+  --uwu-faint: #595959;
+  --uwu-hairline: #595959;
+  --uwu-border: #333333;
+  --uwu-control: #000000;
+
+  --uwu-pink: #8a0046;
+  --uwu-pink-solid: #8a0046;
+  --uwu-pink-solid-hover: #6e0038;
+  --uwu-on-pink: #ffffff;
+  --uwu-pink-ink: #7a003c;
+  --uwu-pink-tint: #ffe4ef;
+  --uwu-pink-tint-strong: #ffc2d9;
+
+  --uwu-danger: #8a0017;
+  --uwu-danger-ink: #8a0017;
+  --uwu-success: #00564a;
+  --uwu-success-ink: #00564a;
+  --uwu-warning: #5c3d00;
+  --uwu-warning-ink: #5c3d00;
+  --uwu-offline: #595959;
+
+  --uwu-toast: #000000;
+  --uwu-toast-ink: #ffffff;
+  --uwu-toast-accent: #ffa6c9;
+  --uwu-toast-danger: #ff9aa8;
+  --uwu-account-pink: #8a0046;
+  --uwu-focus: 0 0 0 3px #000000;
+}
+
+html:root[data-contrast="high"][data-theme="dark"] {
+  --uwu-canvas: #000000;
+  --uwu-surface: #000000;
+  --uwu-elevated: #1f1f1f;
+  --uwu-ink: #ffffff;
+  --uwu-muted: #e6e6e6;
+  --uwu-faint: #a8a8a8;
+  --uwu-hairline: #8c8c8c;
+  --uwu-border: #d9d9d9;
+  --uwu-control: #ffffff;
+
+  --uwu-pink: #ffa6c9;
+  --uwu-pink-solid: #ffa6c9;
+  --uwu-pink-solid-hover: #ffc2d9;
+  --uwu-on-pink: #000000;
+  --uwu-pink-ink: #ffc2d9;
+  --uwu-pink-tint: #4a0f2c;
+  --uwu-pink-tint-strong: #5c1236;
+
+  --uwu-danger: #ff9aa8;
+  --uwu-danger-ink: #ff9aa8;
+  --uwu-success: #7fe0c6;
+  --uwu-success-ink: #7fe0c6;
+  --uwu-warning: #ffd08a;
+  --uwu-warning-ink: #ffd08a;
+  --uwu-offline: #a8a8a8;
+
+  --uwu-toast: #ffffff;
+  --uwu-toast-ink: #000000;
+  --uwu-toast-accent: #8a0046;
+  --uwu-toast-danger: #8a0017;
+  --uwu-account-pink: #ffa6c9;
+  --uwu-focus: 0 0 0 3px #ffffff;
+}

@@ -1,0 +1,62 @@
+# Moving an app onto the package
+
+No app uses the package yet. This is the order, app by app. One PR per app,
+with no release of its own: the change ships with the app's next release.
+
+## Steps for every app
+
+1. **Add the dependency** in the app's `package.json`:
+   `"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.0.0/uwusuite-design-1.0.0.tgz"`.
+2. **CSS:**
+   - Replace the app's `tokens.css`, `fonts.css`, the base layer, the Nyu edge
+     and blink CSS and the keyframes with
+     `@import "tailwindcss"; @import "@uwusuite/design/tailwind.css";`. Add
+     `font-picker.css` if the app has a font picker.
+   - Delete the app's copy of `UwUSans[wght].woff2`.
+   - Remove `@fontsource-variable/*` from the app.
+3. **Tokens that changed:**
+   - Text in a state colour moves to `-ink`: `text-danger` → `text-danger-ink`,
+     `text-success` → `text-success-ink`, `text-warning` → `text-warning-ink`.
+   - Mirror and Lock `--uwu-online` → `--uwu-success-ink` (text) or
+     `--uwu-success` (dot), and `--uwu-alarm` → `--uwu-warning-ink`.
+   - Badges move to `bg-pink-solid text-on-pink`.
+   - `--uwu-font` → `--font-ui`, `--uwu-tracking` → `--tracking-ui`.
+4. **Settings:**
+   - Theme, contrast and motion go through `useAppearance()`, and the inline
+     script through `bootScript()`.
+   - The font goes through `applyUiFont()`. `FONT_CHOICES` adds Manrope; keep
+     an old stored value working with `isFontChoice` and fall back to `uwu`.
+5. **Components:** replace `components/ui/*` with the package's components.
+   Keep app-specific ones (ResizeHandle, ArmedButton, ThreadRow) in the app,
+   built from package tokens.
+6. **Icons:**
+   - Replace direct `lucide-react` imports and inline `Icon.tsx` path maps with
+     `Icon` + `ICONS`.
+   - An icon the vocabulary lacks goes into the package first.
+7. **Nyu:**
+   - Keep the app's scenes.
+   - Take `Sticker`, `NyuFace`, `NyuEars`, the palette and `nyu.css` from the
+     package.
+   - Rename the logo hop class `animate-nyu-hop` to `nyu-logo-hop`.
+8. **Window:** use `TitleBar` + `useTauriWindow()` with native macOS chrome.
+9. **Icons script:** replace `scripts/icons.mjs` with
+   `pnpm exec uwu-icons --brand ../../brand --name <app> [--tray] [--mobile]`.
+10. **Docs:** cut `docs/design.md` down to what is special about the app, and
+    link here for the rest.
+
+## Per app
+
+| App                          | Today                                                                   | Notable work                                                                                                                                                        |
+| ---------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UwUMirror                    | Manrope, own `Icon.tsx` (stroke 1.8), plain CSS, no Tailwind in desktop | Add Tailwind v4, move to UwU Sans, move CSS classes to components. The stage stays (`stage-*` tokens). Good pilot: small app, its TitleBar is the model             |
+| UwUMail-Client               | UwU Sans + picker, lucide (stroke 2), Tailwind                          | Closest to the package. Stroke 2 → 1.8 through `Icon`. Toast tokens. The font source has moved here: delete `brand/fonts/uwu-sans` after the switch                 |
+| UwUMail-Webmail              | Same as the client                                                      | Same as the client. `branding.css` still overrides the pink tokens. Keep the mail frame font injection                                                              |
+| UwUMail-Server web           | Manrope, Tailwind                                                       | Switch to UwU Sans. Card and PageHeader become package `Card` plus a local header                                                                                   |
+| UwUNotes-Client              | `packages/uwu-tokens`, UwU Sans + 4 fonts, own icons at stroke 1.5      | Replace `@uwu/tokens` with the package. Keep `code.css` and `--uwu-deep`, or move them into the package if another app needs them. Nyu companion stays in the app   |
+| UwULock-Client / Server web  | UwU Sans + picker, high contrast, spacing tokens                        | These are the source of high contrast and spacing. Map `--uwu-text-*` (12.5/13/14 px) to the package scale. The browser extension bundles the font from the package |
+| UwUSSH-Client, UwURDP-Client | Manrope, own icons, tokens copy                                         | Terminal and remote area use the `stage-*` tokens. Keygen gets `TitleBar` too                                                                                       |
+| UwUAuth-Server web           | Manrope                                                                 | Switch to UwU Sans and the package components                                                                                                                       |
+| UwUSuite-Website             | Own `site.css`, Manrope, `nyu.mjs`                                      | Take the Nyu catalogue from `@uwusuite/design/nyu-svg` and UwU Sans. The site keeps its own page CSS                                                                |
+
+Suggested order: UwUMirror (pilot), UwUMail-Client and Webmail, UwUNotes,
+UwULock, UwUSSH and UwURDP, the server web UIs, the website.

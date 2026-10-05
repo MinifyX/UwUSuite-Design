@@ -1,0 +1,108 @@
+{
+  "name": "@uwusuite/design",
+  "version": "1.0.0",
+  "description": "The UwUSuite design package: tokens, Tailwind theme, UwU Sans, icon rules, React components, Nyu and the app icon tool.",
+  "license": "MIT",
+  "type": "module",
+  "repository": "github:MinifyX/UwUSuite-Design",
+  "packageManager": "pnpm@11.3.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "fonts/*.woff2",
+    "fonts/OFL.txt",
+    "brand",
+    "bin",
+    "docs",
+    "CHANGELOG.md"
+  ],
+  "bin": {
+    "uwu-icons": "./bin/uwu-icons.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./tauri": {
+      "types": "./dist/tauri/index.d.ts",
+      "default": "./dist/tauri/index.js"
+    },
+    "./nyu-svg": {
+      "types": "./dist/nyu/svg.d.ts",
+      "default": "./dist/nyu/svg.js"
+    },
+    "./tailwind.css": "./dist/css/tailwind.css",
+    "./plain.css": "./dist/css/plain.css",
+    "./tokens.css": "./dist/css/tokens.css",
+    "./fonts.css": "./dist/css/fonts.css",
+    "./font-picker.css": "./dist/css/font-picker.css",
+    "./base.css": "./dist/css/base.css",
+    "./nyu.css": "./dist/css/nyu.css",
+    "./titlebar.css": "./dist/css/titlebar.css",
+    "./fonts/*": "./fonts/*",
+    "./brand/*": "./brand/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "styleguide": "vite --config styleguide/vite.config.ts",
+    "build:styleguide": "vite build --config styleguide/vite.config.ts",
+    "lint": "eslint . && prettier --check . && node scripts/check-icons.mjs",
+    "format": "prettier --write .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "release": "node scripts/release.mjs"
+  },
+  "peerDependencies": {
+    "@tauri-apps/api": "^2.0.0",
+    "lucide-react": ">=1.0.0",
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0",
+    "tailwindcss": "^4.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@tauri-apps/api": {
+      "optional": true
+    },
+    "tailwindcss": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@fontsource-variable/rubik": "^5.3.0",
+    "clsx": "^2.1.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@tauri-apps/api": "^2.11.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^24.13.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^10.10.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.12.0",
+    "jsdom": "^30.0.1",
+    "lucide-react": "^1.52.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.70.0",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.0"
+  }
+}

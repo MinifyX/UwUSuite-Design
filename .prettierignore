@@ -1,0 +1,7 @@
+dist
+dist-styleguide
+node_modules
+pnpm-lock.yaml
+fonts
+brand/*.svg
+CHANGELOG.md

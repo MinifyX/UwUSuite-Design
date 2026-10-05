@@ -1,0 +1,126 @@
+/*
+ * Base styles for every UwUSuite app. Plain CSS (no @apply), so it works with and without
+ * Tailwind. Apps that feel like an app, not a page, put class="uwu-app" on <body>.
+ */
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--uwu-canvas);
+    color: var(--uwu-ink);
+    font-family: var(--font-ui);
+    font-size: var(--uwu-text-body);
+    line-height: var(--uwu-leading);
+    letter-spacing: var(--tracking-ui);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Blink drops contextual alternates (Nyu, the heart) as soon as letter-spacing isn't 0. */
+    font-feature-settings: "calt" 1;
+    /* German compounds must not push a phone screen sideways. */
+    overflow-wrap: break-word;
+  }
+
+  /* A desktop app: the window never scrolls as a whole, and text is only selectable where it
+     makes sense (inputs, content, .selectable). */
+  body.uwu-app {
+    overflow: hidden;
+    user-select: none;
+  }
+
+  body.uwu-app :is(input, textarea, [contenteditable="true"], .selectable) {
+    user-select: text;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+
+  /* UwU Sans turns ":3" into Nyu and "<3" into a heart. Not where people type or read code. */
+  input,
+  textarea,
+  select,
+  [contenteditable],
+  code,
+  pre,
+  kbd,
+  samp,
+  .uwu-mono {
+    font-variant-ligatures: no-contextual;
+    font-feature-settings: "calt" 0;
+  }
+
+  code,
+  pre,
+  kbd,
+  samp,
+  .uwu-mono {
+    font-family: var(--uwu-mono);
+    letter-spacing: 0;
+  }
+
+  code,
+  kbd {
+    font-size: 0.92em;
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--uwu-focus);
+  }
+
+  ::selection {
+    background: var(--uwu-pink-tint-strong);
+  }
+
+  /* Thin scrollbars that turn pink on hover. Chromium ignores the ::-webkit rules as soon as
+     scrollbar-color is set, so that is only the fallback for engines without them (Firefox). */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--uwu-muted) 45%, transparent) padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--uwu-pink) 70%, transparent) padding-box;
+  }
+
+  ::-webkit-scrollbar-button,
+  ::-webkit-scrollbar-corner {
+    display: none;
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--uwu-border) transparent;
+    }
+  }
+
+  /* Settings → Animationen, resolved against prefers-reduced-motion by applyAppearance(). */
+  :root[data-motion="reduced"] *,
+  :root[data-motion="reduced"] *::before,
+  :root[data-motion="reduced"] *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

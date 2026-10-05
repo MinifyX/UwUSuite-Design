@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="de" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="description"
+      content="Das Designpaket der UwUSuite: Farben, Schrift, Icons, Nyu, App-Icons, Komponenten und Ton."
+    />
+    <title>UwUSuite Design</title>
+    <link rel="icon" type="image/svg+xml" href="./apps/uwusuite-app-icon.svg" />
+    <script>
+      (function () {
+        try {
+          var s = JSON.parse(localStorage.getItem("uwusuite-design.settings") || "{}");
+          var m = function (q) {
+            return matchMedia(q).matches;
+          };
+          var r = document.documentElement;
+          var t = s.theme || "system";
+          r.dataset.theme = t === "system" ? (m("(prefers-color-scheme: dark)") ? "dark" : "light") : t;
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

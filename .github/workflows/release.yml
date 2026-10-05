@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Check version and changelog
+        run: |
+          version="$(node -p 'require("./package.json").version')"
+          test "v$version" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME does not match $version"; exit 1; }
+          grep -qx "## $version" CHANGELOG.md || { echo "CHANGELOG.md has no ## $version"; exit 1; }
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm pack
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          awk -v v="## $VERSION" '$0==v{f=1;next} /^## /{f=0} f' CHANGELOG.md > notes.md
+          cat >> notes.md <<NOTES
+
+          Install in an app:
+
+          \`\`\`json
+          "@uwusuite/design": "https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/uwusuite-design-${VERSION}.tgz"
+          \`\`\`
+          NOTES
+          sha256sum "uwusuite-design-$VERSION.tgz" > SHA256SUMS.txt
+          prerelease=""; case "$VERSION" in *-*) prerelease="--prerelease";; esac
+          gh release create "v$VERSION" "uwusuite-design-$VERSION.tgz" SHA256SUMS.txt \
+            --title "UwUSuite Design $VERSION" --notes-file notes.md $prerelease

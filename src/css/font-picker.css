@@ -1,0 +1,7 @@
+/*
+ * The fonts Settings → Darstellung → Schrift offers besides UwU Sans and the system font
+ * (FONT_CHOICES in src/lib/fonts.ts). The browser only fetches the one in use.
+ */
+@import "@fontsource-variable/manrope";
+@import "@fontsource-variable/rubik";
+@import "@fontsource-variable/dm-sans";

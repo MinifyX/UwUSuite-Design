@@ -1,0 +1,14 @@
+/*
+ * UwU Sans, the suite's interface font (fonts/uwu-sans-source), and JetBrains Mono for code,
+ * addresses, fingerprints and versions. Both are bundled: no app loads a font from the network.
+ * The picker's other fonts are in font-picker.css; import it only where the picker exists.
+ */
+@import "@fontsource-variable/jetbrains-mono";
+
+@font-face {
+  font-family: "UwU Sans";
+  src: url("../../fonts/UwUSans[wght].woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}

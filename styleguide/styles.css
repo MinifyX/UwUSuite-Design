@@ -1,0 +1,16 @@
+@import "tailwindcss";
+@import "../src/css/tailwind.css";
+@import "../src/css/font-picker.css";
+
+@source "./";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+
+  :root[data-motion="reduced"] {
+    scroll-behavior: auto;
+  }
+}
