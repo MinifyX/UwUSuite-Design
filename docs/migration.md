@@ -7,7 +7,7 @@ with no release of its own: the change ships with the app's next release.
 ## Steps for every app
 
 1. **Add the dependency** in the app's `package.json`:
-   `"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.4.0/uwusuite-design-1.4.0.tgz"`.
+   `"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.4.1/uwusuite-design-1.4.1.tgz"`.
    After `pnpm install`, check that the package's entry in `pnpm-lock.yaml`
    keeps `tarball: https://github.com/…` in its `resolution`. pnpm 11 can
    rewrite it as `integrity` only when the URL changes; then a fresh install

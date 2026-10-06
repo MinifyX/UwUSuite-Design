@@ -65,9 +65,10 @@ export function Dialog({
         width === "md" && "max-w-[560px]",
         width === "lg" && "max-w-[860px]",
         width === "viewer" && "h-[calc(100svh-48px)] max-h-none max-w-[1200px]",
-        // Phones: everything but small confirmations fills the screen.
+        // Phones: everything but small confirmations fills the screen, clear of the notch and the
+        // home indicator (env() is 0 without viewport-fit=cover).
         width !== "sm" &&
-          "phone:h-full phone:max-h-none phone:w-full phone:max-w-none phone:rounded-none phone:border-0",
+          "phone:h-full phone:max-h-none phone:w-full phone:max-w-none phone:rounded-none phone:border-0 phone:pt-[env(safe-area-inset-top)] phone:pb-[env(safe-area-inset-bottom)]",
         className,
       )}
     >
@@ -83,8 +84,11 @@ export function Dialog({
             </header>
           )}
           <div className="min-h-0 flex-auto overflow-y-auto">{children}</div>
+          {/* Phones: the buttons share the row and grow to fill it. What doesn't fit wraps onto a
+              line of its own at full width, so a third button (the primary one comes last) gets a
+              whole row instead of being squeezed. */}
           {footer && (
-            <footer className="flex flex-wrap items-center justify-end gap-2 border-t border-hairline px-6 py-4">
+            <footer className="flex flex-wrap items-center justify-end gap-2 border-t border-hairline px-6 py-4 phone:px-4 phone:[&>a]:flex-auto phone:[&>button]:flex-auto">
               {footer}
             </footer>
           )}

@@ -6,7 +6,7 @@ export type { FieldProps } from "./components/Field.js";
 export { Switch, Toggle } from "./components/Switch.js";
 export type { SwitchProps, ToggleProps } from "./components/Switch.js";
 export { Segmented } from "./components/Segmented.js";
-export type { SegmentedProps } from "./components/Segmented.js";
+export type { SegmentedOption, SegmentedProps } from "./components/Segmented.js";
 export { Pill, Badge, Tag } from "./components/Pill.js";
 export type { PillProps, TagTone } from "./components/Pill.js";
 export { Dialog } from "./components/Dialog.js";

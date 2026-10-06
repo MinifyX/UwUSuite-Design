@@ -34,6 +34,9 @@ const MARKS: [string, string][] = [
   ...["--uwu-pink-solid", "--uwu-control", "--uwu-danger", "--uwu-success", "--uwu-warning"].flatMap((fg) =>
     ["--uwu-canvas", "--uwu-surface"].map((bg) => [fg, bg] as [string, string]),
   ),
+  // Segmented's chosen option in high contrast: an ink outline on the track (canvas), because
+  // there canvas and surface are the same colour and the choice must not rely on colour alone.
+  ["--uwu-ink", "--uwu-canvas"],
   // The brand pink only needs 3:1 on cards; on the canvas it is decoration (tokens.css).
   ["--uwu-pink", "--uwu-surface"],
 ];

@@ -36,7 +36,7 @@ export function Components() {
   const [airplay, setAirplay] = useState(true);
   const [tone, setTone] = useState<"playful" | "neutral">("playful");
   const [filter, setFilter] = useState("alle");
-  const [dialog, setDialog] = useState<"none" | "form" | "warning">("none");
+  const [dialog, setDialog] = useState<"none" | "form" | "warning" | "three">("none");
   const [name, setName] = useState("Wohnzimmer");
 
   return (
@@ -112,6 +112,26 @@ export function Components() {
               options={[
                 { value: "playful", label: "Verspielt" },
                 { value: "neutral", label: "Neutral" },
+              ]}
+            />
+            <Segmented
+              label="Server, während die Anmeldung läuft"
+              value="cloud"
+              onChange={() => {}}
+              disabled
+              options={[
+                { value: "cloud", label: "UwU Cloud" },
+                { value: "own", label: "Eigener Server" },
+              ]}
+            />
+            <Segmented
+              label="Qualität"
+              value="auto"
+              onChange={() => {}}
+              options={[
+                { value: "auto", label: "Auto" },
+                { value: "high", label: "Hoch" },
+                { value: "4k", label: "4K", disabled: true },
               ]}
             />
           </div>
@@ -206,6 +226,7 @@ export function Components() {
             ]}
           />
           <Button onClick={() => setDialog("form")}>Dialog</Button>
+          <Button onClick={() => setDialog("three")}>Dialog mit drei Buttons</Button>
           <Button
             onClick={() =>
               toasts.show("Nachricht gesendet ✉︎ ~", { tone: "success", action: { label: "Rückgängig", run: () => {} } })
@@ -268,6 +289,25 @@ export function Components() {
         >
           <p className="px-6 pb-4 text-body text-muted">
             „Wohnzimmer“ wird auf allen Geräten gelöscht. Das lässt sich nicht rückgängig machen.
+          </p>
+        </Dialog>
+        <Dialog
+          open={dialog === "three"}
+          onClose={() => setDialog("none")}
+          title="Eintrag verschieben"
+          footer={
+            <>
+              <Button onClick={() => setDialog("none")}>Abbrechen</Button>
+              <Button onClick={() => setDialog("none")}>Kopie behalten</Button>
+              <Button variant="primary" onClick={() => setDialog("none")}>
+                Verschieben
+              </Button>
+            </>
+          }
+        >
+          <p className="px-6 pb-4 text-body text-muted">
+            Auf dem Handy teilen sich die Buttons die Zeile. Was nicht passt, bekommt eine eigene Zeile in voller
+            Breite, der Haupt-Button steht zuletzt.
           </p>
         </Dialog>
         <Toaster store={toasts} />

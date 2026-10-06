@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.4.1
+
+Gaps UwULock-Client found while moving its desktop app onto the package.
+
+- **`Segmented` can be disabled:** `disabled` greys out the whole control
+  (`aria-disabled` on the group, every option a disabled button), and an
+  option can carry `disabled: true` on its own. Arrow keys skip disabled
+  options, and when the chosen one is disabled the first usable option keeps
+  the tab stop. New type `SegmentedOption`. Apps no longer need a
+  `<fieldset disabled>` around it.
+- **Fix: `Segmented` in high contrast marks its choice with a shape.** Canvas
+  and surface are the same colour there (white, or black in dark), so the
+  chosen option was shown only by its text colour. It now gets a 2 px ink
+  outline (21:1, WCAG 1.4.1 and 1.4.11); `tests/contrast.test.ts` checks the
+  pair.
+- **Fix: `Dialog` footers on phones.** Below 700 px the footer buttons share
+  the row and grow to fill it; what doesn't fit wraps onto a full-width line
+  of its own, so with three buttons the last one (the primary) gets a whole
+  row. Full-screen phone dialogs keep clear of the notch and the home
+  indicator (`env(safe-area-inset-*)`).
+- The styleguide shows a disabled `Segmented`, one with a disabled option,
+  and a dialog with three buttons.
+
 ## 1.4.0
 
 - **Icons:** `ICONS` gets the meanings UwULock needs to move onto the

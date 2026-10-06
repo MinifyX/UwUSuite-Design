@@ -86,6 +86,65 @@ describe("Toggle and Segmented", () => {
     fireEvent.keyDown(screen.getByRole("radiogroup"), { key: "ArrowLeft" });
     expect(onChange).toHaveBeenCalledWith("dark");
   });
+
+  it("skips a disabled option and keeps a tab stop", () => {
+    const onChange = vi.fn();
+    render(
+      <Segmented
+        label="Design"
+        value="light"
+        onChange={onChange}
+        options={[
+          { value: "system", label: "System" },
+          { value: "light", label: "Hell", disabled: true },
+          { value: "dark", label: "Dunkel" },
+        ]}
+      />,
+    );
+    const hell = screen.getByRole("radio", { name: "Hell" }) as HTMLButtonElement;
+    expect(hell.disabled).toBe(true);
+    expect(screen.getByRole("radio", { name: "System" }).tabIndex).toBe(0);
+    fireEvent.keyDown(screen.getByRole("radiogroup"), { key: "ArrowRight" });
+    expect(onChange).toHaveBeenCalledWith("dark");
+  });
+
+  it("can be disabled as a whole", () => {
+    const onChange = vi.fn();
+    render(
+      <Segmented
+        label="Server"
+        value="cloud"
+        disabled
+        onChange={onChange}
+        options={[
+          { value: "cloud", label: "Cloud" },
+          { value: "own", label: "Eigener" },
+        ]}
+      />,
+    );
+    const group = screen.getByRole("radiogroup");
+    expect(group.getAttribute("aria-disabled")).toBe("true");
+    for (const radio of screen.getAllByRole("radio")) expect((radio as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.keyDown(group, { key: "ArrowRight" });
+    fireEvent.click(screen.getByRole("radio", { name: "Eigener" }));
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it("marks the choice with a shape in high contrast", () => {
+    render(
+      <Segmented
+        label="Ton"
+        value="a"
+        onChange={() => {}}
+        options={[
+          { value: "a", label: "A" },
+          { value: "b", label: "B" },
+        ]}
+      />,
+    );
+    expect(screen.getByRole("radio", { name: "A" }).className).toContain("contrast-high:outline-ink");
+    expect(screen.getByRole("radio", { name: "B" }).className).not.toContain("outline");
+  });
 });
 
 describe("Badge", () => {
