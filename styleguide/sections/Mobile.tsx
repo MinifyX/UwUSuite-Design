@@ -188,7 +188,7 @@ function DemoApp({ kind, portrait = false }: { kind: DeviceKind; portrait?: bool
   const settings = (
     <Screen title="Einstellungen" largeTitle>
       <ListSection header="Darstellung">
-        <ListRow icon={ICONS.appearance} title="Design" value="System" onClick={() => {}} />
+        <ListRow icon={ICONS.appearance} iconTone="solid" title="Design" value="System" onClick={() => {}} />
         <ListRow
           icon={ICONS.fingerprint}
           title="Mit Face ID entsperren"
@@ -376,10 +376,12 @@ function EditForm() {
   return (
     <ListSection>
       <ListRow
+        data-uwu-field=""
         label="Name"
         title={<input className="w-full bg-transparent outline-none" defaultValue="" placeholder="Neuer Eintrag" />}
       />
       <ListRow
+        data-uwu-field=""
         label="Benutzername"
         title={<input className="w-full bg-transparent outline-none" placeholder="nyu@example.com" />}
       />

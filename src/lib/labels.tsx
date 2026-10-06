@@ -23,6 +23,8 @@ export interface Labels {
   increase: string;
   sidebar: string;
   actions: string;
+  /** Read after a tap-to-copy row (ListRow `onCopy`): "Passwort, kopieren". */
+  copy: string;
 }
 
 export const LABELS_DE: Labels = {
@@ -43,6 +45,7 @@ export const LABELS_DE: Labels = {
   increase: "Mehr",
   sidebar: "Seitenleiste",
   actions: "Aktionen",
+  copy: "kopieren",
 };
 
 export const LABELS_EN: Labels = {
@@ -63,6 +66,7 @@ export const LABELS_EN: Labels = {
   increase: "Increase",
   sidebar: "Sidebar",
   actions: "Actions",
+  copy: "copy",
 };
 
 const LabelsContext = createContext<Labels>(LABELS_DE);

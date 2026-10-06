@@ -6,6 +6,7 @@ import { createToasts } from "../src/components/Toaster";
 import { ContextMenu } from "../src/mobile/ContextMenu";
 import { Fab, MobileToaster, Stepper } from "../src/mobile/Controls";
 import { useKeyboardShortcut, useLongPress } from "../src/mobile/hooks";
+import { UwuLabels } from "../src/lib/labels";
 import { ListRow, ListSection } from "../src/mobile/List";
 import { Screen } from "../src/mobile/NavBar";
 import { Sheet } from "../src/mobile/Sheet";
@@ -98,6 +99,18 @@ describe("ListRow", () => {
     const row = screen.getByRole("button", { name: /Benutzername.*nyu@example\.com.*kopieren/ });
     fireEvent.click(row);
     expect(copy).toHaveBeenCalledOnce();
+  });
+
+  it("takes the copy word from UwuLabels, or copyLabel for one row", () => {
+    render(
+      <UwuLabels labels="en">
+        <ListRow label="Username" title="nyu@example.com" onCopy={() => {}} />
+        <ListRow label="Code" title="123 456" onCopy={() => {}} copyLabel="copy code" />
+      </UwuLabels>,
+    );
+    expect(screen.getByRole("button", { name: /Username.*nyu@example\.com, copy$/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Code.*123 456, copy code$/ })).toBeTruthy();
+    expect(screen.queryByText(/kopieren/)).toBeNull();
   });
 
   it("stays pressable with its own buttons inside", () => {

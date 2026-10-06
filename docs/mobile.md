@@ -128,41 +128,73 @@ render.
 
 ## Components
 
-| Component / hook                             | Notes                                                                                                                                                                                                                                           |
-| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MobileShell`                                | `kind?` pins the device. Overlays portal into it                                                                                                                                                                                                |
-| `TabBar`                                     | `tabs` (`{ id, label, icon, badge? }`), `value`, `onChange`, `search?` (`{ open, onOpenChange, value, onChange, placeholder? }`, iPhone), `platform?`                                                                                           |
-| `SearchButton`, `SearchField`                | The iPhone pieces `TabBar` uses; the field rises above the keyboard, Escape closes                                                                                                                                                              |
-| `SearchBar`                                  | Android M3 search bar: `value`/`onChange` (an input) or `onActivate` (a button), `trailing` (avatar), `leading`, `inline`                                                                                                                       |
-| `Screen`                                     | One page: `title`, `largeTitle`, `subtitle`, `leading`, `trailing`, `onBack` (+ edge/predictive back), `underRef`, `onRefresh` (pull to sync), `searchBar`                                                                                      |
-| `NavBar`, `NavButton`, `BackButton`          | `NavButton`: `label` (name), `icon` or `text`, `tint` for the primary action                                                                                                                                                                    |
-| `GroupedList`, `ListSection`, `ListRow`      | Section: `header`, `headerAction`, `footer`. Row: `title`, `subtitle`, `label` (field row), `value`, `icon` + `iconTone`, `chevron`, `trailing`, `mono`, `tone` (`danger`/`accent`), `selected`, `onClick`, `onCopy` (tap to copy), `longPress` |
-| `SwipeRow`                                   | `leading`/`trailing` actions (`{ label, icon, tone, onSelect }`). Opens past 70 px, one row open at a time, closed actions are hidden                                                                                                           |
-| `useLongPress(handler)` + `ContextMenu`      | Spread the handlers on the row (`longPress` on `ListRow`). Menu: `open`, `onClose`, `items` (`{ label, icon?, onSelect, danger? }` or `"separator"`), `at`, `preview`                                                                           |
-| `PullToRefresh`                              | `onRefresh` returns a promise; spins until it settles. `Screen` wraps it for you                                                                                                                                                                |
-| `Sheet`                                      | `open`, `onClose`, `title`, `leading`, `trailing`, `detents` (`medium`/`large`), `dismissible`. iPad: form sheet                                                                                                                                |
-| `FullScreenDialog`                           | Android edit: `title`, `action: { label, onClick, disabled? }`                                                                                                                                                                                  |
-| `Stepper`                                    | `value`, `onChange`, `min`, `max`, `step`, `label`. Arrow keys work                                                                                                                                                                             |
-| `MobileToaster`                              | The `createToasts()` store drawn as iOS toast or Android snackbar (newest only). `detail` is the second line                                                                                                                                    |
-| `Fab`                                        | `label`, `icon`, `extended`                                                                                                                                                                                                                     |
-| `SplitView`, `SidebarRow`, `SidebarHeading`  | `sidebar`, `list`, `detail`, `overlaySidebar`, `sidebarOpen`, `onSidebarOpenChange`, `listWidth`                                                                                                                                                |
-| `useDeviceKind`, `DeviceKindProvider`        | See above                                                                                                                                                                                                                                       |
-| `useEdgeBack`, `usePredictiveBack`           | `(pageRef, { onBack, enabled, underRef })`, used by `Screen`                                                                                                                                                                                    |
-| `useHaptics()` / `haptic(kind)`              | `selection` · `light` · `medium` · `heavy` · `success` · `warning` · `error`; `setHapticsEnabled(false)` turns all off                                                                                                                          |
-| `useKeyboardShortcut(accelerator, handler)`  | Tauri accelerator syntax, `matchesAccelerator()` underneath                                                                                                                                                                                     |
-| `useKeyboardInset()`, `useScrolledPast(ref)` | Keyboard height from the visual viewport; large-title collapse                                                                                                                                                                                  |
+| Component / hook                             | Notes                                                                                                                                                                                                                                                         |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `MobileShell`                                | `kind?` pins the device. Overlays portal into it                                                                                                                                                                                                              |
+| `TabBar`                                     | `tabs` (`{ id, label, icon, badge? }`), `value`, `onChange`, `search?` (`{ open, onOpenChange, value, onChange, placeholder? }`, iPhone), `platform?`                                                                                                         |
+| `SearchButton`, `SearchField`                | The iPhone pieces `TabBar` uses; the field rises above the keyboard, Escape closes                                                                                                                                                                            |
+| `SearchBar`                                  | Android M3 search bar: `value`/`onChange` (an input) or `onActivate` (a button), `trailing` (avatar), `leading`, `inline`                                                                                                                                     |
+| `Screen`                                     | One page: `title`, `largeTitle`, `subtitle`, `leading`, `trailing`, `onBack` (+ edge/predictive back), `underRef`, `onRefresh` (pull to sync), `searchBar`                                                                                                    |
+| `NavBar`, `NavButton`, `BackButton`          | `NavButton`: `label` (name), `icon` or `text`, `tint` for the primary action                                                                                                                                                                                  |
+| `GroupedList`, `ListSection`, `ListRow`      | Section: `header`, `headerAction`, `footer`. Row: `title`, `subtitle`, `label` (field row), `value`, `icon` + `iconTone`, `chevron`, `trailing`, `mono`, `tone` (`danger`/`accent`), `selected`, `onClick`, `onCopy` (tap to copy) + `copyLabel`, `longPress` |
+| `SwipeRow`                                   | `leading`/`trailing` actions (`{ label, icon, tone, onSelect }`). Opens past 70 px, one row open at a time, closed actions are hidden                                                                                                                         |
+| `useLongPress(handler)` + `ContextMenu`      | Spread the handlers on the row (`longPress` on `ListRow`). Menu: `open`, `onClose`, `items` (`{ label, icon?, onSelect, danger? }` or `"separator"`), `at`, `preview`                                                                                         |
+| `PullToRefresh`                              | `onRefresh` returns a promise; spins until it settles. `Screen` wraps it for you                                                                                                                                                                              |
+| `Sheet`                                      | `open`, `onClose`, `title`, `leading`, `trailing`, `detents` (`medium`/`large`), `dismissible`. iPad: form sheet                                                                                                                                              |
+| `FullScreenDialog`                           | Android edit: `title`, `action: { label, onClick, disabled? }`                                                                                                                                                                                                |
+| `Stepper`                                    | `value`, `onChange`, `min`, `max`, `step`, `label`. Arrow keys work                                                                                                                                                                                           |
+| `MobileToaster`                              | The `createToasts()` store drawn as iOS toast or Android snackbar (newest only). `detail` is the second line                                                                                                                                                  |
+| `Fab`                                        | `label`, `icon`, `extended`                                                                                                                                                                                                                                   |
+| `SplitView`, `SidebarRow`, `SidebarHeading`  | `sidebar`, `list`, `detail`, `overlaySidebar`, `sidebarOpen`, `onSidebarOpenChange`, `listWidth`                                                                                                                                                              |
+| `useDeviceKind`, `DeviceKindProvider`        | See above                                                                                                                                                                                                                                                     |
+| `useEdgeBack`, `usePredictiveBack`           | `(pageRef, { onBack, enabled, underRef })`, used by `Screen`                                                                                                                                                                                                  |
+| `useHaptics()` / `haptic(kind)`              | `selection` · `light` · `medium` · `heavy` · `success` · `warning` · `error`; `setHapticsEnabled(false)` turns all off                                                                                                                                        |
+| `useKeyboardShortcut(accelerator, handler)`  | Tauri accelerator syntax, `matchesAccelerator()` underneath                                                                                                                                                                                                   |
+| `useKeyboardInset()`, `useScrolledPast(ref)` | Keyboard height from the visual viewport; large-title collapse                                                                                                                                                                                                |
 
-Their words (Zurück, Suchen, Suche schließen, Wird aktualisiert …) come from
-`UwuLabels` like the desktop components'.
+Their words (Zurück, Suchen, Suche schließen, Wird aktualisiert …, the
+"kopieren" screen readers hear after a tap-to-copy row) come from `UwuLabels`
+like the desktop components'. `copyLabel` on a `ListRow` overrides it for one
+row.
+
+The navigation bar is a three-column grid: the sides take what their buttons
+need, the small title gets the rest and ends in "…". A short title stays
+centred; a wide text button ("Bearbeiten") moves it aside instead of covering
+it.
+
+## Text fields
+
+A bare input inside a rounded field or a field row draws no focus ring of its
+own (it would be a box inside the field); the caret shows focus in the accent.
+Mark the field's container with `data-uwu-field` and it gets the ring around
+its own shape (inset in a grouped card). The package's search fields do this
+already. Inputs with their own border (`TextInput`) keep their ring.
 
 ## Haptics
 
 `haptic(kind)` uses `tauri-plugin-haptics` when the app has it (add the
-plugin to the mobile build and the `haptics:default` permission): the Taptic
+plugin to the mobile build and its permissions, see below): the Taptic
 Engine on iOS, the vibrator on Android. It calls the plugin through Tauri's
 IPC directly, so the main entry imports nothing from Tauri and a missing
 plugin fails soft. Without the plugin Android falls back to
 `navigator.vibrate`; iOS without the plugin and the desktop do nothing.
+
+The plugin has no `haptics:default` permission set, so list the three
+feedback commands `haptic()` calls in a mobile-only capability
+(`src-tauri/capabilities/mobile.json`); `vibrate` is not needed:
+
+```json
+{
+  "identifier": "mobile",
+  "platforms": ["iOS", "android"],
+  "windows": ["main"],
+  "permissions": [
+    "haptics:allow-impact-feedback",
+    "haptics:allow-notification-feedback",
+    "haptics:allow-selection-feedback"
+  ]
+}
+```
 
 Haptics confirm: a copy, a stepper step, a pull that arms, a long press, a
 committed swipe. Never on scroll, never in a loop. Apps offer a switch and

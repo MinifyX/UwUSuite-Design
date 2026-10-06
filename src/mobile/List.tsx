@@ -1,6 +1,7 @@
 import { clsx } from "clsx";
 import { ChevronRight, type LucideIcon } from "lucide-react";
 import type { HTMLAttributes, ReactNode } from "react";
+import { useLabels } from "../lib/labels.js";
 import type { MobilePlatform } from "./device.js";
 import { haptic } from "./haptics.js";
 import { useMobilePlatform, type LongPressHandlers } from "./hooks.js";
@@ -81,7 +82,10 @@ export interface ListRowProps extends Omit<HTMLAttributes<HTMLElement>, "title" 
    * that a tap copies.
    */
   onCopy?: () => void;
-  /** What screen readers hear after the row when it copies. Defaults to "kopieren". */
+  /**
+   * What screen readers hear after the row when it copies. Defaults to the `copy` word of
+   * `<UwuLabels>` ("kopieren", "copy"), like the other words the components say themselves.
+   */
   copyLabel?: string;
   onClick?: () => void;
   /** From `useLongPress()`: opens the context menu. */
@@ -117,6 +121,7 @@ export function ListRow({
   className,
   ...rest
 }: ListRowProps) {
+  const labels = useLabels();
   const action = onCopy
     ? () => {
         haptic("success");
@@ -146,7 +151,7 @@ export function ListRow({
       {value !== undefined && <span className="uwu-row-value">{value}</span>}
       {trailing && <span className="uwu-row-trailing">{trailing}</span>}
       {showChevron && <ChevronRight className="uwu-row-chevron" aria-hidden />}
-      {onCopy && <span className="uwu-visually-hidden">, {copyLabel ?? "kopieren"}</span>}
+      {onCopy && <span className="uwu-visually-hidden">, {copyLabel ?? labels.copy}</span>}
     </>
   );
   const common = {

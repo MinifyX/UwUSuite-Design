@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.7.1
+
+Fixes from integrating the mobile components into UwULock:
+
+- **Haptics:** `tauri-plugin-haptics` has no `haptics:default` permission
+  set; docs/mobile.md lists the three feedback permissions `haptic()` needs
+  (a test keeps them in step with the commands).
+- **NavBar:** the small title no longer reserves a fixed 80 px on each side.
+  The bar is a three-column grid: the buttons keep their width, a short title
+  stays centred and a long one ends in "…" instead of running under a text
+  button such as "Bearbeiten".
+- **ListRow:** the solid icon tone keeps a visible glyph on Android (accent
+  ink, as there is no tile there). The word screen readers hear after a
+  tap-to-copy row comes from `UwuLabels` (`copy`: "kopieren", "copy");
+  `copyLabel` still overrides it per row.
+- **Text fields on mobile:** a bare input inside a rounded field or field row
+  no longer draws the global focus box; the caret shows focus in the accent,
+  and a container marked `data-uwu-field` (the search fields already are)
+  gets the ring around its own shape (inset in a grouped card).
+
 ## 1.7.0
 
 - **Mobile patterns** for the suite's iPhone, iPad and Android apps, from the

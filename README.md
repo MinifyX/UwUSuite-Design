@@ -29,7 +29,7 @@ the high-contrast theme from UwULock.
 
 ```jsonc
 // package.json: the release tarball, no registry needed
-"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.7.0/uwusuite-design-1.7.0.tgz"
+"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.7.1/uwusuite-design-1.7.1.tgz"
 ```
 
 ```css
