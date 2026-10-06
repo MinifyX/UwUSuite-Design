@@ -52,6 +52,12 @@ export const SUITE_ICON_NODES = {
     ["path", { d: "M13.5 4.5h3", key: "arrow-a" }],
     ["path", { d: "M15 3l1.5 1.5L15 6", key: "arrow-a-head" }],
   ],
+  /** A tunnel mouth: SSH port forwarding (UwUSSH tunnels, UwULock's SSH entries). Lucide has none. */
+  tunnel: [
+    ["path", { d: "M3.5 19.5V12a8.5 8.5 0 0 1 17 0v7.5", key: "outer" }],
+    ["path", { d: "M8 19.5V12a4 4 0 0 1 8 0v7.5", key: "inner" }],
+    ["path", { d: "M2 19.5h20", key: "ground" }],
+  ],
 } satisfies Record<string, LucideIconNode[]>;
 
 export type SuiteIconName = keyof typeof SUITE_ICON_NODES;
@@ -61,3 +67,4 @@ export const Paw = createLucideIcon("paw", SUITE_ICON_NODES.paw);
 export const NyuFaceIcon = createLucideIcon("nyu", SUITE_ICON_NODES.nyu);
 export const HandMirror = createLucideIcon("hand-mirror", SUITE_ICON_NODES["hand-mirror"]);
 export const DevicesSync = createLucideIcon("devices-sync", SUITE_ICON_NODES["devices-sync"]);
+export const Tunnel = createLucideIcon("tunnel", SUITE_ICON_NODES.tunnel);

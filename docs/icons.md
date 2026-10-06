@@ -56,6 +56,19 @@ something in as an item), `image`, `moveUp`/`moveDown` (reorder). Remote
 access: `terminal` (SSH, snippets), `computer` (a desktop host, RDP),
 `network` (the local network, a device on it).
 
+Sessions and files on a host (from UwUSSH and UwURDP): `server` (a server
+or a sync server, the remote side of a file browser), `connect` and
+`disconnect` (open or end a session; plug and unplug), `tunnel` (SSH port
+forwarding), `admin` (root or administrator rights, `sudo`), `keyboard` (send
+keys, like Ctrl+Alt+Del), `fit` (fit a remote desktop into the window;
+`fullscreen` stays fullscreen), `overview` (all open sessions as tiles;
+`collection` stays a collection), `files` (a file browser, SFTP),
+`parentFolder` (one level up), `drive` (a local disk, all drives),
+`permissions` (file rights, chmod). Also `start`/`stop` (a tunnel, a
+transfer), `export` (into a file; the counterpart of `import`), `signIn`
+(the counterpart of `signOut`) and `work` (the work space; `home` is also the
+private space and a home folder).
+
 `secret` (the round key) is a password or a secret value. A key that is a
 file or a format, like an SSH key, is `sshKey`.
 
@@ -71,6 +84,7 @@ package, not in the app.
 | `nyu`          | `NyuFaceIcon` | Nyu as a line icon (menus, "about", mascot setting), the same cat as U+E000 |
 | `hand-mirror`  | `HandMirror`  | UwUMirror in suite menus                                                    |
 | `devices-sync` | `DevicesSync` | Sync between devices                                                        |
+| `tunnel`       | `Tunnel`      | SSH tunnels (port forwarding): an arch over the ground line                 |
 
 ### Drawing a suite icon
 

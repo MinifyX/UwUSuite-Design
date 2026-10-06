@@ -35,7 +35,7 @@ export { Icon, ICON_SIZES } from "./icons/Icon.js";
 export type { IconProps, IconSize } from "./icons/Icon.js";
 export { ICONS } from "./icons/vocabulary.js";
 export type { IconMeaning } from "./icons/vocabulary.js";
-export { Android, DevicesSync, HandMirror, NyuFaceIcon, Paw, SUITE_ICON_NODES } from "./icons/suite.js";
+export { Android, DevicesSync, HandMirror, NyuFaceIcon, Paw, SUITE_ICON_NODES, Tunnel } from "./icons/suite.js";
 export type { SuiteIconName } from "./icons/suite.js";
 
 // Nyu

@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.5.0
+
+- **Icons:** `ICONS` gets the meanings UwUSSH and UwURDP need to move onto
+  the package:
+  - sessions: `server`, `connect`, `disconnect`, `tunnel`, `admin`,
+    `keyboard`, `fit`, `overview`;
+  - files on a host: `files`, `parentFolder`, `drive`, `permissions`;
+  - actions: `start`, `stop`, `export`, `signIn`; spaces: `work`.
+- **New suite icon `tunnel`** (`Tunnel`): Lucide has no tunnel. An arch over
+  the ground line, drawn by the suite icon rules.
+- docs/icons.md explains the new meanings and their close neighbours
+  (`fit` vs `fullscreen`, `overview` vs `collection`, `server` vs `network`).
+
 ## 1.4.1
 
 Gaps UwULock-Client found while moving its desktop app onto the package.
