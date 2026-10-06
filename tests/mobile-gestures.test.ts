@@ -1,4 +1,5 @@
 // @vitest-environment node
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { matchesAccelerator } from "../src/lib/shortcuts";
 import { detectDeviceKind, platformOf } from "../src/mobile/device";
@@ -208,5 +209,16 @@ describe("haptics", () => {
     expect(hapticCommand("selection")).toEqual(["plugin:haptics|selection_feedback", {}]);
     expect(hapticCommand("success")).toEqual(["plugin:haptics|notification_feedback", { type: "success" }]);
     expect(hapticCommand("medium")).toEqual(["plugin:haptics|impact_feedback", { style: "medium" }]);
+  });
+
+  // tauri-plugin-haptics has no default permission set: docs/mobile.md lists one per command.
+  it("documents a permission for every command it calls", () => {
+    const docs = readFileSync("docs/mobile.md", "utf8");
+    expect(docs).not.toContain('"haptics:default"');
+    const kinds = ["selection", "light", "medium", "heavy", "success", "warning", "error"] as const;
+    for (const command of new Set(kinds.map((kind) => hapticCommand(kind)[0]))) {
+      const name = command.replace("plugin:haptics|", "").replaceAll("_", "-");
+      expect(docs).toContain(`"haptics:allow-${name}"`);
+    }
   });
 });

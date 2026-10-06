@@ -7,7 +7,7 @@ import { useMemo } from "react";
  * - `light` / `medium`: a long press that opens a menu, a swipe that commits.
  * - `success` / `warning` / `error`: copied, saved, failed.
  *
- * Inside a Tauri mobile app with `tauri-plugin-haptics` (permission `haptics:default`) it uses the
+ * Inside a Tauri mobile app with `tauri-plugin-haptics` (permissions: see docs/mobile.md) it uses the
  * plugin, which reaches the Taptic Engine on iOS. Without the plugin, Android falls back to
  * `navigator.vibrate`. The desktop and iOS Safari do nothing. It never throws.
  */

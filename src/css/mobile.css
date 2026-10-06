@@ -219,13 +219,16 @@
     padding: 2px 24px 0;
   }
 
+  /* Three columns: the sides take what their buttons need, the title gets the rest and ends in
+     "…". Equal side columns keep a short title centred; a wide side ("Bearbeiten") pushes it. */
   .uwu-navbar {
     position: absolute;
     inset: 0 0 auto;
     z-index: 20;
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(max-content, 1fr) minmax(0, auto) minmax(max-content, 1fr);
     align-items: center;
-    justify-content: space-between;
+    column-gap: 8px;
     height: calc(var(--uwu-safe-top) + 52px);
     padding: var(--uwu-safe-top) calc(var(--uwu-safe-right) + 16px) 4px calc(var(--uwu-safe-left) + 16px);
   }
@@ -248,20 +251,22 @@
 
   .uwu-navbar-side {
     display: flex;
+    grid-column: 1;
+    grid-row: 1;
     align-items: center;
     gap: 8px;
     min-width: 44px;
   }
 
   .uwu-navbar-side[data-side="trailing"] {
+    grid-column: 3;
     justify-content: flex-end;
   }
 
   .uwu-navbar-title {
-    position: absolute;
-    top: var(--uwu-safe-top);
-    right: 80px;
-    left: 80px;
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
     height: 48px;
     overflow: hidden;
     font-size: 17px;
@@ -281,7 +286,10 @@
   }
 
   /* Android: a Material 3 top app bar, 64 px, title left, container tone once scrolled. */
+  /* Android: the title starts after the back arrow and takes the free width. */
   .uwu-navbar[data-platform="android"] {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: 0;
     height: calc(var(--uwu-safe-top) + 64px);
     padding: var(--uwu-safe-top) 6px 0 4px;
   }
@@ -295,17 +303,20 @@
   }
 
   .uwu-navbar[data-platform="android"] .uwu-navbar-title {
-    right: 110px;
-    left: 60px;
     height: 64px;
+    padding: 0 12px;
     font-size: 22px;
     font-weight: 500;
     line-height: 64px;
     text-align: left;
   }
 
-  .uwu-navbar[data-platform="android"][data-root] .uwu-navbar-title {
-    left: 20px;
+  .uwu-navbar[data-platform="android"] .uwu-navbar-side[data-side="leading"]:empty {
+    min-width: 0;
+  }
+
+  .uwu-navbar[data-platform="android"] .uwu-navbar-side[data-side="leading"]:empty + .uwu-navbar-title {
+    padding-left: 16px;
   }
 
   /* Round glass toolbar buttons (iOS 26): 44 px, an icon or a short word. */
@@ -518,10 +529,32 @@
     font-size: 17px;
   }
 
-  /* The field is the focus indicator; the input inside draws no second ring. */
-  .uwu-searchfield input:focus-visible,
-  .uwu-searchbar input:focus-visible {
+  /* Text fields on phones and iPads: the bare input inside a rounded field or a list row draws
+     no ring of its own (it would be a box inside the field). The caret shows focus in the accent,
+     and a field marked as one (the search fields, `data-uwu-field` on an app's own) gets the ring
+     around its rounded shape. Inputs with their own border (TextInput) keep their utility ring. */
+  :where(.uwu-mshell, .uwu-screen, .uwu-sheet, .uwu-fullscreen)
+    :is(input:not([type="checkbox"], [type="radio"], [type="range"]), textarea, select):focus-visible {
     box-shadow: none;
+    caret-color: var(--uwu-pink-solid);
+  }
+
+  .uwu-searchbar:focus-within,
+  [data-uwu-field]:focus-within {
+    box-shadow: var(--uwu-focus);
+  }
+
+  /* The glass search field keeps its glass shadow under the ring. */
+  .uwu-searchfield:focus-within {
+    box-shadow:
+      var(--uwu-focus),
+      inset 0 1px 0.5px var(--uwu-glass-highlight),
+      0 8px 26px -6px var(--uwu-glass-shade);
+  }
+
+  /* A field row inside a grouped card: the ring sits inside the card, which rounds its corners. */
+  .uwu-list-body > [data-uwu-field]:focus-within {
+    box-shadow: inset var(--uwu-focus);
   }
 
   .uwu-searchfield input::placeholder {
@@ -885,6 +918,11 @@
   [data-platform="android"] .uwu-row-icon {
     width: 26px;
     background: none;
+  }
+
+  /* No tile on Android: the solid tone's glyph takes the accent ink instead of on-pink. */
+  [data-platform="android"] .uwu-row-icon[data-tone="solid"] {
+    color: var(--uwu-pink-ink);
   }
 
   [data-platform="android"] .uwu-row-icon svg {
