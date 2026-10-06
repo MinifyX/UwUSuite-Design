@@ -67,7 +67,8 @@ function GlassMenu({
     const x = (at?.x ?? bounds.left + bounds.width / 2) - bounds.left;
     const y = (at?.y ?? bounds.top + bounds.height / 3) - bounds.top;
     const previewHeight = preview ? 72 : 0;
-    const left = Math.min(Math.max(GAP, x - 40), bounds.width - MENU_WIDTH - GAP);
+    // With a preview the menu lines up under it, like iOS; without one it opens at the finger.
+    const left = preview ? GAP : Math.min(Math.max(GAP, x - 40), bounds.width - MENU_WIDTH - GAP);
     let previewTop = Math.max(GAP + 48, y - previewHeight / 2);
     let top = previewTop + previewHeight + 10;
     if (top + height > bounds.height - GAP) {
@@ -90,7 +91,7 @@ function GlassMenu({
         <div
           ref={menu}
           className="uwu-menu uwu-glass"
-          style={place ? { left: place.left, top: place.top } : { visibility: "hidden" }}
+          style={place ? { left: place.left, top: place.top } : { opacity: 0 }}
         >
           <MenuList items={items} onClose={onClose} label={label} />
         </div>

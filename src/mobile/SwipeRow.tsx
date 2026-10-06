@@ -131,16 +131,13 @@ export function SwipeRow({ leading = [], trailing = [], children, disabled, clas
       data-state={state}
       data-swiping={swiping}
       onClickCapture={(event) => {
-        // The click at the end of a swipe, or a tap that only closes an open row, opens nothing.
-        if (
-          swallowClick.current ||
-          (state !== "closed" && !(event.target as HTMLElement).closest(".uwu-swipe-action"))
-        ) {
-          swallowClick.current = false;
-          if (state !== "closed") setState("closed");
-          event.preventDefault();
-          event.stopPropagation();
-        }
+        // The click at the end of a swipe opens nothing; a tap on an open row only closes it.
+        const onAction = (event.target as HTMLElement).closest(".uwu-swipe-action");
+        if (swallowClick.current) swallowClick.current = false;
+        else if (state === "closed" || onAction) return;
+        else setState("closed");
+        event.preventDefault();
+        event.stopPropagation();
       }}
     >
       {actions("leading", leading)}

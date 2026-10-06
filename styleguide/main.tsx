@@ -18,6 +18,7 @@ import { Colors } from "./sections/Colors";
 import { Components } from "./sections/Components";
 import { AppIcons, Icons } from "./sections/Icons";
 import { Intro, Usage } from "./sections/Intro";
+import { Mobile } from "./sections/Mobile";
 import { Motion, Tone, Window } from "./sections/More";
 import { NyuSection } from "./sections/Nyu";
 import { Typography } from "./sections/Typography";
@@ -49,6 +50,7 @@ const SECTIONS = [
   ["app-icons", "App-Icons"],
   ["nyu", "Nyu"],
   ["komponenten", "Komponenten"],
+  ["mobil", "Mobil"],
   ["fenster", "Fenster"],
   ["bewegung", "Bewegung"],
   ["ton", "Ton"],
@@ -144,6 +146,7 @@ function App() {
           <AppIcons />
           <NyuSection />
           <Components />
+          <Mobile />
           <Window />
           <Motion />
           <Tone />

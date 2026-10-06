@@ -6,1721 +6,1759 @@
  *
  * Everything is positioned inside `.uwu-mshell`, the app's full-screen root. In an app that is
  * the viewport; in the styleguide it is a device frame.
+ *
+ * The classes live in the `components` layer, so Tailwind utilities on the same elements win.
  */
 
-:root {
-  /* The notch, the Dynamic Island, the home indicator and Android's gesture bar. env() is 0
-     without `viewport-fit=cover`; frames and tests set the variables directly. */
-  --uwu-safe-top: env(safe-area-inset-top, 0px);
-  --uwu-safe-bottom: env(safe-area-inset-bottom, 0px);
-  --uwu-safe-left: env(safe-area-inset-left, 0px);
-  --uwu-safe-right: env(safe-area-inset-right, 0px);
-  /* How far the on-screen keyboard covers the bottom; set by the components that rise above it. */
-  --uwu-keyboard: 0px;
-  --uwu-ease-sheet: cubic-bezier(0.2, 0.9, 0.25, 1);
-  --uwu-ease-push: cubic-bezier(0.2, 0.85, 0.25, 1);
-}
-
-/* ── Shell ──────────────────────────────────────────────────────────────────────────────────── */
-
-.uwu-mshell {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  isolation: isolate;
-  background: var(--uwu-canvas);
-  color: var(--uwu-ink);
-  font-size: 17px;
-  line-height: 1.3;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  -webkit-user-select: none;
-  /* A long press opens the app's own menu, not WebKit's callout. */
-  -webkit-touch-callout: none;
-}
-
-.uwu-mshell[data-platform="android"] {
-  background: var(--uwu-m3-surface);
-  font-size: 16px;
-}
-
-.uwu-mshell :is(input, textarea, [contenteditable="true"], .selectable) {
-  user-select: text;
-  -webkit-user-select: text;
-}
-
-.uwu-mshell button {
-  border: 0;
-  padding: 0;
-  background: none;
-  color: inherit;
-  cursor: pointer;
-}
-
-/* Read by screen readers, not shown. */
-.uwu-visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-/* ── Liquid Glass ───────────────────────────────────────────────────────────────────────────── */
-
-/* iOS 26 material for what floats over content: tab bar, search button, toolbar buttons, toasts,
-   context menus, the iPad sidebar. A translucent fill over a blurred, saturated backdrop, a light
-   top edge and a soft shade. Text on it is always ink, never muted. */
-.uwu-glass {
-  background: var(--uwu-glass) linear-gradient(180deg, var(--uwu-glass-highlight) -140%, transparent 55%);
-  -webkit-backdrop-filter: blur(var(--uwu-glass-blur)) saturate(1.9);
-  backdrop-filter: blur(var(--uwu-glass-blur)) saturate(1.9);
-  border: 0.5px solid var(--uwu-glass-edge);
-  box-shadow:
-    inset 0 1px 0.5px var(--uwu-glass-highlight),
-    inset 0 -1px 1px rgb(0 0 0 / 0.04),
-    0 8px 26px -6px var(--uwu-glass-shade);
-}
-
-/* Without backdrop-filter, with "Transparenz reduzieren" or high contrast, glass turns solid. */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .uwu-glass {
-    background: var(--uwu-elevated);
+@layer base {
+  /* Buttons inside the shell start bare; every mobile control styles its own. */
+  .uwu-mshell button {
+    border: 0;
+    padding: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
   }
 }
 
-@media (prefers-reduced-transparency: reduce) {
+@layer components {
+  :root {
+    /* The notch, the Dynamic Island, the home indicator and Android's gesture bar. env() is 0
+     without `viewport-fit=cover`; frames and tests set the variables directly. */
+    --uwu-safe-top: env(safe-area-inset-top, 0px);
+    --uwu-safe-bottom: env(safe-area-inset-bottom, 0px);
+    --uwu-safe-left: env(safe-area-inset-left, 0px);
+    --uwu-safe-right: env(safe-area-inset-right, 0px);
+    /* How far the on-screen keyboard covers the bottom; set by the components that rise above it. */
+    --uwu-keyboard: 0px;
+    --uwu-ease-sheet: cubic-bezier(0.2, 0.9, 0.25, 1);
+    --uwu-ease-push: cubic-bezier(0.2, 0.85, 0.25, 1);
+  }
+
+  /* ── Shell ──────────────────────────────────────────────────────────────────────────────────── */
+
+  .uwu-mshell {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--uwu-canvas);
+    color: var(--uwu-ink);
+    font-size: 17px;
+    line-height: 1.3;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    /* A long press opens the app's own menu, not WebKit's callout. */
+    -webkit-touch-callout: none;
+  }
+
+  .uwu-mshell[data-platform="android"] {
+    background: var(--uwu-m3-surface);
+    font-size: 16px;
+  }
+
+  .uwu-mshell :is(input, textarea, [contenteditable="true"], .selectable) {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  /* Read by screen readers, not shown. */
+  .uwu-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* ── Liquid Glass ───────────────────────────────────────────────────────────────────────────── */
+
+  /* iOS 26 material for what floats over content: tab bar, search button, toolbar buttons, toasts,
+   context menus, the iPad sidebar. A translucent fill over a blurred, saturated backdrop, a light
+   top edge and a soft shade. Text on it is always ink, never muted. */
   .uwu-glass {
+    background: var(--uwu-glass) linear-gradient(180deg, var(--uwu-glass-highlight) -140%, transparent 55%);
+    -webkit-backdrop-filter: blur(var(--uwu-glass-blur)) saturate(1.9);
+    backdrop-filter: blur(var(--uwu-glass-blur)) saturate(1.9);
+    border: 0.5px solid var(--uwu-glass-edge);
+    box-shadow:
+      inset 0 1px 0.5px var(--uwu-glass-highlight),
+      inset 0 -1px 1px rgb(0 0 0 / 0.04),
+      0 8px 26px -6px var(--uwu-glass-shade);
+  }
+
+  /* Without backdrop-filter, with "Transparenz reduzieren" or high contrast, glass turns solid. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .uwu-glass {
+      background: var(--uwu-elevated);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .uwu-glass {
+      background: var(--uwu-elevated);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  :root[data-transparency="reduced"] .uwu-glass {
     background: var(--uwu-elevated);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
-}
 
-:root[data-transparency="reduced"] .uwu-glass {
-  background: var(--uwu-elevated);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
+  :root[data-contrast="high"] .uwu-glass {
+    background: var(--uwu-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border: 1.5px solid var(--uwu-glass-edge);
+    box-shadow: none;
+  }
 
-:root[data-contrast="high"] .uwu-glass {
-  background: var(--uwu-surface);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  border: 1.5px solid var(--uwu-glass-edge);
-  box-shadow: none;
-}
+  /* ── Screen, navigation bar, large title ─────────────────────────────────────────────────────── */
 
-/* ── Screen, navigation bar, large title ─────────────────────────────────────────────────────── */
+  .uwu-screen {
+    position: absolute;
+    inset: 0;
+    /* Its own stacking context: a pushed page covers this page's navigation bar too. */
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--uwu-canvas);
+  }
 
-.uwu-screen {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background: var(--uwu-canvas);
-}
+  .uwu-screen[data-platform="android"] {
+    background: var(--uwu-m3-surface);
+  }
 
-.uwu-screen[data-platform="android"] {
-  background: var(--uwu-m3-surface);
-}
+  .uwu-screen[data-dragging] {
+    box-shadow: -10px 0 30px -10px rgb(0 0 0 / 0.25);
+  }
 
-.uwu-screen[data-dragging] {
-  box-shadow: -10px 0 30px -10px rgb(0 0 0 / 0.25);
-}
+  .uwu-screen[data-platform="android"][data-dragging] {
+    overflow: hidden;
+    border-radius: 32px;
+    box-shadow: 0 10px 40px rgb(0 0 0 / 0.3);
+  }
 
-.uwu-screen[data-platform="android"][data-dragging] {
-  overflow: hidden;
-  border-radius: 32px;
-  box-shadow: 0 10px 40px rgb(0 0 0 / 0.3);
-}
+  .uwu-screen-scroll {
+    position: absolute;
+    inset: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    padding-top: calc(var(--uwu-safe-top) + 52px);
+    /* Room for the floating tab bar (iOS) or the navigation bar (Android). */
+    padding-bottom: calc(var(--uwu-safe-bottom) + var(--uwu-screen-bottom, 110px));
+  }
 
-.uwu-screen-scroll {
-  position: absolute;
-  inset: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: none;
-  padding-top: calc(var(--uwu-safe-top) + 52px);
-  /* Room for the floating tab bar (iOS) or the navigation bar (Android). */
-  padding-bottom: calc(var(--uwu-safe-bottom) + var(--uwu-screen-bottom, 110px));
-}
+  .uwu-screen-scroll::-webkit-scrollbar {
+    display: none;
+  }
 
-.uwu-screen-scroll::-webkit-scrollbar {
-  display: none;
-}
+  .uwu-screen[data-platform="android"] .uwu-screen-scroll {
+    padding-top: calc(var(--uwu-safe-top) + 64px);
+  }
 
-.uwu-screen[data-platform="android"] .uwu-screen-scroll {
-  padding-top: calc(var(--uwu-safe-top) + 64px);
-}
+  .uwu-screen[data-platform="android"][data-search] .uwu-screen-scroll {
+    padding-top: calc(var(--uwu-safe-top) + 78px);
+  }
 
-.uwu-screen[data-platform="android"][data-search] .uwu-screen-scroll {
-  padding-top: calc(var(--uwu-safe-top) + 78px);
-}
+  /* iPad: the floating tab bar sits over the top of every page. */
+  .uwu-screen[data-platform="ipad"] .uwu-screen-scroll {
+    padding-top: calc(var(--uwu-safe-top) + 84px);
+    padding-bottom: calc(var(--uwu-safe-bottom) + 40px);
+  }
 
-.uwu-large-title {
-  margin: 0;
-  padding: 0 20px;
-  font-size: 34px;
-  font-weight: 750;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-}
+  /* iPad: the bar's buttons sit on the large title's line, below the floating tab bar. */
+  .uwu-navbar[data-platform="ipad"] {
+    top: calc(var(--uwu-safe-top) + 62px);
+    height: 52px;
+    padding-top: 0;
+  }
 
-.uwu-large-title-sub {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 2px 0 0;
-  padding: 0 20px;
-  color: var(--uwu-muted);
-  font-size: 15px;
-}
+  .uwu-navbar[data-platform="ipad"]::before,
+  .uwu-navbar[data-platform="ipad"] .uwu-navbar-title {
+    display: none;
+  }
 
-[data-platform="android"] .uwu-large-title {
-  padding: 0 24px;
-  font-size: 32px;
-  font-weight: 500;
-  letter-spacing: 0;
-}
+  .uwu-screen[data-platform="ipad"] .uwu-large-title {
+    padding-right: 120px;
+  }
 
-[data-platform="android"] .uwu-large-title-sub {
-  padding: 2px 24px 0;
-}
+  .uwu-large-title {
+    margin: 0;
+    padding: 0 20px;
+    font-size: 34px;
+    font-weight: 750;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
 
-.uwu-navbar {
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: calc(var(--uwu-safe-top) + 52px);
-  padding: var(--uwu-safe-top) calc(var(--uwu-safe-right) + 16px) 4px calc(var(--uwu-safe-left) + 16px);
-}
+  .uwu-large-title-sub {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 2px 0 0;
+    padding: 0 20px;
+    color: var(--uwu-muted);
+    font-size: 15px;
+  }
 
-/* iOS: content scrolls under a gradient that fades in once the large title is gone. */
-.uwu-navbar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: 0;
-  background: linear-gradient(180deg, var(--uwu-canvas) 62%, transparent);
-  transition: opacity var(--uwu-duration-base);
-  pointer-events: none;
-}
+  [data-platform="android"] .uwu-large-title {
+    padding: 0 24px;
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
 
-.uwu-navbar[data-collapsed]::before {
-  opacity: 0.92;
-}
+  [data-platform="android"] .uwu-large-title-sub {
+    padding: 2px 24px 0;
+  }
 
-.uwu-navbar-side {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 44px;
-}
+  .uwu-navbar {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: calc(var(--uwu-safe-top) + 52px);
+    padding: var(--uwu-safe-top) calc(var(--uwu-safe-right) + 16px) 4px calc(var(--uwu-safe-left) + 16px);
+  }
 
-.uwu-navbar-side[data-side="trailing"] {
-  justify-content: flex-end;
-}
+  /* iOS: content scrolls under a gradient that fades in once the large title is gone. */
+  .uwu-navbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0;
+    background: linear-gradient(180deg, var(--uwu-canvas) 62%, transparent);
+    transition: opacity var(--uwu-duration-base);
+    pointer-events: none;
+  }
 
-.uwu-navbar-title {
-  position: absolute;
-  top: var(--uwu-safe-top);
-  right: 80px;
-  left: 80px;
-  height: 48px;
-  overflow: hidden;
-  font-size: 17px;
-  font-weight: 650;
-  line-height: 48px;
-  text-align: center;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  opacity: 0;
-  transition: opacity var(--uwu-duration-fast);
-  pointer-events: none;
-}
+  .uwu-navbar[data-collapsed]::before {
+    opacity: 0.92;
+  }
 
-.uwu-navbar[data-collapsed] .uwu-navbar-title,
-.uwu-navbar[data-inline] .uwu-navbar-title {
-  opacity: 1;
-}
+  .uwu-navbar-side {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 44px;
+  }
 
-/* Android: a Material 3 top app bar, 64 px, title left, container tone once scrolled. */
-.uwu-navbar[data-platform="android"] {
-  height: calc(var(--uwu-safe-top) + 64px);
-  padding: var(--uwu-safe-top) 6px 0 4px;
-}
+  .uwu-navbar-side[data-side="trailing"] {
+    justify-content: flex-end;
+  }
 
-.uwu-navbar[data-platform="android"]::before {
-  background: var(--uwu-m3-container-high);
-}
+  .uwu-navbar-title {
+    position: absolute;
+    top: var(--uwu-safe-top);
+    right: 80px;
+    left: 80px;
+    height: 48px;
+    overflow: hidden;
+    font-size: 17px;
+    font-weight: 650;
+    line-height: 48px;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    opacity: 0;
+    transition: opacity var(--uwu-duration-fast);
+    pointer-events: none;
+  }
 
-.uwu-navbar[data-platform="android"][data-collapsed]::before {
-  opacity: 1;
-}
+  .uwu-navbar[data-collapsed] .uwu-navbar-title,
+  .uwu-navbar[data-inline] .uwu-navbar-title {
+    opacity: 1;
+  }
 
-.uwu-navbar[data-platform="android"] .uwu-navbar-title {
-  right: 110px;
-  left: 60px;
-  height: 64px;
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 64px;
-  text-align: left;
-}
+  /* Android: a Material 3 top app bar, 64 px, title left, container tone once scrolled. */
+  .uwu-navbar[data-platform="android"] {
+    height: calc(var(--uwu-safe-top) + 64px);
+    padding: var(--uwu-safe-top) 6px 0 4px;
+  }
 
-.uwu-navbar[data-platform="android"][data-root] .uwu-navbar-title {
-  left: 20px;
-}
+  .uwu-navbar[data-platform="android"]::before {
+    background: var(--uwu-m3-container-high);
+  }
 
-/* Round glass toolbar buttons (iOS 26): 44 px, an icon or a short word. */
-.uwu-nav-button {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 22px;
-  color: var(--uwu-ink);
-}
+  .uwu-navbar[data-platform="android"][data-collapsed]::before {
+    opacity: 1;
+  }
 
-.uwu-nav-button svg {
-  width: 22px;
-  height: 22px;
-}
+  .uwu-navbar[data-platform="android"] .uwu-navbar-title {
+    right: 110px;
+    left: 60px;
+    height: 64px;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 64px;
+    text-align: left;
+  }
 
-.uwu-nav-button[data-label] {
-  width: auto;
-  padding: 0 16px;
-  font-size: 16px;
-  font-weight: 600;
-}
+  .uwu-navbar[data-platform="android"][data-root] .uwu-navbar-title {
+    left: 20px;
+  }
 
-.uwu-nav-button[data-tint] {
-  border-color: transparent;
-  background: var(--uwu-pink-solid);
-  color: var(--uwu-on-pink);
-  box-shadow: 0 6px 18px -6px var(--uwu-pink-solid);
-}
+  /* Round glass toolbar buttons (iOS 26): 44 px, an icon or a short word. */
+  .uwu-nav-button {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 22px;
+    color: var(--uwu-ink);
+  }
 
-.uwu-nav-button:disabled {
-  opacity: 0.4;
-}
+  .uwu-nav-button svg {
+    width: 22px;
+    height: 22px;
+  }
 
-[data-platform="android"] .uwu-nav-button {
-  width: 48px;
-  height: 48px;
-  border: 0;
-  background: none;
-  box-shadow: none;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
+  .uwu-nav-button[data-label] {
+    width: auto;
+    padding: 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+  }
 
-[data-platform="android"] .uwu-nav-button[data-label] {
-  width: auto;
-  color: var(--uwu-pink-ink);
-}
+  .uwu-nav-button[data-tint] {
+    border-color: transparent;
+    background: var(--uwu-pink-solid);
+    color: var(--uwu-on-pink);
+    box-shadow: 0 6px 18px -6px var(--uwu-pink-solid);
+  }
 
-[data-platform="android"] .uwu-nav-button[data-tint] {
-  height: 40px;
-  padding: 0 20px;
-  border-radius: 20px;
-  background: var(--uwu-pink-solid);
-  color: var(--uwu-on-pink);
-}
+  .uwu-nav-button:disabled {
+    opacity: 0.4;
+  }
 
-.uwu-nav-button:focus-visible,
-.uwu-tab:focus-visible,
-.uwu-row:focus-visible,
-.uwu-searchbutton:focus-visible,
-.uwu-fab:focus-visible,
-.uwu-stepper button:focus-visible,
-.uwu-swipe-action:focus-visible,
-.uwu-menu-item:focus-visible {
-  outline: none;
-  box-shadow: var(--uwu-focus);
-}
+  [data-platform="android"] .uwu-nav-button {
+    width: 48px;
+    height: 48px;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 
-/* ── Tab bar ────────────────────────────────────────────────────────────────────────────────── */
+  [data-platform="android"] .uwu-nav-button[data-label] {
+    width: auto;
+    color: var(--uwu-pink-ink);
+  }
 
-/* iPhone: a floating Liquid Glass capsule, the search button as a round glass button beside it. */
-.uwu-tabbar {
-  position: absolute;
-  right: calc(var(--uwu-safe-right) + 14px);
-  bottom: max(12px, calc(var(--uwu-safe-bottom) - 10px));
-  left: calc(var(--uwu-safe-left) + 14px);
-  z-index: 50;
-  display: flex;
-  height: 64px;
-  padding: 4px;
-  border-radius: 32px;
-  transition:
-    left 350ms var(--uwu-ease-push),
-    right 350ms var(--uwu-ease-push),
-    width 350ms var(--uwu-ease-push),
-    bottom 350ms var(--uwu-ease-push);
-}
+  [data-platform="android"] .uwu-nav-button[data-tint] {
+    height: 40px;
+    padding: 0 20px;
+    border-radius: 20px;
+    background: var(--uwu-pink-solid);
+    color: var(--uwu-on-pink);
+  }
 
-.uwu-tabbar[data-search] {
-  right: calc(var(--uwu-safe-right) + 90px);
-}
+  .uwu-nav-button:focus-visible,
+  .uwu-tab:focus-visible,
+  .uwu-row:focus-visible,
+  .uwu-searchbutton:focus-visible,
+  .uwu-fab:focus-visible,
+  .uwu-stepper button:focus-visible,
+  .uwu-swipe-action:focus-visible,
+  .uwu-menu-item:focus-visible {
+    outline: none;
+    box-shadow: var(--uwu-focus);
+  }
 
-.uwu-tab {
-  position: relative;
-  display: grid;
-  flex: 1;
-  place-items: center;
-  align-content: center;
-  gap: 1px;
-  min-width: 0;
-  border-radius: 28px;
-  color: var(--uwu-ink);
-  font-size: 10.5px;
-  font-weight: 650;
-}
+  /* ── Tab bar ────────────────────────────────────────────────────────────────────────────────── */
 
-.uwu-tab svg {
-  width: 25px;
-  height: 25px;
-  stroke-width: 1.8;
-}
+  /* iPhone: a floating Liquid Glass capsule, the search button as a round glass button beside it. */
+  .uwu-tabbar {
+    position: absolute;
+    right: calc(var(--uwu-safe-right) + 14px);
+    bottom: max(12px, calc(var(--uwu-safe-bottom) - 10px));
+    left: calc(var(--uwu-safe-left) + 14px);
+    z-index: 50;
+    display: flex;
+    height: 64px;
+    padding: 4px;
+    border-radius: 32px;
+    transition:
+      left 350ms var(--uwu-ease-push),
+      right 350ms var(--uwu-ease-push),
+      width 350ms var(--uwu-ease-push),
+      bottom 350ms var(--uwu-ease-push);
+  }
 
-.uwu-tab[aria-current="page"] {
-  background: var(--uwu-glass-selected);
-  color: var(--uwu-pink-solid);
-}
+  .uwu-tabbar[data-search] {
+    right: calc(var(--uwu-safe-right) + 90px);
+  }
 
-.uwu-tab-label {
-  max-width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+  .uwu-tab {
+    position: relative;
+    display: grid;
+    flex: 1;
+    place-items: center;
+    align-content: center;
+    gap: 1px;
+    min-width: 0;
+    border-radius: 28px;
+    color: var(--uwu-ink);
+    font-size: 10.5px;
+    font-weight: 650;
+  }
 
-.uwu-tab-icon {
-  display: grid;
-  place-items: center;
-}
+  .uwu-tab svg {
+    width: 25px;
+    height: 25px;
+    stroke-width: 1.8;
+  }
 
-.uwu-tab-badge {
-  position: absolute;
-  top: 6px;
-  left: calc(50% + 7px);
-  display: grid;
-  place-items: center;
-  min-width: 17px;
-  height: 17px;
-  padding: 0 4px;
-  border-radius: 9px;
-  background: var(--uwu-danger-ink);
-  color: var(--uwu-surface);
-  font-size: 10.5px;
-  font-weight: 700;
-}
+  .uwu-tab[aria-current="page"] {
+    background: var(--uwu-glass-selected);
+    color: var(--uwu-pink-solid);
+  }
 
-.uwu-searchbutton {
-  position: absolute;
-  right: calc(var(--uwu-safe-right) + 14px);
-  bottom: max(12px, calc(var(--uwu-safe-bottom) - 10px));
-  z-index: 50;
-  display: grid;
-  place-items: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 32px;
-  color: var(--uwu-ink);
-}
+  .uwu-tab-label {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 
-.uwu-searchbutton svg {
-  width: 25px;
-  height: 25px;
-}
+  .uwu-tab-icon {
+    display: grid;
+    place-items: center;
+  }
 
-/* Searching: the tab bar shrinks to a round button on the left, the field grows beside it, and
+  .uwu-tab-badge {
+    position: absolute;
+    top: 6px;
+    left: calc(50% + 7px);
+    display: grid;
+    place-items: center;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: 9px;
+    background: var(--uwu-danger-ink);
+    color: var(--uwu-surface);
+    font-size: 10.5px;
+    font-weight: 700;
+  }
+
+  .uwu-searchbutton {
+    position: absolute;
+    right: calc(var(--uwu-safe-right) + 14px);
+    bottom: max(12px, calc(var(--uwu-safe-bottom) - 10px));
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    color: var(--uwu-ink);
+  }
+
+  .uwu-searchbutton svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  /* Searching: the tab bar shrinks to a round button on the left, the field grows beside it, and
    both ride on top of the keyboard. */
-.uwu-tabbar[data-searching] {
-  right: auto;
-  bottom: calc(var(--uwu-keyboard) + 10px);
-  left: calc(var(--uwu-safe-left) + 12px);
-  width: 56px;
-  height: 56px;
-  padding: 0;
-}
-
-.uwu-tabbar[data-searching] .uwu-tab {
-  color: var(--uwu-pink-solid);
-}
-
-.uwu-searchfield {
-  position: absolute;
-  right: calc(var(--uwu-safe-right) + 12px);
-  bottom: calc(max(12px, var(--uwu-keyboard)) + 10px);
-  left: calc(var(--uwu-safe-left) + 76px);
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 56px;
-  padding: 0 8px 0 18px;
-  border-radius: 28px;
-  animation: uwu-search-grow 350ms var(--uwu-ease-push);
-}
-
-.uwu-searchfield svg {
-  flex: none;
-  width: 20px;
-  height: 20px;
-  color: var(--uwu-muted);
-}
-
-.uwu-searchfield input {
-  flex: 1;
-  min-width: 0;
-  border: 0;
-  outline: none;
-  background: none;
-  font-size: 17px;
-}
-
-.uwu-searchfield input::placeholder {
-  color: var(--uwu-muted);
-}
-
-.uwu-searchfield button {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 18px;
-}
-
-@keyframes uwu-search-grow {
-  from {
-    clip-path: inset(0 0 0 calc(100% - 64px) round 28px);
+  .uwu-tabbar[data-searching] {
+    right: auto;
+    bottom: calc(var(--uwu-keyboard) + 10px);
+    left: calc(var(--uwu-safe-left) + 12px);
+    width: 56px;
+    height: 56px;
+    padding: 0;
   }
-  to {
-    clip-path: inset(0 0 0 0 round 28px);
+
+  .uwu-tabbar[data-searching] .uwu-tab {
+    color: var(--uwu-pink-solid);
   }
-}
 
-/* Android: the Material 3 navigation bar, full width, a pill indicator behind the active icon. */
-.uwu-tabbar[data-platform="android"] {
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: calc(80px + var(--uwu-safe-bottom));
-  padding: 12px calc(var(--uwu-safe-right) + 6px) calc(var(--uwu-safe-bottom) + 16px) calc(var(--uwu-safe-left) + 6px);
-  border-radius: 0;
-  background: var(--uwu-m3-container);
-}
+  .uwu-searchfield {
+    position: absolute;
+    right: calc(var(--uwu-safe-right) + 12px);
+    bottom: calc(max(12px, var(--uwu-keyboard)) + 10px);
+    left: calc(var(--uwu-safe-left) + 76px);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 56px;
+    padding: 0 8px 0 18px;
+    border-radius: 28px;
+    animation: uwu-search-grow 350ms var(--uwu-ease-push);
+  }
 
-.uwu-tabbar[data-platform="android"] .uwu-tab {
-  align-content: start;
-  gap: 4px;
-  border-radius: 0;
-  background: none;
-  color: var(--uwu-muted);
-  font-size: 12px;
-  font-weight: 600;
-}
+  .uwu-searchfield svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    color: var(--uwu-muted);
+  }
 
-.uwu-tabbar[data-platform="android"] .uwu-tab-icon {
-  width: 64px;
-  height: 32px;
-  border-radius: 16px;
-  transition: background-color var(--uwu-duration-base);
-}
+  .uwu-searchfield input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: none;
+    background: none;
+    font-size: 17px;
+  }
 
-.uwu-tabbar[data-platform="android"] .uwu-tab svg {
-  width: 24px;
-  height: 24px;
-}
+  /* The field is the focus indicator; the input inside draws no second ring. */
+  .uwu-searchfield input:focus-visible,
+  .uwu-searchbar input:focus-visible {
+    box-shadow: none;
+  }
 
-.uwu-tabbar[data-platform="android"] .uwu-tab[aria-current="page"] {
-  color: var(--uwu-ink);
-}
+  .uwu-searchfield input::placeholder {
+    color: var(--uwu-muted);
+  }
 
-.uwu-tabbar[data-platform="android"] .uwu-tab[aria-current="page"] .uwu-tab-icon {
-  background: var(--uwu-m3-indicator);
-  color: var(--uwu-pink-ink);
-}
+  .uwu-searchfield button {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+  }
 
-.uwu-tabbar[data-platform="android"] .uwu-tab-badge {
-  top: -2px;
-  left: calc(50% + 8px);
-}
+  @keyframes uwu-search-grow {
+    from {
+      clip-path: inset(0 0 0 calc(100% - 64px) round 28px);
+    }
+    to {
+      clip-path: inset(0 0 0 0 round 28px);
+    }
+  }
 
-:root[data-contrast="high"] .uwu-tabbar[data-platform="android"] {
-  border-top: 1.5px solid var(--uwu-border);
-}
+  /* Android: the Material 3 navigation bar, full width, a pill indicator behind the active icon. */
+  .uwu-tabbar[data-platform="android"] {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: calc(80px + var(--uwu-safe-bottom));
+    padding: 12px calc(var(--uwu-safe-right) + 6px) calc(var(--uwu-safe-bottom) + 16px) calc(var(--uwu-safe-left) + 6px);
+    border-radius: 0;
+    background: var(--uwu-m3-container);
+  }
 
-/* iPad: a floating glass tab bar at the top centre, icon and label side by side. */
-.uwu-tabbar[data-platform="ipad"] {
-  top: calc(var(--uwu-safe-top) + 14px);
-  right: auto;
-  bottom: auto;
-  left: 50%;
-  gap: 2px;
-  height: 50px;
-  border-radius: 25px;
-  translate: -50% 0;
-}
+  .uwu-tabbar[data-platform="android"] .uwu-tab {
+    align-content: start;
+    gap: 4px;
+    border-radius: 0;
+    background: none;
+    color: var(--uwu-muted);
+    font-size: 12px;
+    font-weight: 600;
+  }
 
-.uwu-tabbar[data-platform="ipad"] .uwu-tab {
-  display: flex;
-  flex: none;
-  gap: 7px;
-  padding: 0 16px;
-  border-radius: 21px;
-  font-size: 15px;
-  font-weight: 600;
-}
+  .uwu-tabbar[data-platform="android"] .uwu-tab-icon {
+    width: 64px;
+    height: 32px;
+    border-radius: 16px;
+    transition: background-color var(--uwu-duration-base);
+  }
 
-.uwu-tabbar[data-platform="ipad"] .uwu-tab svg {
-  width: 19px;
-  height: 19px;
-}
+  .uwu-tabbar[data-platform="android"] .uwu-tab svg {
+    width: 24px;
+    height: 24px;
+  }
 
-.uwu-tabbar[data-platform="ipad"] .uwu-tab-badge {
-  position: static;
-}
+  .uwu-tabbar[data-platform="android"] .uwu-tab[aria-current="page"] {
+    color: var(--uwu-ink);
+  }
 
-/* ── Grouped inset lists ────────────────────────────────────────────────────────────────────── */
+  .uwu-tabbar[data-platform="android"] .uwu-tab[aria-current="page"] .uwu-tab-icon {
+    background: var(--uwu-m3-indicator);
+    color: var(--uwu-pink-ink);
+  }
 
-.uwu-list {
-  margin: 0;
-}
+  .uwu-tabbar[data-platform="android"] .uwu-tab-badge {
+    top: -2px;
+    left: calc(50% + 8px);
+  }
 
-.uwu-list + .uwu-list {
-  margin-top: 0;
-}
+  :root[data-contrast="high"] .uwu-tabbar[data-platform="android"] {
+    border-top: 1.5px solid var(--uwu-border);
+  }
 
-.uwu-list-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 24px 32px 8px;
-  font-size: 15px;
-  font-weight: 650;
-}
+  /* iPad: a floating glass tab bar at the top centre, icon and label side by side. */
+  .uwu-tabbar[data-platform="ipad"] {
+    top: calc(var(--uwu-safe-top) + 14px);
+    right: auto;
+    bottom: auto;
+    left: 50%;
+    gap: 2px;
+    height: 50px;
+    border-radius: 25px;
+    translate: -50% 0;
+  }
 
-.uwu-list-header > :first-child {
-  flex: 1;
-}
+  .uwu-tabbar[data-platform="ipad"] .uwu-tab {
+    display: flex;
+    flex: none;
+    gap: 7px;
+    padding: 0 16px;
+    border-radius: 21px;
+    font-size: 15px;
+    font-weight: 600;
+  }
 
-.uwu-list-footer {
-  padding: 8px 32px 0;
-  color: var(--uwu-muted);
-  font-size: 13px;
-  line-height: 1.4;
-}
+  .uwu-tabbar[data-platform="ipad"] .uwu-tab svg {
+    width: 19px;
+    height: 19px;
+  }
 
-.uwu-list-body {
-  margin: 0 16px;
-  overflow: hidden;
-  border-radius: 26px;
-  background: var(--uwu-surface);
-}
+  .uwu-tabbar[data-platform="ipad"] .uwu-tab-badge {
+    position: static;
+  }
 
-:root[data-contrast="high"] .uwu-list-body {
-  border: 1.5px solid var(--uwu-border);
-}
+  /* ── Grouped inset lists ────────────────────────────────────────────────────────────────────── */
 
-.uwu-row {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  min-height: 52px;
-  padding: 6px 18px;
-  background: var(--uwu-surface);
-  color: var(--uwu-ink);
-  font-size: inherit;
-  text-align: left;
-}
+  .uwu-list {
+    margin: 0;
+  }
 
-/* The hairline between rows starts where the text starts (after the icon). */
-.uwu-list-body > * {
-  position: relative;
-}
+  /* A card without a header keeps its distance from what is above it. */
+  .uwu-list > .uwu-list-body:first-child {
+    margin-top: 18px;
+  }
 
-.uwu-list-body > * + *::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 18px;
-  z-index: 2;
-  height: 0.5px;
-  background: var(--uwu-hairline);
-}
+  .uwu-list-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 24px 32px 8px;
+    font-size: 15px;
+    font-weight: 650;
+  }
 
-.uwu-list-body > * + :has(.uwu-row-icon)::before {
-  left: 62px;
-}
+  .uwu-list-header > :first-child {
+    flex: 1;
+  }
 
-:is(button, a).uwu-row:active,
-.uwu-row[data-pressable]:active {
-  background: var(--uwu-elevated);
-}
+  .uwu-list-footer {
+    padding: 8px 32px 0;
+    color: var(--uwu-muted);
+    font-size: 13px;
+    line-height: 1.4;
+  }
 
-.uwu-row[aria-selected="true"],
-.uwu-row[data-selected] {
-  background: var(--uwu-pink-tint);
-}
+  .uwu-list-body {
+    margin: 0 16px;
+    overflow: hidden;
+    border-radius: 26px;
+    background: var(--uwu-surface);
+  }
 
-.uwu-row-icon {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
-  background: var(--uwu-pink-tint);
-  color: var(--uwu-pink-ink);
-}
+  :root[data-contrast="high"] .uwu-list-body {
+    border: 1.5px solid var(--uwu-border);
+  }
 
-.uwu-row-icon svg {
-  width: 18px;
-  height: 18px;
-}
+  .uwu-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    min-height: 52px;
+    padding: 6px 18px;
+    background: var(--uwu-surface);
+    color: var(--uwu-ink);
+    font-size: inherit;
+    text-align: left;
+  }
 
-.uwu-row-icon[data-tone="success"] {
-  background: var(--uwu-success-tint);
-  color: var(--uwu-success-ink);
-}
+  /* The hairline between rows starts where the text starts (after the icon). */
+  .uwu-list-body > * {
+    position: relative;
+  }
 
-.uwu-row-icon[data-tone="warning"] {
-  background: var(--uwu-warning-tint);
-  color: var(--uwu-warning-ink);
-}
+  .uwu-list-body > * + *::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 18px;
+    z-index: 2;
+    height: 0.5px;
+    background: var(--uwu-hairline);
+  }
 
-.uwu-row-icon[data-tone="danger"] {
-  background: var(--uwu-danger-tint);
-  color: var(--uwu-danger-ink);
-}
+  .uwu-list-body > * + :has(.uwu-row-icon)::before {
+    left: 62px;
+  }
 
-.uwu-row-icon[data-tone="neutral"] {
-  background: var(--uwu-elevated);
-  color: var(--uwu-muted);
-}
+  :is(button, a).uwu-row:active,
+  .uwu-row[data-pressable]:active {
+    background: var(--uwu-elevated);
+  }
 
-.uwu-row-icon[data-tone="solid"] {
-  background: var(--uwu-pink-solid);
-  color: var(--uwu-on-pink);
-}
+  .uwu-row[aria-selected="true"],
+  .uwu-row[data-selected] {
+    background: var(--uwu-pink-tint);
+  }
 
-.uwu-row-icon[data-tone="none"] {
-  background: none;
-}
+  .uwu-row-icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--uwu-pink-tint);
+    color: var(--uwu-pink-ink);
+  }
 
-.uwu-row-text {
-  display: grid;
-  flex: 1;
-  min-width: 0;
-}
+  .uwu-row-icon svg {
+    width: 18px;
+    height: 18px;
+  }
 
-.uwu-row-label {
-  color: var(--uwu-muted);
-  font-size: 13px;
-}
+  .uwu-row-icon[data-tone="success"] {
+    background: var(--uwu-success-tint);
+    color: var(--uwu-success-ink);
+  }
 
-.uwu-row-title,
-.uwu-row-subtitle,
-.uwu-row-value {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+  .uwu-row-icon[data-tone="warning"] {
+    background: var(--uwu-warning-tint);
+    color: var(--uwu-warning-ink);
+  }
 
-.uwu-row-subtitle {
-  color: var(--uwu-muted);
-  font-size: 15px;
-}
+  .uwu-row-icon[data-tone="danger"] {
+    background: var(--uwu-danger-tint);
+    color: var(--uwu-danger-ink);
+  }
 
-.uwu-row-title[data-mono] {
-  font-family: var(--uwu-mono);
-  font-size: 16px;
-  letter-spacing: 0.02em;
-}
+  .uwu-row-icon[data-tone="neutral"] {
+    background: var(--uwu-elevated);
+    color: var(--uwu-muted);
+  }
 
-.uwu-row-title[data-wrap] {
-  white-space: normal;
-}
+  .uwu-row-icon[data-tone="solid"] {
+    background: var(--uwu-pink-solid);
+    color: var(--uwu-on-pink);
+  }
 
-.uwu-row-value {
-  flex: none;
-  max-width: 50%;
-  color: var(--uwu-muted);
-  font-variant-numeric: tabular-nums;
-}
+  .uwu-row-icon[data-tone="none"] {
+    background: none;
+  }
 
-.uwu-row-chevron {
-  flex: none;
-  width: 17px;
-  height: 17px;
-  margin-right: -4px;
-  color: var(--uwu-faint);
-  stroke-width: 2.4;
-}
+  .uwu-row-text {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+  }
 
-.uwu-row[data-tone="danger"] {
-  justify-content: center;
-  color: var(--uwu-danger-ink);
-  font-weight: 600;
-}
+  .uwu-row-label {
+    color: var(--uwu-muted);
+    font-size: 13px;
+  }
 
-.uwu-row[data-tone="accent"] {
-  color: var(--uwu-pink-solid);
-  font-weight: 600;
-}
+  .uwu-row-title,
+  .uwu-row-subtitle,
+  .uwu-row-value {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 
-.uwu-row[data-field] {
-  min-height: 66px;
-  padding: 10px 12px 10px 18px;
-}
+  .uwu-row-subtitle {
+    color: var(--uwu-muted);
+    font-size: 15px;
+  }
 
-.uwu-row-trailing {
-  display: flex;
-  flex: none;
-  align-items: center;
-  gap: 6px;
-}
+  .uwu-row-title[data-mono] {
+    font-family: var(--uwu-mono);
+    font-size: 16px;
+    letter-spacing: 0.02em;
+  }
 
-/* Android: Material 3 list items, one container tone, 2 px gaps instead of hairlines. */
-[data-platform="android"] .uwu-list-header {
-  padding: 22px 30px 8px;
-  color: var(--uwu-pink-ink);
-  font-size: 14px;
-}
+  .uwu-row-title[data-wrap] {
+    white-space: normal;
+  }
 
-[data-platform="android"] .uwu-list-body {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  border-radius: 24px;
-  background: transparent;
-}
+  .uwu-row-value {
+    flex: none;
+    max-width: 50%;
+    color: var(--uwu-muted);
+    font-variant-numeric: tabular-nums;
+  }
 
-[data-platform="android"] .uwu-list-body > * {
-  flex: none;
-}
+  .uwu-row-chevron {
+    flex: none;
+    width: 17px;
+    height: 17px;
+    margin-right: -4px;
+    color: var(--uwu-faint);
+    stroke-width: 2.4;
+  }
 
-[data-platform="android"] .uwu-row {
-  gap: 18px;
-  min-height: 56px;
-  padding: 8px 20px;
-  border-radius: 4px;
-  background: var(--uwu-m3-container);
-}
+  .uwu-row[data-tone="danger"] {
+    justify-content: center;
+    color: var(--uwu-danger-ink);
+    font-weight: 600;
+  }
 
-[data-platform="android"] .uwu-list-body > :first-child,
-[data-platform="android"] .uwu-list-body > :first-child .uwu-row {
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
-}
+  .uwu-row[data-tone="accent"] {
+    color: var(--uwu-pink-solid);
+    font-weight: 600;
+  }
 
-[data-platform="android"] .uwu-list-body > :last-child,
-[data-platform="android"] .uwu-list-body > :last-child .uwu-row {
-  border-bottom-right-radius: 24px;
-  border-bottom-left-radius: 24px;
-}
+  .uwu-row[data-field] {
+    min-height: 66px;
+    padding: 10px 12px 10px 18px;
+  }
 
-[data-platform="android"] .uwu-list-body > * + *::before {
-  content: none;
-}
+  .uwu-row-trailing {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 6px;
+  }
 
-[data-platform="android"] .uwu-list-body > .uwu-swipe {
-  border-radius: 4px;
-}
+  /* Android: Material 3 list items, one container tone, 2 px gaps instead of hairlines. */
+  [data-platform="android"] .uwu-list-header {
+    padding: 22px 30px 8px;
+    color: var(--uwu-pink-ink);
+    font-size: 14px;
+  }
 
-[data-platform="android"] .uwu-row-chevron {
-  display: none;
-}
+  [data-platform="android"] .uwu-list-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-radius: 24px;
+    background: transparent;
+  }
 
-[data-platform="android"] .uwu-row-icon {
-  width: 26px;
-  background: none;
-}
+  [data-platform="android"] .uwu-list-body > * {
+    flex: none;
+  }
 
-[data-platform="android"] .uwu-row-icon svg {
-  width: 22px;
-  height: 22px;
-}
+  [data-platform="android"] .uwu-row {
+    gap: 18px;
+    min-height: 56px;
+    padding: 8px 20px;
+    border-radius: 4px;
+    background: var(--uwu-m3-container);
+  }
 
-[data-platform="android"] :is(button, a).uwu-row:active {
-  background: var(--uwu-m3-container-high);
-}
+  [data-platform="android"] .uwu-list-body > :first-child,
+  [data-platform="android"] .uwu-list-body > :first-child .uwu-row {
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+  }
 
-/* ── Swipe rows ─────────────────────────────────────────────────────────────────────────────── */
+  [data-platform="android"] .uwu-list-body > :last-child,
+  [data-platform="android"] .uwu-list-body > :last-child .uwu-row {
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 24px;
+  }
 
-.uwu-swipe {
-  position: relative;
-  overflow: hidden;
-  touch-action: pan-y;
-}
+  [data-platform="android"] .uwu-list-body > * + *::before {
+    content: none;
+  }
 
-.uwu-swipe-main {
-  position: relative;
-  z-index: 1;
-  transition: transform 280ms var(--uwu-ease-push);
-}
+  [data-platform="android"] .uwu-list-body > .uwu-swipe {
+    border-radius: 4px;
+  }
 
-.uwu-swipe-actions {
-  position: absolute;
-  inset: 0 0 0 auto;
-  display: flex;
-  /* Closed rows hide their actions, so the action colours never bleed past the list's rounded
+  [data-platform="android"] .uwu-row-chevron {
+    display: none;
+  }
+
+  [data-platform="android"] .uwu-row-icon {
+    width: 26px;
+    background: none;
+  }
+
+  [data-platform="android"] .uwu-row-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  [data-platform="android"] :is(button, a).uwu-row:active {
+    background: var(--uwu-m3-container-high);
+  }
+
+  /* ── Swipe rows ─────────────────────────────────────────────────────────────────────────────── */
+
+  .uwu-swipe {
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  .uwu-swipe-main {
+    position: relative;
+    z-index: 1;
+    transition: transform 280ms var(--uwu-ease-push);
+  }
+
+  .uwu-swipe-actions {
+    position: absolute;
+    inset: 0 0 0 auto;
+    display: flex;
+    /* Closed rows hide their actions, so the action colours never bleed past the list's rounded
      corners and screen readers never meet buttons they can't see. */
-  visibility: hidden;
-}
-
-.uwu-swipe-actions[data-side="leading"] {
-  inset: 0 auto 0 0;
-}
-
-.uwu-swipe[data-state="trailing"] .uwu-swipe-actions[data-side="trailing"],
-.uwu-swipe[data-state="leading"] .uwu-swipe-actions[data-side="leading"],
-.uwu-swipe[data-swiping="trailing"] .uwu-swipe-actions[data-side="trailing"],
-.uwu-swipe[data-swiping="leading"] .uwu-swipe-actions[data-side="leading"] {
-  visibility: visible;
-}
-
-.uwu-swipe-action {
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 3px;
-  width: 76px;
-  background: var(--uwu-muted);
-  color: var(--uwu-surface);
-  font-size: 12px;
-  font-weight: 650;
-}
-
-.uwu-swipe-action svg {
-  width: 21px;
-  height: 21px;
-}
-
-.uwu-swipe-action[data-tone="accent"] {
-  background: var(--uwu-pink-solid);
-  color: var(--uwu-on-pink);
-}
-
-.uwu-swipe-action[data-tone="success"] {
-  background: var(--uwu-success-ink);
-}
-
-.uwu-swipe-action[data-tone="warning"] {
-  background: var(--uwu-warning-ink);
-}
-
-.uwu-swipe-action[data-tone="danger"] {
-  background: var(--uwu-danger-ink);
-}
-
-/* ── Pull to refresh ────────────────────────────────────────────────────────────────────────── */
-
-.uwu-ptr {
-  position: relative;
-}
-
-.uwu-ptr-content {
-  position: relative;
-  transition: transform 300ms var(--uwu-ease-out);
-}
-
-.uwu-ptr[data-pulling] .uwu-ptr-content {
-  transition: none;
-}
-
-/* iOS: the content moves down and uncovers a spinner with a line of text. */
-.uwu-ptr-indicator {
-  position: absolute;
-  top: -64px;
-  right: 0;
-  left: 0;
-  display: grid;
-  justify-items: center;
-  align-content: center;
-  gap: 4px;
-  height: 60px;
-  color: var(--uwu-muted);
-  font-size: 13px;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.uwu-ptr-indicator svg {
-  width: 22px;
-  height: 22px;
-  color: var(--uwu-pink-solid);
-  stroke-width: 2.4;
-}
-
-.uwu-ptr[data-refreshing] .uwu-ptr-indicator svg {
-  animation: uwu-spin 800ms linear infinite;
-}
-
-/* Android: a round indicator slides down over the content, which stays put. */
-.uwu-ptr[data-platform="android"] .uwu-ptr-indicator {
-  top: 8px;
-  left: 50%;
-  z-index: 30;
-  width: 42px;
-  height: 42px;
-  margin-left: -21px;
-  border-radius: 50%;
-  background: var(--uwu-m3-container-high);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.22);
-  place-items: center;
-}
-
-/* ── Sheets ─────────────────────────────────────────────────────────────────────────────────── */
-
-.uwu-sheet-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 80;
-}
-
-.uwu-scrim {
-  position: absolute;
-  inset: 0;
-  background: var(--uwu-scrim);
-  animation: uwu-fade 300ms ease-out;
-}
-
-/* iPhone: a card from the bottom with a grabber, inset from the screen edges, two heights. */
-.uwu-sheet {
-  position: absolute;
-  right: 6px;
-  bottom: 6px;
-  left: 6px;
-  display: flex;
-  flex-direction: column;
-  height: var(--uwu-sheet-height, 90%);
-  max-height: calc(100% - var(--uwu-safe-top) - 8px);
-  overflow: hidden;
-  border-radius: 38px;
-  background: var(--uwu-canvas);
-  box-shadow: 0 -10px 40px -10px rgb(0 0 0 / 0.3);
-  transition: height 320ms var(--uwu-ease-sheet);
-  animation: uwu-sheet-in 420ms var(--uwu-ease-sheet);
-}
-
-.uwu-sheet[data-dragging] {
-  transition: none;
-}
-
-.uwu-sheet:focus {
-  outline: none;
-}
-
-:root[data-contrast="high"] .uwu-sheet {
-  border: 1.5px solid var(--uwu-border);
-}
-
-@keyframes uwu-sheet-in {
-  from {
-    transform: translateY(105%);
+    visibility: hidden;
   }
-}
 
-.uwu-sheet-grabber {
-  flex: none;
-  width: 100%;
-  height: 22px;
-  touch-action: none;
-}
+  .uwu-swipe-actions[data-side="leading"] {
+    inset: 0 auto 0 0;
+  }
 
-.uwu-sheet-grabber::after {
-  content: "";
-  display: block;
-  width: 38px;
-  height: 5px;
-  margin: 7px auto 0;
-  border-radius: 3px;
-  background: var(--uwu-faint);
-  opacity: 0.6;
-}
+  .uwu-swipe[data-state="trailing"] .uwu-swipe-actions[data-side="trailing"],
+  .uwu-swipe[data-state="leading"] .uwu-swipe-actions[data-side="leading"],
+  .uwu-swipe[data-swiping="trailing"] .uwu-swipe-actions[data-side="trailing"],
+  .uwu-swipe[data-swiping="leading"] .uwu-swipe-actions[data-side="leading"] {
+    visibility: visible;
+  }
 
-.uwu-sheet-header {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  min-height: 52px;
-  padding: 0 14px 6px;
-}
+  .uwu-swipe-action {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 3px;
+    width: 76px;
+    background: var(--uwu-muted);
+    color: var(--uwu-surface);
+    font-size: 12px;
+    font-weight: 650;
+  }
 
-.uwu-sheet-title {
-  flex: 1;
-  margin: 0;
-  overflow: hidden;
-  font-size: 17px;
-  font-weight: 650;
-  text-align: center;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+  .uwu-swipe-action svg {
+    width: 21px;
+    height: 21px;
+  }
 
-.uwu-sheet-body {
-  flex: 1;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding-bottom: calc(var(--uwu-safe-bottom) + 24px);
-  scrollbar-width: none;
-}
+  .uwu-swipe-action[data-tone="accent"] {
+    background: var(--uwu-pink-solid);
+    color: var(--uwu-on-pink);
+  }
 
-/* Android: a Material 3 bottom sheet, edge to edge, a drag handle, the container tone. */
-.uwu-sheet[data-platform="android"] {
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: 28px 28px 0 0;
-  background: var(--uwu-m3-container);
-}
+  .uwu-swipe-action[data-tone="success"] {
+    background: var(--uwu-success-ink);
+  }
 
-.uwu-sheet[data-platform="android"] .uwu-sheet-grabber::after {
-  width: 32px;
-  height: 4px;
-  margin-top: 12px;
-  border-radius: 2px;
-  background: var(--uwu-muted);
-  opacity: 0.5;
-}
+  .uwu-swipe-action[data-tone="warning"] {
+    background: var(--uwu-warning-ink);
+  }
 
-.uwu-sheet[data-platform="android"] .uwu-sheet-grabber {
-  height: 28px;
-}
+  .uwu-swipe-action[data-tone="danger"] {
+    background: var(--uwu-danger-ink);
+  }
 
-.uwu-sheet[data-platform="android"] .uwu-sheet-title {
-  font-size: 22px;
-  font-weight: 500;
-  text-align: left;
-}
+  /* ── Pull to refresh ────────────────────────────────────────────────────────────────────────── */
 
-.uwu-sheet[data-platform="android"] .uwu-row {
-  background: var(--uwu-m3-container-high);
-}
+  .uwu-ptr {
+    position: relative;
+  }
 
-/* iPad: a form sheet in the middle of the screen. */
-.uwu-sheet[data-platform="ipad"] {
-  top: 50%;
-  right: auto;
-  bottom: auto;
-  left: 50%;
-  width: min(560px, calc(100% - 40px));
-  height: min(var(--uwu-sheet-height, 720px), calc(100% - 80px));
-  translate: -50% -50%;
-  animation: uwu-pop 260ms var(--uwu-ease-pop);
-}
+  .uwu-ptr-content {
+    position: relative;
+    transition: transform 300ms var(--uwu-ease-out);
+  }
 
-.uwu-sheet[data-platform="ipad"] .uwu-sheet-grabber {
-  display: none;
-}
+  .uwu-ptr[data-pulling] .uwu-ptr-content {
+    transition: none;
+  }
 
-.uwu-sheet[data-platform="ipad"] .uwu-sheet-header {
-  padding-top: 14px;
-}
-
-/* Android: a full-screen dialog for creating and editing. */
-.uwu-fullscreen {
-  position: absolute;
-  inset: 0;
-  z-index: 80;
-  display: flex;
-  flex-direction: column;
-  padding-top: var(--uwu-safe-top);
-  background: var(--uwu-m3-surface);
-  animation: uwu-sheet-in 360ms var(--uwu-ease-sheet);
-}
-
-.uwu-fullscreen:focus {
-  outline: none;
-}
-
-.uwu-fullscreen-header {
-  display: flex;
-  flex: none;
-  align-items: center;
-  gap: 4px;
-  height: 64px;
-  padding: 0 12px 0 4px;
-}
-
-.uwu-fullscreen-title {
-  flex: 1;
-  margin: 0 0 0 4px;
-  overflow: hidden;
-  font-size: 22px;
-  font-weight: 500;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.uwu-fullscreen-body {
-  flex: 1;
-  overflow-y: auto;
-  padding-bottom: calc(var(--uwu-safe-bottom) + 24px);
-}
-
-/* ── Context menu ───────────────────────────────────────────────────────────────────────────── */
-
-.uwu-menu-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 85;
-}
-
-.uwu-menu-layer > .uwu-scrim {
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  animation-duration: 200ms;
-}
-
-.uwu-menu-preview {
-  position: absolute;
-  right: 16px;
-  left: 16px;
-  overflow: hidden;
-  border-radius: 22px;
-  background: var(--uwu-surface);
-  box-shadow: 0 18px 40px -12px rgb(0 0 0 / 0.4);
-  animation: uwu-pop 300ms var(--uwu-ease-pop);
-}
-
-.uwu-menu {
-  position: absolute;
-  width: min(270px, calc(100% - 32px));
-  max-height: calc(100% - var(--uwu-safe-top) - var(--uwu-safe-bottom) - 32px);
-  overflow-y: auto;
-  padding: 6px 0;
-  border-radius: 24px;
-  transform-origin: top left;
-  animation: uwu-menu-in 300ms var(--uwu-ease-pop);
-}
-
-@keyframes uwu-menu-in {
-  from {
+  /* iOS: the content moves down and uncovers a spinner with a line of text. */
+  .uwu-ptr-indicator {
+    position: absolute;
+    top: -64px;
+    right: 0;
+    left: 0;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 4px;
+    height: 60px;
+    color: var(--uwu-muted);
+    font-size: 13px;
     opacity: 0;
-    transform: scale(0.4);
+    pointer-events: none;
   }
-}
 
-.uwu-menu-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-  padding: 11px 20px;
-  font-size: 17px;
-  text-align: left;
-}
-
-.uwu-menu-item svg {
-  flex: none;
-  width: 20px;
-  height: 20px;
-}
-
-.uwu-menu-item:active,
-.uwu-menu-item:focus-visible {
-  background: var(--uwu-glass-selected);
-}
-
-.uwu-menu-item[data-danger] {
-  color: var(--uwu-danger-ink);
-}
-
-.uwu-menu-separator {
-  height: 7px;
-  margin: 4px 0;
-  border: 0;
-  background: var(--uwu-glass-selected);
-}
-
-/* Android: the menu is a bottom sheet list. */
-[data-platform="android"] .uwu-menu-item {
-  justify-content: flex-start;
-  flex-direction: row-reverse;
-  gap: 18px;
-  padding: 14px 26px;
-  font-size: 16px;
-}
-
-[data-platform="android"] .uwu-menu-item svg {
-  color: var(--uwu-muted);
-}
-
-[data-platform="android"] .uwu-menu-item[data-danger] svg {
-  color: var(--uwu-danger-ink);
-}
-
-[data-platform="android"] .uwu-menu-separator {
-  height: 1px;
-  margin: 6px 24px;
-  background: var(--uwu-hairline);
-}
-
-/* ── Stepper ────────────────────────────────────────────────────────────────────────────────── */
-
-.uwu-stepper {
-  display: flex;
-  flex: none;
-  height: 32px;
-  overflow: hidden;
-  border-radius: 9px;
-  background: var(--uwu-glass-selected);
-}
-
-.uwu-stepper button {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  color: var(--uwu-ink);
-  font-size: 20px;
-  font-weight: 500;
-}
-
-.uwu-stepper button + button {
-  border-left: 0.5px solid var(--uwu-hairline);
-}
-
-.uwu-stepper button:disabled {
-  opacity: 0.3;
-}
-
-.uwu-stepper svg {
-  width: 18px;
-  height: 18px;
-}
-
-[data-platform="android"] .uwu-stepper,
-.uwu-stepper[data-platform="android"] {
-  height: 40px;
-  border: 1px solid var(--uwu-control);
-  border-radius: 20px;
-  background: none;
-}
-
-[data-platform="android"] .uwu-stepper button + button,
-.uwu-stepper[data-platform="android"] button + button {
-  border-left: 1px solid var(--uwu-control);
-}
-
-/* ── Toast (iOS) and snackbar (Android) ─────────────────────────────────────────────────────── */
-
-.uwu-mtoast {
-  position: absolute;
-  top: calc(var(--uwu-safe-top) + 4px);
-  left: 50%;
-  z-index: 95;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 220px;
-  max-width: min(360px, calc(100% - 32px));
-  padding: 10px 18px 10px 12px;
-  border-radius: 26px;
-  font-size: 15px;
-  translate: -50% 0;
-  animation: uwu-toast-drop 420ms cubic-bezier(0.2, 1.3, 0.4, 1);
-}
-
-@keyframes uwu-toast-drop {
-  from {
-    opacity: 0;
-    transform: translateY(-30px) scale(0.6);
+  .uwu-ptr-indicator svg {
+    width: 22px;
+    height: 22px;
+    color: var(--uwu-pink-solid);
+    stroke-width: 2.4;
   }
-}
 
-.uwu-mtoast-icon {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 16px;
-  background: var(--uwu-success-ink);
-  color: var(--uwu-surface);
-}
-
-.uwu-mtoast-icon[data-tone="error"] {
-  background: var(--uwu-danger-ink);
-}
-
-.uwu-mtoast-icon[data-tone="info"] {
-  background: var(--uwu-pink-solid);
-  color: var(--uwu-on-pink);
-}
-
-.uwu-mtoast-icon svg {
-  width: 18px;
-  height: 18px;
-  stroke-width: 2.6;
-}
-
-.uwu-mtoast-text {
-  display: grid;
-  flex: 1;
-  min-width: 0;
-}
-
-.uwu-mtoast-text b {
-  font-weight: 650;
-}
-
-.uwu-mtoast-text span {
-  color: var(--uwu-muted);
-  font-size: 13px;
-}
-
-.uwu-mtoast-action {
-  flex: none;
-  padding: 6px 4px;
-  color: var(--uwu-pink-solid);
-  font-weight: 700;
-}
-
-:root[data-platform="ipad"] .uwu-mtoast,
-.uwu-mtoast[data-platform="ipad"] {
-  top: calc(var(--uwu-safe-top) + 76px);
-}
-
-.uwu-snackbar {
-  position: absolute;
-  right: calc(var(--uwu-safe-right) + 14px);
-  bottom: calc(var(--uwu-safe-bottom) + var(--uwu-snackbar-bottom, 96px));
-  left: calc(var(--uwu-safe-left) + 14px);
-  z-index: 95;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 48px;
-  padding: 8px 8px 8px 16px;
-  border-radius: 6px;
-  background: var(--uwu-toast);
-  color: var(--uwu-toast-ink);
-  box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
-  font-size: 15px;
-  animation: uwu-slide-up var(--uwu-duration-enter) var(--uwu-ease-out);
-}
-
-.uwu-snackbar-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.uwu-snackbar button {
-  flex: none;
-  padding: 8px 10px;
-  border-radius: 20px;
-  color: var(--uwu-toast-accent);
-  font-weight: 700;
-}
-
-/* ── FAB and the Material 3 search bar ──────────────────────────────────────────────────────── */
-
-.uwu-fab {
-  position: absolute;
-  right: calc(var(--uwu-safe-right) + 16px);
-  bottom: calc(var(--uwu-safe-bottom) + var(--uwu-fab-bottom, 96px));
-  z-index: 49;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-width: 56px;
-  height: 56px;
-  padding: 0 16px;
-  border-radius: 16px;
-  background: var(--uwu-m3-indicator);
-  color: var(--uwu-pink-ink);
-  box-shadow: 0 3px 8px rgb(0 0 0 / 0.2);
-  font-size: 15px;
-  font-weight: 650;
-  transition: box-shadow var(--uwu-duration-fast);
-}
-
-.uwu-fab:active {
-  box-shadow: 0 6px 14px rgb(0 0 0 / 0.24);
-}
-
-.uwu-fab svg {
-  width: 24px;
-  height: 24px;
-}
-
-:root[data-contrast="high"] .uwu-fab {
-  border: 1.5px solid var(--uwu-pink-ink);
-}
-
-.uwu-searchbar {
-  position: absolute;
-  top: calc(var(--uwu-safe-top) + 8px);
-  right: calc(var(--uwu-safe-right) + 16px);
-  left: calc(var(--uwu-safe-left) + 16px);
-  z-index: 22;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  height: 56px;
-  padding: 0 8px 0 18px;
-  border-radius: 28px;
-  background: var(--uwu-m3-container-high);
-  color: var(--uwu-muted);
-  font-size: 16px;
-  text-align: left;
-}
-
-.uwu-searchbar[data-inline] {
-  position: relative;
-  top: auto;
-  right: auto;
-  left: auto;
-}
-
-.uwu-searchbar svg {
-  flex: none;
-  width: 22px;
-  height: 22px;
-}
-
-.uwu-searchbar input {
-  flex: 1;
-  min-width: 0;
-  border: 0;
-  outline: none;
-  background: none;
-  color: var(--uwu-ink);
-  font-size: 16px;
-}
-
-.uwu-searchbar input::placeholder {
-  color: var(--uwu-muted);
-}
-
-.uwu-searchbar-placeholder {
-  flex: 1;
-}
-
-:root[data-contrast="high"] .uwu-searchbar {
-  border: 1.5px solid var(--uwu-control);
-}
-
-/* ── iPad split view ────────────────────────────────────────────────────────────────────────── */
-
-.uwu-split {
-  position: absolute;
-  inset: 0;
-  display: flex;
-}
-
-.uwu-split-sidebar {
-  z-index: 35;
-  display: flex;
-  flex: none;
-  flex-direction: column;
-  width: 290px;
-  margin: calc(var(--uwu-safe-top) + 10px) 0 10px calc(var(--uwu-safe-left) + 10px);
-  overflow: hidden;
-  border-radius: 30px;
-}
-
-.uwu-split[data-overlay] .uwu-split-sidebar {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  box-shadow: 0 20px 60px -10px rgb(0 0 0 / 0.35);
-  animation: uwu-drawer var(--uwu-duration-enter) var(--uwu-ease-out);
-}
-
-.uwu-split-sidebar-scroll {
-  flex: 1;
-  overflow-y: auto;
-  padding: 4px 10px 30px;
-  scrollbar-width: none;
-}
-
-.uwu-split-column {
-  position: relative;
-  flex: none;
-  width: 370px;
-  height: 100%;
-  overflow: hidden;
-  border-right: 0.5px solid var(--uwu-hairline);
-}
-
-.uwu-split-detail {
-  position: relative;
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  overflow: hidden;
-}
-
-.uwu-split .uwu-screen {
-  background: transparent;
-}
-
-.uwu-split .uwu-screen-scroll {
-  padding-top: calc(var(--uwu-safe-top) + 84px);
-  padding-bottom: calc(var(--uwu-safe-bottom) + 40px);
-}
-
-.uwu-split .uwu-list-body {
-  margin: 0 12px;
-}
-
-.uwu-split .uwu-list-header {
-  padding-left: 26px;
-}
-
-.uwu-sidebar-heading {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 16px 10px 5px;
-  color: var(--uwu-muted);
-  font-size: 13px;
-  font-weight: 650;
-}
-
-.uwu-sidebar-row {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 12px;
-  font-size: 16px;
-  text-align: left;
-}
-
-.uwu-sidebar-row svg {
-  flex: none;
-  width: 20px;
-  height: 20px;
-  color: var(--uwu-pink-solid);
-}
-
-.uwu-sidebar-row > span:first-of-type {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.uwu-sidebar-row-count {
-  color: var(--uwu-muted);
-  font-size: 14px;
-  font-variant-numeric: tabular-nums;
-}
-
-.uwu-sidebar-row[aria-current="page"] {
-  background: var(--uwu-pink-solid);
-  color: var(--uwu-on-pink);
-}
-
-.uwu-sidebar-row[aria-current="page"] :is(svg, .uwu-sidebar-row-count) {
-  color: var(--uwu-on-pink);
-}
-
-.uwu-sidebar-row:focus-visible {
-  outline: none;
-  box-shadow: var(--uwu-focus);
-}
-
-/* ── Page transitions (push / pop) ──────────────────────────────────────────────────────────── */
-
-.uwu-push-in {
-  z-index: 3;
-  box-shadow: -10px 0 30px -10px rgb(0 0 0 / 0.25);
-  animation: uwu-push-in 420ms var(--uwu-ease-push) both;
-}
-
-.uwu-pop-out {
-  z-index: 3;
-  animation: uwu-pop-out 380ms var(--uwu-ease-push) both;
-}
-
-[data-platform="android"].uwu-push-in {
-  box-shadow: none;
-  animation: uwu-push-in-android 320ms var(--uwu-ease-push) both;
-}
-
-[data-platform="android"].uwu-pop-out {
-  animation: uwu-pop-out-android 300ms var(--uwu-ease-push) both;
-}
-
-@keyframes uwu-push-in {
-  from {
-    transform: translateX(100%);
+  .uwu-ptr[data-refreshing] .uwu-ptr-indicator svg {
+    animation: uwu-spin 800ms linear infinite;
   }
-}
 
-@keyframes uwu-pop-out {
-  to {
-    transform: translateX(100%);
+  /* Android: a round indicator slides down over the content, which stays put. */
+  .uwu-ptr[data-platform="android"] .uwu-ptr-indicator {
+    top: 8px;
+    left: 50%;
+    z-index: 30;
+    width: 42px;
+    height: 42px;
+    margin-left: -21px;
+    border-radius: 50%;
+    background: var(--uwu-m3-container-high);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.22);
+    place-items: center;
   }
-}
 
-@keyframes uwu-push-in-android {
-  from {
-    opacity: 0;
-    transform: translateX(14%);
+  /* ── Sheets ─────────────────────────────────────────────────────────────────────────────────── */
+
+  .uwu-sheet-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 80;
   }
-}
 
-@keyframes uwu-pop-out-android {
-  to {
-    opacity: 0;
-    transform: translateX(14%);
+  .uwu-scrim {
+    position: absolute;
+    inset: 0;
+    background: var(--uwu-scrim);
+    animation: uwu-fade 300ms ease-out;
   }
-}
 
-/* ── Leaving ────────────────────────────────────────────────────────────────────────────────── */
-
-[data-closing] {
-  pointer-events: none;
-}
-
-[data-closing] > .uwu-scrim,
-.uwu-menu-layer[data-closing] {
-  animation: uwu-fade-out 200ms ease-in forwards;
-}
-
-[data-closing] > .uwu-sheet,
-.uwu-fullscreen[data-closing] {
-  animation: uwu-sheet-out 260ms ease-in forwards;
-}
-
-[data-closing] > .uwu-sheet[data-platform="ipad"] {
-  animation: uwu-fade-out 200ms ease-in forwards;
-}
-
-@keyframes uwu-sheet-out {
-  to {
-    transform: translateY(105%);
+  /* iPhone: a card from the bottom with a grabber, inset from the screen edges, two heights. */
+  .uwu-sheet {
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    left: 6px;
+    display: flex;
+    flex-direction: column;
+    height: var(--uwu-sheet-height, 90%);
+    max-height: calc(100% - var(--uwu-safe-top) - 8px);
+    overflow: hidden;
+    border-radius: 38px;
+    background: var(--uwu-canvas);
+    box-shadow: 0 -10px 40px -10px rgb(0 0 0 / 0.3);
+    transition: height 320ms var(--uwu-ease-sheet);
+    animation: uwu-sheet-in 420ms var(--uwu-ease-sheet);
   }
-}
 
-@keyframes uwu-fade-out {
-  to {
-    opacity: 0;
+  .uwu-sheet[data-dragging] {
+    transition: none;
+  }
+
+  .uwu-sheet:focus {
+    outline: none;
+  }
+
+  :root[data-contrast="high"] .uwu-sheet {
+    border: 1.5px solid var(--uwu-border);
+  }
+
+  @keyframes uwu-sheet-in {
+    from {
+      transform: translateY(105%);
+    }
+  }
+
+  .uwu-sheet-grabber {
+    flex: none;
+    width: 100%;
+    height: 22px;
+    touch-action: none;
+  }
+
+  .uwu-sheet-grabber::after {
+    content: "";
+    display: block;
+    width: 38px;
+    height: 5px;
+    margin: 7px auto 0;
+    border-radius: 3px;
+    background: var(--uwu-faint);
+    opacity: 0.6;
+  }
+
+  .uwu-sheet-header {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 52px;
+    padding: 0 14px 6px;
+  }
+
+  .uwu-sheet-title {
+    flex: 1;
+    margin: 0;
+    overflow: hidden;
+    font-size: 17px;
+    font-weight: 650;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .uwu-sheet-body {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: calc(var(--uwu-safe-bottom) + 24px);
+    scrollbar-width: none;
+  }
+
+  /* Android: a Material 3 bottom sheet, edge to edge, a drag handle, the container tone. */
+  .uwu-sheet[data-platform="android"] {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 28px 28px 0 0;
+    background: var(--uwu-m3-container);
+  }
+
+  .uwu-sheet[data-platform="android"] .uwu-sheet-grabber::after {
+    width: 32px;
+    height: 4px;
+    margin-top: 12px;
+    border-radius: 2px;
+    background: var(--uwu-muted);
+    opacity: 0.5;
+  }
+
+  .uwu-sheet[data-platform="android"] .uwu-sheet-grabber {
+    height: 28px;
+  }
+
+  .uwu-sheet[data-platform="android"] .uwu-sheet-title {
+    font-size: 22px;
+    font-weight: 500;
+    text-align: left;
+  }
+
+  .uwu-sheet[data-platform="android"] .uwu-row {
+    background: var(--uwu-m3-container-high);
+  }
+
+  /* iPad: a form sheet in the middle of the screen. */
+  .uwu-sheet[data-platform="ipad"] {
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+    width: min(560px, calc(100% - 40px));
+    height: min(var(--uwu-sheet-height, 720px), calc(100% - 80px));
+    translate: -50% -50%;
+    animation: uwu-pop 260ms var(--uwu-ease-pop);
+  }
+
+  .uwu-sheet[data-platform="ipad"] .uwu-sheet-grabber {
+    display: none;
+  }
+
+  .uwu-sheet[data-platform="ipad"] .uwu-sheet-header {
+    padding-top: 14px;
+  }
+
+  /* Android: a full-screen dialog for creating and editing. */
+  .uwu-fullscreen {
+    position: absolute;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--uwu-safe-top);
+    background: var(--uwu-m3-surface);
+    animation: uwu-sheet-in 360ms var(--uwu-ease-sheet);
+  }
+
+  .uwu-fullscreen:focus {
+    outline: none;
+  }
+
+  .uwu-fullscreen-header {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 4px;
+    height: 64px;
+    padding: 0 12px 0 4px;
+  }
+
+  .uwu-fullscreen-title {
+    flex: 1;
+    margin: 0 0 0 4px;
+    overflow: hidden;
+    font-size: 22px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .uwu-fullscreen-body {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: calc(var(--uwu-safe-bottom) + 24px);
+  }
+
+  /* ── Context menu ───────────────────────────────────────────────────────────────────────────── */
+
+  .uwu-menu-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 85;
+  }
+
+  .uwu-menu-layer > .uwu-scrim {
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    animation-duration: 200ms;
+  }
+
+  .uwu-menu-preview {
+    position: absolute;
+    right: 16px;
+    left: 16px;
+    overflow: hidden;
+    border-radius: 22px;
+    background: var(--uwu-surface);
+    box-shadow: 0 18px 40px -12px rgb(0 0 0 / 0.4);
+    animation: uwu-pop 300ms var(--uwu-ease-pop);
+  }
+
+  .uwu-menu {
+    position: absolute;
+    width: min(270px, calc(100% - 32px));
+    max-height: calc(100% - var(--uwu-safe-top) - var(--uwu-safe-bottom) - 32px);
+    overflow-y: auto;
+    padding: 6px 0;
+    border-radius: 24px;
+    transform-origin: top left;
+    animation: uwu-menu-in 300ms var(--uwu-ease-pop);
+  }
+
+  @keyframes uwu-menu-in {
+    from {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+  }
+
+  .uwu-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 20px;
+    font-size: 17px;
+    text-align: left;
+  }
+
+  .uwu-menu-item svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+  }
+
+  .uwu-menu-item:active,
+  .uwu-menu-item:focus-visible {
+    background: var(--uwu-glass-selected);
+  }
+
+  .uwu-menu-item[data-danger] {
+    color: var(--uwu-danger-ink);
+  }
+
+  .uwu-menu-separator {
+    height: 7px;
+    margin: 4px 0;
+    border: 0;
+    background: var(--uwu-glass-selected);
+  }
+
+  /* Android: the menu is a bottom sheet list. */
+  [data-platform="android"] .uwu-menu-item {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    gap: 18px;
+    padding: 14px 26px;
+    font-size: 16px;
+  }
+
+  [data-platform="android"] .uwu-menu-item svg {
+    color: var(--uwu-muted);
+  }
+
+  [data-platform="android"] .uwu-menu-item[data-danger] svg {
+    color: var(--uwu-danger-ink);
+  }
+
+  [data-platform="android"] .uwu-menu-separator {
+    height: 1px;
+    margin: 6px 24px;
+    background: var(--uwu-hairline);
+  }
+
+  /* ── Stepper ────────────────────────────────────────────────────────────────────────────────── */
+
+  .uwu-stepper {
+    display: flex;
+    flex: none;
+    height: 32px;
+    overflow: hidden;
+    border-radius: 9px;
+    background: var(--uwu-glass-selected);
+  }
+
+  .uwu-stepper button {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    color: var(--uwu-ink);
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .uwu-stepper button + button {
+    border-left: 0.5px solid var(--uwu-hairline);
+  }
+
+  .uwu-stepper button:disabled {
+    opacity: 0.3;
+  }
+
+  .uwu-stepper svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  [data-platform="android"] .uwu-stepper,
+  .uwu-stepper[data-platform="android"] {
+    height: 40px;
+    border: 1px solid var(--uwu-control);
+    border-radius: 20px;
+    background: none;
+  }
+
+  [data-platform="android"] .uwu-stepper button + button,
+  .uwu-stepper[data-platform="android"] button + button {
+    border-left: 1px solid var(--uwu-control);
+  }
+
+  /* ── Toast (iOS) and snackbar (Android) ─────────────────────────────────────────────────────── */
+
+  .uwu-mtoast {
+    position: absolute;
+    top: calc(var(--uwu-safe-top) + 4px);
+    left: 50%;
+    z-index: 95;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 220px;
+    max-width: min(360px, calc(100% - 32px));
+    padding: 10px 18px 10px 12px;
+    border-radius: 26px;
+    font-size: 15px;
+    translate: -50% 0;
+    animation: uwu-toast-drop 420ms cubic-bezier(0.2, 1.3, 0.4, 1);
+  }
+
+  @keyframes uwu-toast-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-30px) scale(0.6);
+    }
+  }
+
+  .uwu-mtoast-icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    background: var(--uwu-success-ink);
+    color: var(--uwu-surface);
+  }
+
+  .uwu-mtoast-icon[data-tone="error"] {
+    background: var(--uwu-danger-ink);
+  }
+
+  .uwu-mtoast-icon[data-tone="info"] {
+    background: var(--uwu-pink-solid);
+    color: var(--uwu-on-pink);
+  }
+
+  .uwu-mtoast-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.6;
+  }
+
+  .uwu-mtoast-text {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .uwu-mtoast-text b {
+    font-weight: 650;
+  }
+
+  .uwu-mtoast-text span {
+    color: var(--uwu-muted);
+    font-size: 13px;
+  }
+
+  .uwu-mtoast-action {
+    flex: none;
+    padding: 6px 4px;
+    color: var(--uwu-pink-solid);
+    font-weight: 700;
+  }
+
+  :root[data-platform="ipad"] .uwu-mtoast,
+  .uwu-mtoast[data-platform="ipad"] {
+    top: calc(var(--uwu-safe-top) + 76px);
+  }
+
+  .uwu-snackbar {
+    position: absolute;
+    right: calc(var(--uwu-safe-right) + 14px);
+    bottom: calc(var(--uwu-safe-bottom) + var(--uwu-snackbar-bottom, 96px));
+    left: calc(var(--uwu-safe-left) + 14px);
+    z-index: 95;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 8px 8px 8px 16px;
+    border-radius: 6px;
+    background: var(--uwu-toast);
+    color: var(--uwu-toast-ink);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
+    font-size: 15px;
+    animation: uwu-slide-up var(--uwu-duration-enter) var(--uwu-ease-out);
+  }
+
+  .uwu-snackbar-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .uwu-snackbar button {
+    flex: none;
+    padding: 8px 10px;
+    border-radius: 20px;
+    color: var(--uwu-toast-accent);
+    font-weight: 700;
+  }
+
+  /* ── FAB and the Material 3 search bar ──────────────────────────────────────────────────────── */
+
+  .uwu-fab {
+    position: absolute;
+    right: calc(var(--uwu-safe-right) + 16px);
+    bottom: calc(var(--uwu-safe-bottom) + var(--uwu-fab-bottom, 96px));
+    z-index: 49;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-width: 56px;
+    height: 56px;
+    padding: 0 16px;
+    border-radius: 16px;
+    background: var(--uwu-m3-indicator);
+    color: var(--uwu-pink-ink);
+    box-shadow: 0 3px 8px rgb(0 0 0 / 0.2);
+    font-size: 15px;
+    font-weight: 650;
+    transition: box-shadow var(--uwu-duration-fast);
+  }
+
+  .uwu-fab:active {
+    box-shadow: 0 6px 14px rgb(0 0 0 / 0.24);
+  }
+
+  .uwu-fab svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  :root[data-contrast="high"] .uwu-fab {
+    border: 1.5px solid var(--uwu-pink-ink);
+  }
+
+  .uwu-searchbar {
+    position: absolute;
+    top: calc(var(--uwu-safe-top) + 8px);
+    right: calc(var(--uwu-safe-right) + 16px);
+    left: calc(var(--uwu-safe-left) + 16px);
+    z-index: 22;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 56px;
+    padding: 0 8px 0 18px;
+    border-radius: 28px;
+    background: var(--uwu-m3-container-high);
+    color: var(--uwu-muted);
+    font-size: 16px;
+    text-align: left;
+  }
+
+  .uwu-searchbar[data-inline] {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+  }
+
+  .uwu-searchbar svg {
+    flex: none;
+    width: 22px;
+    height: 22px;
+  }
+
+  .uwu-searchbar input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: none;
+    background: none;
+    color: var(--uwu-ink);
+    font-size: 16px;
+  }
+
+  .uwu-searchbar input::placeholder {
+    color: var(--uwu-muted);
+  }
+
+  .uwu-searchbar-placeholder {
+    flex: 1;
+  }
+
+  :root[data-contrast="high"] .uwu-searchbar {
+    border: 1.5px solid var(--uwu-control);
+  }
+
+  /* ── iPad split view ────────────────────────────────────────────────────────────────────────── */
+
+  .uwu-split {
+    position: absolute;
+    inset: 0;
+    display: flex;
+  }
+
+  .uwu-split-sidebar {
+    z-index: 35;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    width: 290px;
+    margin: calc(var(--uwu-safe-top) + 10px) 0 10px calc(var(--uwu-safe-left) + 10px);
+    overflow: hidden;
+    border-radius: 30px;
+  }
+
+  .uwu-split[data-overlay] .uwu-split-sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    box-shadow: 0 20px 60px -10px rgb(0 0 0 / 0.35);
+    animation: uwu-drawer var(--uwu-duration-enter) var(--uwu-ease-out);
+  }
+
+  .uwu-split-sidebar-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 10px 30px;
+    scrollbar-width: none;
+  }
+
+  .uwu-split-column {
+    position: relative;
+    flex: none;
+    width: 370px;
+    height: 100%;
+    overflow: hidden;
+    border-right: 0.5px solid var(--uwu-hairline);
+  }
+
+  .uwu-split-detail {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .uwu-split .uwu-screen {
+    background: transparent;
+  }
+
+  .uwu-split .uwu-screen-scroll {
+    padding-top: calc(var(--uwu-safe-top) + 84px);
+    padding-bottom: calc(var(--uwu-safe-bottom) + 40px);
+  }
+
+  .uwu-split .uwu-list-body {
+    margin: 0 12px;
+  }
+
+  .uwu-split .uwu-list-header {
+    padding-left: 26px;
+  }
+
+  .uwu-sidebar-heading {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 10px 5px;
+    color: var(--uwu-muted);
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  .uwu-sidebar-row {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-size: 16px;
+    text-align: left;
+  }
+
+  .uwu-sidebar-row svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    color: var(--uwu-pink-solid);
+  }
+
+  .uwu-sidebar-row > span:first-of-type {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .uwu-sidebar-row-count {
+    color: var(--uwu-muted);
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .uwu-sidebar-row[aria-current="page"] {
+    background: var(--uwu-pink-solid);
+    color: var(--uwu-on-pink);
+  }
+
+  .uwu-sidebar-row[aria-current="page"] :is(svg, .uwu-sidebar-row-count) {
+    color: var(--uwu-on-pink);
+  }
+
+  .uwu-sidebar-row:focus-visible {
+    outline: none;
+    box-shadow: var(--uwu-focus);
+  }
+
+  /* ── Page transitions (push / pop) ──────────────────────────────────────────────────────────── */
+
+  .uwu-push-in {
+    z-index: 3;
+    box-shadow: -10px 0 30px -10px rgb(0 0 0 / 0.25);
+    animation: uwu-push-in 420ms var(--uwu-ease-push) both;
+  }
+
+  .uwu-pop-out {
+    z-index: 3;
+    animation: uwu-pop-out 380ms var(--uwu-ease-push) both;
+  }
+
+  [data-platform="android"].uwu-push-in {
+    box-shadow: none;
+    animation: uwu-push-in-android 320ms var(--uwu-ease-push) both;
+  }
+
+  [data-platform="android"].uwu-pop-out {
+    animation: uwu-pop-out-android 300ms var(--uwu-ease-push) both;
+  }
+
+  @keyframes uwu-push-in {
+    from {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes uwu-pop-out {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes uwu-push-in-android {
+    from {
+      opacity: 0;
+      transform: translateX(14%);
+    }
+  }
+
+  @keyframes uwu-pop-out-android {
+    to {
+      opacity: 0;
+      transform: translateX(14%);
+    }
+  }
+
+  /* ── Leaving ────────────────────────────────────────────────────────────────────────────────── */
+
+  [data-closing] {
+    pointer-events: none;
+  }
+
+  [data-closing] > .uwu-scrim,
+  .uwu-menu-layer[data-closing] {
+    animation: uwu-fade-out 200ms ease-in forwards;
+  }
+
+  [data-closing] > .uwu-sheet,
+  .uwu-fullscreen[data-closing] {
+    animation: uwu-sheet-out 260ms ease-in forwards;
+  }
+
+  [data-closing] > .uwu-sheet[data-platform="ipad"] {
+    animation: uwu-fade-out 200ms ease-in forwards;
+  }
+
+  @keyframes uwu-sheet-out {
+    to {
+      transform: translateY(105%);
+    }
+  }
+
+  @keyframes uwu-fade-out {
+    to {
+      opacity: 0;
+    }
   }
 }
