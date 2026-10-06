@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { detectPlatform, type Platform } from "../components/TitleBar";
+import { detectPlatform, type Platform } from "../components/TitleBar.js";
 
 /**
  * How a suite app lives on macOS (docs/macos.md):

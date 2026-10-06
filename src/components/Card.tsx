@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import type { LucideIcon } from "lucide-react";
 import type { HTMLAttributes, ReactNode } from "react";
-import { Icon } from "../icons/Icon";
+import { Icon } from "../icons/Icon.js";
 
 export interface CardProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
   title?: ReactNode;

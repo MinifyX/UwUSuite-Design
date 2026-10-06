@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import type { LucideIcon } from "lucide-react";
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { Icon } from "../icons/Icon";
+import { Icon } from "../icons/Icon.js";
 
 export interface MenuItem {
   label: ReactNode;

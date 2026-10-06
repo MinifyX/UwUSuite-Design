@@ -1,8 +1,8 @@
 import { clsx } from "clsx";
 import type { ReactNode } from "react";
-import { NYU, nyuSvg, type NyuMood, type NyuShell } from "./svg";
+import { NYU, nyuSvg, type NyuMood, type NyuShell } from "./svg.js";
 
-export { NYU, MOODS, SHELLS, VIEWBOX, type NyuMood, type NyuShell } from "./svg";
+export { NYU, MOODS, SHELLS, VIEWBOX, type NyuMood, type NyuShell } from "./svg.js";
 
 /** Draws its children twice: first as the white die-cut edge, then as they are. */
 export function Sticker({ edge, children }: { edge: number; children: ReactNode }) {

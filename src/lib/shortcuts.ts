@@ -1,4 +1,4 @@
-import type { Platform } from "../components/TitleBar";
+import type { Platform } from "../components/TitleBar.js";
 
 /**
  * Shortcuts are written once, as Tauri accelerators (`CmdOrCtrl+Shift+S`), and shown the way the

@@ -37,6 +37,11 @@ meaning, not a Lucide name, so a bin never means "close" in one app and a
 cross never means "delete" in another. A test makes sure each glyph is used
 for one meaning only.
 
+The groups: navigation and structure, actions, files and editing (file,
+folder, save, print, compare, replace, outline, bookmark, notebook, restore
+from the bin, sidebar show/hide; from UwUNotes), state and feedback, settings
+pages, and the suite icons below.
+
 Need a new meaning? Add it to `ICONS` (`src/icons/vocabulary.ts`) in this
 package, not in the app.
 

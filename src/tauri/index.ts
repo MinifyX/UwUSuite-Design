@@ -1,6 +1,6 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useEffect, useMemo, useState } from "react";
-import type { WindowControls } from "../components/TitleBar";
+import type { WindowControls } from "../components/TitleBar.js";
 
 /**
  * Window controls for <TitleBar> in a Tauri 2 app. Needs the capabilities
@@ -43,7 +43,7 @@ export function useTauriWindow(): WindowControls {
   );
 }
 
-export { hideWindowOnClose, MAC_QUIT_EVENT, onMacQuit } from "./mac-lifecycle";
-export type { MacQuitOptions } from "./mac-lifecycle";
-export { MAC_MENU_LABELS, macMenuSpec, setMacMenu } from "./mac-menu";
-export type { MacMenuEntry, MacMenuOptions, MacSubmenuSpec } from "./mac-menu";
+export { hideWindowOnClose, MAC_QUIT_EVENT, onMacQuit } from "./mac-lifecycle.js";
+export type { MacQuitOptions } from "./mac-lifecycle.js";
+export { MAC_MENU_LABELS, macMenuSpec, setMacMenu } from "./mac-menu.js";
+export type { MacMenuEntry, MacMenuOptions, MacSubmenuSpec } from "./mac-menu.js";

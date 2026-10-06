@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { Nyu, type NyuShell } from "../nyu/Nyu";
+import { Nyu, type NyuShell } from "../nyu/Nyu.js";
 
 export interface WordmarkProps {
   /** The part after "UwU": "Mail", "Mirror", "Notes", "Suite". */

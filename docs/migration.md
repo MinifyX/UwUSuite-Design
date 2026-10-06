@@ -6,7 +6,7 @@ with no release of its own: the change ships with the app's next release.
 ## Steps for every app
 
 1. **Add the dependency** in the app's `package.json`:
-   `"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.2.0/uwusuite-design-1.2.0.tgz"`.
+   `"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.3.0/uwusuite-design-1.3.0.tgz"`.
 2. **CSS:**
    - Replace the app's `tokens.css`, `fonts.css`, the base layer, the Nyu edge
      and blink CSS and the keyframes with

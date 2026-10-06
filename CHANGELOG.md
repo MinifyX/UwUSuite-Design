@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.3.0
+
+- **Fix: the package loads in plain Node.** The JavaScript in `dist/` had
+  relative imports without an extension (`./components/Button`), which Vite
+  resolves and Node does not, so apps' vitest runs needed
+  `server.deps.inline`. Every relative import now carries `.js`, and
+  `pnpm build` imports each entry point (`.`, `./tauri`, `./nyu-svg`) with
+  Node and fails if one does not load.
+- **Icons:** `ICONS` gets the meanings of an editor, from UwUNotes: `file`,
+  `newFile`, `folder`, `folderOpen`, `newFolder`, `save`, `saveAll`,
+  `closeFile`, `closeAll`, `print`, `compare`, `replace`, `collapseAll`,
+  `gitBranch`, `sidebarHide`, `sidebarShow`, `preview`, `outline`,
+  `bookmark`, `notebook`, `restore`.
+- Reminder for apps on 1.1: since 1.2.0 `uwu-icons` sets the Dock icon into
+  Apple's grid itself, so an app's own macOS icon step can go.
+
 ## 1.2.0
 
 macOS: the apps now get what a Mac app needs (docs/macos.md).

@@ -1,8 +1,8 @@
 import { clsx } from "clsx";
 import { X } from "lucide-react";
 import { useEffect, useRef, type ReactNode } from "react";
-import { useLabels } from "../lib/labels";
-import { IconButton } from "./Button";
+import { useLabels } from "../lib/labels.js";
+import { IconButton } from "./Button.js";
 
 export interface DialogProps {
   open: boolean;

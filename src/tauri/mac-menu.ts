@@ -5,7 +5,7 @@ import type {
   PredefinedMenuItemOptions,
 } from "@tauri-apps/api/menu";
 import { Menu, Submenu } from "@tauri-apps/api/menu";
-import { detectPlatform } from "../components/TitleBar";
+import { detectPlatform } from "../components/TitleBar.js";
 
 /**
  * The suite's macOS menu bar (docs/macos.md). Every app gets the same skeleton in Apple's order:

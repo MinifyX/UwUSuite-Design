@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import type { ReactNode } from "react";
-import { useLabels } from "../lib/labels";
+import { useLabels } from "../lib/labels.js";
 
 /** The desktop platform, for chrome decisions: title bar, menus, shortcut text. */
 export type Platform = "windows" | "linux" | "mac";

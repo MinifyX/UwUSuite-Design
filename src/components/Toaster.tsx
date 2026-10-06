@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import { CircleAlert, CircleCheck, Info, X } from "lucide-react";
 import { useSyncExternalStore, type ReactNode } from "react";
-import { useLabels } from "../lib/labels";
+import { useLabels } from "../lib/labels.js";
 
 export type ToastTone = "info" | "success" | "error";
 
