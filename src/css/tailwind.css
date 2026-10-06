@@ -4,8 +4,8 @@
  *   @import "tailwindcss";
  *   @import "@uwusuite/design/tailwind.css";
  *
- * It brings tokens, fonts, base styles, motion, Nyu and the title bar, maps every token to a
- * Tailwind name (bg-surface, text-muted, border-line, rounded-control, shadow-float, animate-pop…),
+ * It brings tokens, fonts, base styles, motion, Nyu, the title bar and the mobile patterns, maps
+ * every token to a Tailwind name (bg-surface, text-muted, border-line, rounded-control, shadow-float, animate-pop…),
  * makes dark: follow <html data-theme="dark"> and lets Tailwind see the package's components.
  */
 @import "./tokens.css";
@@ -14,6 +14,7 @@
 @import "./motion.css";
 @import "./nyu.css";
 @import "./titlebar.css";
+@import "./mobile.css";
 
 @source "../";
 
@@ -88,6 +89,17 @@
 
   --color-plum: var(--uwu-plum);
   --color-plum-soft: var(--uwu-plum-soft);
+
+  --color-glass: var(--uwu-glass);
+  --color-glass-edge: var(--uwu-glass-edge);
+  --color-glass-highlight: var(--uwu-glass-highlight);
+  --color-glass-shade: var(--uwu-glass-shade);
+  --color-glass-selected: var(--uwu-glass-selected);
+  --color-m3-surface: var(--uwu-m3-surface);
+  --color-m3-container: var(--uwu-m3-container);
+  --color-m3-container-high: var(--uwu-m3-container-high);
+  --color-m3-indicator: var(--uwu-m3-indicator);
+  --color-scrim: var(--uwu-scrim);
 
   --shadow-float: var(--uwu-shadow-float);
   --shadow-primary: var(--uwu-shadow-primary);

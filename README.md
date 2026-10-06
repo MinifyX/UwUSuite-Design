@@ -22,13 +22,14 @@ the high-contrast theme from UwULock.
 | Tone of voice, copy, i18n                                             |                                          | [tone](docs/tone.md)                                       |
 | Names, wordmark, licence                                              |                                          | [brand](docs/brand.md)                                     |
 | macOS: menu bar, shortcuts, closing and quitting, Dock and tray icons | `src/tauri/`, `crates/uwu-macos`, `bin/` | [macos](docs/macos.md)                                     |
+| iPhone, iPad, Android: Liquid Glass, Material 3, gestures, haptics    | `src/mobile/`, `mobile.css`              | [mobile](docs/mobile.md)                                   |
 | Moving an app onto the package                                        |                                          | [migration](docs/migration.md)                             |
 
 ## Use it
 
 ```jsonc
 // package.json: the release tarball, no registry needed
-"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.6.2/uwusuite-design-1.6.2.tgz"
+"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.7.0/uwusuite-design-1.7.0.tgz"
 ```
 
 ```css

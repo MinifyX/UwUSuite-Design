@@ -12,6 +12,17 @@ export interface Labels {
   restore: string;
   settings: string;
   loading: string;
+  back: string;
+  search: string;
+  closeSearch: string;
+  clearSearch: string;
+  pullToRefresh: string;
+  releaseToRefresh: string;
+  refreshing: string;
+  decrease: string;
+  increase: string;
+  sidebar: string;
+  actions: string;
 }
 
 export const LABELS_DE: Labels = {
@@ -21,6 +32,17 @@ export const LABELS_DE: Labels = {
   restore: "Verkleinern",
   settings: "Einstellungen",
   loading: "Lädt …",
+  back: "Zurück",
+  search: "Suchen",
+  closeSearch: "Suche schließen",
+  clearSearch: "Suche leeren",
+  pullToRefresh: "Zum Aktualisieren ziehen",
+  releaseToRefresh: "Loslassen zum Aktualisieren",
+  refreshing: "Wird aktualisiert …",
+  decrease: "Weniger",
+  increase: "Mehr",
+  sidebar: "Seitenleiste",
+  actions: "Aktionen",
 };
 
 export const LABELS_EN: Labels = {
@@ -30,6 +52,17 @@ export const LABELS_EN: Labels = {
   restore: "Restore",
   settings: "Settings",
   loading: "Loading…",
+  back: "Back",
+  search: "Search",
+  closeSearch: "Close search",
+  clearSearch: "Clear search",
+  pullToRefresh: "Pull to refresh",
+  releaseToRefresh: "Release to refresh",
+  refreshing: "Refreshing…",
+  decrease: "Decrease",
+  increase: "Increase",
+  sidebar: "Sidebar",
+  actions: "Actions",
 };
 
 const LabelsContext = createContext<Labels>(LABELS_DE);

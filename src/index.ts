@@ -30,6 +30,9 @@ export type { WordmarkProps } from "./components/Wordmark.js";
 export { TitleBar, TitleBarAction, detectPlatform } from "./components/TitleBar.js";
 export type { Platform, TitleBarProps, WindowControls } from "./components/TitleBar.js";
 
+// Mobile: iPhone, iPad, Android (docs/mobile.md)
+export * from "./mobile/index.js";
+
 // Icons
 export { Icon, ICON_SIZES } from "./icons/Icon.js";
 export type { IconProps, IconSize } from "./icons/Icon.js";
@@ -58,6 +61,7 @@ export {
 export type { FontChoice } from "./lib/fonts.js";
 export { LABELS_DE, LABELS_EN, UwuLabels, useLabels } from "./lib/labels.js";
 export type { Labels } from "./lib/labels.js";
-export { macShortcut, shortcutText, withShortcut } from "./lib/shortcuts.js";
+export { macShortcut, matchesAccelerator, shortcutText, withShortcut } from "./lib/shortcuts.js";
+export type { KeyChord } from "./lib/shortcuts.js";
 export { keepKaomojiTogether } from "./lib/text.js";
 export { cx } from "./lib/cx.js";

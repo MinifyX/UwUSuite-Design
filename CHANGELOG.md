@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.7.0
+
+- **Mobile patterns** for the suite's iPhone, iPad and Android apps, from the
+  approved UwULock prototype ([mobile.md](docs/mobile.md)):
+  - Tokens: Liquid Glass (`--uwu-glass*`), Material 3 surface tones from the
+    suite pink (`--uwu-m3-*`, contrast-tested) and `--uwu-scrim`, in light,
+    dark and high contrast. Glass turns solid without `backdrop-filter`, with
+    reduced transparency and in high contrast.
+  - `mobile.css` (part of `tailwind.css` and `plain.css`, also
+    `@uwusuite/design/mobile.css`), in the `components` layer.
+  - Components: `MobileShell`, `TabBar` (iOS glass capsule with search button
+    and a search field above the keyboard, Android M3 navigation bar, iPad
+    floating top bar), `Screen`/`NavBar`/`NavButton` with collapsing large
+    titles, `GroupedList`/`ListSection`/`ListRow` with tap to copy,
+    `SwipeRow`, `ContextMenu`, `PullToRefresh`, `Sheet` (detents, M3 bottom
+    sheet, iPad form sheet), `FullScreenDialog`, `Stepper`, `MobileToaster`
+    (iOS toast, Android snackbar), `Fab`, `SearchBar`, `SplitView` with
+    `SidebarRow`.
+  - Hooks: `useDeviceKind`, `useEdgeBack`, `usePredictiveBack`,
+    `useLongPress`, `useHaptics`/`haptic` (Tauri haptics plugin, else
+    `navigator.vibrate` on Android), `useKeyboardShortcut` (iPad ⌘F, ⌘N),
+    `useKeyboardInset`. The gesture thresholds are pure functions in
+    `gestures.ts`.
+  - Styleguide: a Mobil section with iPhone, Android and iPad frames.
+- **Toaster:** a toast takes a `detail` line.
+- **Labels:** words for the mobile components (`back`, `search`, …).
+- `matchesAccelerator()` matches a key press against a Tauri accelerator.
+
 ## 1.6.2
 
 - **Dialog:** a dialog opened from inside another closes on its own on Escape;

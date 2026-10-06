@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { block, ROOT } from "./tokens";
@@ -39,7 +39,7 @@ describe("tokens.css", () => {
 describe("css files", () => {
   it.each(["tailwind.css", "plain.css"])("%s imports every part", (file) => {
     const css = readFileSync(join(ROOT, "src/css", file), "utf8");
-    for (const part of ["tokens", "fonts", "base", "motion", "nyu", "titlebar"])
+    for (const part of ["tokens", "fonts", "base", "motion", "nyu", "titlebar", "mobile"])
       expect(css).toContain(`"./${part}.css"`);
   });
 
@@ -60,5 +60,11 @@ describe("css files", () => {
       const source = readFileSync(join(ROOT, "src/components", `${file}.tsx`), "utf8");
       expect(source, file).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
     }
+  });
+
+  it("uses no raw hex colours in the mobile components and their CSS", () => {
+    const files = readdirSync(join(ROOT, "src/mobile")).map((file) => join(ROOT, "src/mobile", file));
+    for (const file of [...files, join(ROOT, "src/css/mobile.css")])
+      expect(readFileSync(file, "utf8"), file).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
   });
 });

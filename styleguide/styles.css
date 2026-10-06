@@ -14,3 +14,109 @@
     scroll-behavior: auto;
   }
 }
+
+/* Device frames for the mobile section: the safe areas a real device reports through env(). */
+.sg-device {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  border-radius: 54px;
+  box-shadow:
+    0 0 0 11px #121014,
+    0 0 0 12.5px #4a434f,
+    0 30px 70px -10px rgb(40 10 30 / 0.35);
+  margin: 13px;
+  font-family: var(--font-ui);
+}
+
+.sg-iphone {
+  width: 393px;
+  height: 852px;
+  --uwu-safe-top: 54px;
+  --uwu-safe-bottom: 34px;
+}
+
+/* The Dynamic Island and the home indicator. */
+.sg-iphone::before {
+  content: "";
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  z-index: 100;
+  width: 124px;
+  height: 36px;
+  border-radius: 20px;
+  background: #000;
+  translate: -50% 0;
+}
+
+.sg-device::after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  z-index: 100;
+  width: 138px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--uwu-ink);
+  opacity: 0.8;
+  pointer-events: none;
+  translate: -50% 0;
+}
+
+.sg-android {
+  width: 412px;
+  height: 860px;
+  border-radius: 44px;
+  --uwu-safe-top: 40px;
+  --uwu-safe-bottom: 20px;
+}
+
+.sg-android::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  z-index: 100;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #000;
+  translate: -50% 0;
+}
+
+.sg-android::after {
+  width: 108px;
+  height: 4px;
+}
+
+.sg-ipad {
+  border-radius: 38px;
+  box-shadow:
+    0 0 0 16px #121014,
+    0 0 0 17.5px #4a434f,
+    0 30px 70px -10px rgb(40 10 30 / 0.35);
+  margin: 18px;
+  --uwu-safe-top: 24px;
+  --uwu-safe-bottom: 20px;
+}
+
+.sg-ipad::after {
+  width: 320px;
+}
+
+/* The iPad at 72 %, so it fits the page; its layout still sees the real size. */
+.sg-ipad {
+  zoom: 0.72;
+}
+
+.sg-ipad-landscape {
+  width: 1180px;
+  height: 820px;
+}
+
+.sg-ipad-portrait {
+  width: 820px;
+  height: 1180px;
+}

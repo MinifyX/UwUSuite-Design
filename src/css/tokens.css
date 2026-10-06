@@ -154,6 +154,22 @@
   --uwu-titlebar-height: 38px;
   --uwu-titlebar-mac-inset: 78px;
 
+  /* Mobile (docs/mobile.md). iOS 26 Liquid Glass: a translucent fill over a blurred, saturated
+     backdrop, a bright top edge and a soft shade. Never carries body text on its own. */
+  --uwu-glass: rgb(255 255 255 / 0.56);
+  --uwu-glass-edge: rgb(255 255 255 / 0.8);
+  --uwu-glass-highlight: rgb(255 255 255 / 0.95);
+  --uwu-glass-shade: rgb(70 20 50 / 0.16);
+  --uwu-glass-selected: rgb(28 20 32 / 0.075);
+  --uwu-glass-blur: 16px;
+  /* Android Material 3: surface tones derived from the suite pink (tone 98, 94, 92, 90). */
+  --uwu-m3-surface: #fff8fa;
+  --uwu-m3-container: #f9eef3;
+  --uwu-m3-container-high: #f4e6ec;
+  --uwu-m3-indicator: #ffd9e5;
+  /* What dims the app behind a sheet or a context menu. */
+  --uwu-scrim: rgb(25 10 20 / 0.3);
+
   color-scheme: light;
 }
 
@@ -207,6 +223,17 @@
 
   --uwu-backdrop: rgb(0 0 0 / 0.5);
 
+  --uwu-glass: rgb(44 36 48 / 0.52);
+  --uwu-glass-edge: rgb(255 255 255 / 0.13);
+  --uwu-glass-highlight: rgb(255 255 255 / 0.16);
+  --uwu-glass-shade: rgb(0 0 0 / 0.5);
+  --uwu-glass-selected: rgb(255 255 255 / 0.1);
+  --uwu-m3-surface: #191115;
+  --uwu-m3-container: #261c21;
+  --uwu-m3-container-high: #31252b;
+  --uwu-m3-indicator: #5c1f39;
+  --uwu-scrim: rgb(0 0 0 / 0.5);
+
   --uwu-shadow-float: 0 12px 32px rgb(0 0 0 / 0.45), 0 2px 8px rgb(0 0 0 / 0.3);
   --uwu-shadow-primary: 0 2px 10px rgb(255 127 172 / 0.2);
   --uwu-focus: 0 0 0 3px rgb(255 127 172 / 0.4);
@@ -252,6 +279,17 @@ html:root[data-contrast="high"] {
   --uwu-toast-danger: #ff9aa8;
   --uwu-account-pink: #8a0046;
   --uwu-focus: 0 0 0 3px #000000;
+
+  /* Glass turns solid with a real border; M3 tones become plain surfaces. */
+  --uwu-glass: #ffffff;
+  --uwu-glass-edge: #000000;
+  --uwu-glass-highlight: #ffffff;
+  --uwu-glass-shade: rgb(0 0 0 / 0);
+  --uwu-glass-selected: #ffe4ef;
+  --uwu-m3-surface: #ffffff;
+  --uwu-m3-container: #ffffff;
+  --uwu-m3-container-high: #eeeeee;
+  --uwu-m3-indicator: #ffe4ef;
 }
 
 html:root[data-contrast="high"][data-theme="dark"] {
@@ -287,4 +325,13 @@ html:root[data-contrast="high"][data-theme="dark"] {
   --uwu-toast-danger: #8a0017;
   --uwu-account-pink: #ffa6c9;
   --uwu-focus: 0 0 0 3px #ffffff;
+
+  --uwu-glass: #000000;
+  --uwu-glass-edge: #ffffff;
+  --uwu-glass-highlight: #000000;
+  --uwu-glass-selected: #4a0f2c;
+  --uwu-m3-surface: #000000;
+  --uwu-m3-container: #000000;
+  --uwu-m3-container-high: #1f1f1f;
+  --uwu-m3-indicator: #4a0f2c;
 }
