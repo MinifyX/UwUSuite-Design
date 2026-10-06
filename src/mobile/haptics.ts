@@ -40,6 +40,12 @@ export function hapticCommand(kind: HapticKind): [string, Record<string, unknown
 }
 
 let pluginMissing = false;
+let hapticsOn = true;
+
+/** The app's "Haptisches Feedback" setting; the components' own ticks follow it too. */
+export function setHapticsEnabled(enabled: boolean): void {
+  hapticsOn = enabled;
+}
 
 function vibrate(kind: HapticKind) {
   try {
@@ -51,6 +57,7 @@ function vibrate(kind: HapticKind) {
 
 /** One haptic tap. Fire and forget. */
 export function haptic(kind: HapticKind = "light"): void {
+  if (!hapticsOn) return;
   const invoke = pluginMissing ? null : tauriInvoke();
   if (!invoke) {
     vibrate(kind);

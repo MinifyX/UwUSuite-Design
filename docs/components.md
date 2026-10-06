@@ -76,7 +76,8 @@ default, `labels="en"` gives English, or pass your own.
     with a state dot, a title and a close button on hover.
   - Active tabs show a pink top inset (`inset 0 2px 0 var(--uwu-pink)`).
 - **Phone:**
-  - `phone:` means below 700 px.
+  - `phone:` means below 700 px. The iPhone, iPad and Android apps use the
+    mobile components instead; see [mobile.md](mobile.md).
   - Toasts move to the top and dialogs go full screen.
   - The sidebar slides in from the left (`animate-drawer`) and details from the
     right (`animate-screen-in`).

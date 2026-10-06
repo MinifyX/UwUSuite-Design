@@ -1,7 +1,7 @@
 export { currentDeviceKind, detectDeviceKind, platformOf, PHONE_MAX_WIDTH } from "./device.js";
 export type { DeviceKind, DeviceSignals, MobilePlatform } from "./device.js";
 export * from "./gestures.js";
-export { haptic, hapticCommand, useHaptics } from "./haptics.js";
+export { haptic, hapticCommand, setHapticsEnabled, useHaptics } from "./haptics.js";
 export type { HapticKind } from "./haptics.js";
 export {
   DeviceKindProvider,
