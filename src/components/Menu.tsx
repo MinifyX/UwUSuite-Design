@@ -12,6 +12,28 @@ export interface MenuItem {
   disabled?: boolean;
 }
 
+/** A labelled section: the items after it, up to the next heading, belong to it. */
+export interface MenuHeading {
+  heading: ReactNode;
+}
+
+export type MenuEntry = MenuItem | MenuHeading | "separator";
+
+interface MenuSection {
+  heading?: ReactNode;
+  entries: (MenuItem | "separator")[];
+}
+
+/** Splits the entries at their headings; what comes before the first heading has none. */
+function sections(items: MenuEntry[]): MenuSection[] {
+  const result: MenuSection[] = [{ entries: [] }];
+  for (const item of items) {
+    if (item !== "separator" && "heading" in item) result.push({ heading: item.heading, entries: [] });
+    else result[result.length - 1]!.entries.push(item);
+  }
+  return result.filter((section) => section.heading !== undefined || section.entries.length > 0);
+}
+
 export interface MenuProps {
   /** Renders the button that opens the menu; spread the props onto it. */
   trigger: (props: {
@@ -21,7 +43,8 @@ export interface MenuProps {
     "aria-expanded": boolean;
     "aria-controls": string;
   }) => ReactNode;
-  items: (MenuItem | "separator")[];
+  /** Items, `"separator"` lines and `{ heading }` entries that start a labelled section. */
+  items: MenuEntry[];
   align?: "start" | "end";
   /** Opens upwards, e.g. from a toolbar at the bottom. */
   side?: "below" | "above";
@@ -31,7 +54,10 @@ export interface MenuProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-/** A small popup list of actions. Closes on selection, Escape and clicks outside. */
+/**
+ * A small popup list of actions. Closes on selection, Escape and clicks outside. Long menus scroll
+ * (at most 520 px or three quarters of the window high).
+ */
 export function Menu({
   trigger,
   items,
@@ -104,36 +130,60 @@ export function Menu({
             }
           }}
           className={clsx(
-            "absolute z-[var(--uwu-z-menu)] flex w-max max-w-[min(360px,calc(100vw-48px))] min-w-[200px] animate-pop flex-col rounded-2xl border border-line bg-surface p-1.5 text-ink shadow-float",
+            "absolute z-[var(--uwu-z-menu)] flex max-h-[min(75vh,520px)] w-max max-w-[min(360px,calc(100vw-48px))] min-w-[200px] animate-pop flex-col overflow-y-auto overscroll-contain rounded-2xl border border-line bg-surface p-1.5 text-ink shadow-float",
             side === "above" ? "bottom-[calc(100%+6px)]" : "top-[calc(100%+6px)]",
             align === "end" ? "right-0" : "left-0",
           )}
         >
-          {items.map((item, index) =>
-            item === "separator" ? (
-              <hr key={index} role="separator" className="mx-2 my-1 border-hairline" />
+          {sections(items).map((section, sectionIndex) =>
+            section.heading === undefined ? (
+              <Entries key={sectionIndex} entries={section.entries} close={() => setOpen(false)} />
             ) : (
-              <button
-                key={index}
-                type="button"
-                role="menuitem"
-                disabled={item.disabled}
-                onClick={() => {
-                  setOpen(false);
-                  item.onSelect();
-                }}
-                className={clsx(
-                  "flex items-center gap-2.5 rounded-xl px-3 py-2 text-left text-meta font-medium break-words hover:bg-pink-tint/60 focus:bg-pink-tint/60 focus:outline-none disabled:opacity-50",
-                  item.danger && "text-danger-ink",
-                )}
+              <div
+                key={sectionIndex}
+                role="group"
+                aria-labelledby={`${id}-h${sectionIndex}`}
+                className={clsx("flex flex-col", sectionIndex > 0 && "mt-1 border-t border-hairline pt-1")}
               >
-                {item.icon && <Icon icon={item.icon} className={item.danger ? undefined : "text-muted"} />}
-                {item.label}
-              </button>
+                <p
+                  id={`${id}-h${sectionIndex}`}
+                  role="presentation"
+                  className="px-3 pt-1.5 pb-1 text-badge font-bold tracking-wide text-muted uppercase"
+                >
+                  {section.heading}
+                </p>
+                <Entries entries={section.entries} close={() => setOpen(false)} />
+              </div>
             ),
           )}
         </div>
       )}
     </div>
+  );
+}
+
+function Entries({ entries, close }: { entries: (MenuItem | "separator")[]; close: () => void }) {
+  return entries.map((item, index) =>
+    item === "separator" ? (
+      <hr key={index} role="separator" className="mx-2 my-1 shrink-0 border-hairline" />
+    ) : (
+      <button
+        key={index}
+        type="button"
+        role="menuitem"
+        disabled={item.disabled}
+        onClick={() => {
+          close();
+          item.onSelect();
+        }}
+        className={clsx(
+          "flex shrink-0 items-center gap-2.5 rounded-xl px-3 py-2 text-left text-meta font-medium break-words hover:bg-pink-tint/60 focus:bg-pink-tint/60 focus:outline-none disabled:opacity-50",
+          item.danger && "text-danger-ink",
+        )}
+      >
+        {item.icon && <Icon icon={item.icon} className={item.danger ? undefined : "text-muted"} />}
+        {item.label}
+      </button>
+    ),
   );
 }

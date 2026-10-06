@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.6.2
+
+- **Dialog:** a dialog opened from inside another closes on its own on Escape;
+  the one behind it stays open. React used to hand the `cancel` on to the outer
+  dialog too, so apps needed a wrapper for it.
+- **Menu:** `{ heading: "…" }` entries start a labelled section
+  (`role="group"`) up to the next heading. Long menus scroll, at most
+  `min(75vh, 520px)` high; apps drop their own max-height.
+- **uwu-icons:** a mono symbol that is not square is centred in a square canvas
+  (with room for the thicker outlines) for `tray-template.png`, so apps no
+  longer need a hand-drawn `<app>-tray-template.svg` for it.
+
 ## 1.6.1
 
 - **Button:** a focused primary button shows the focus ring; its own

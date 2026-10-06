@@ -225,6 +225,23 @@ export function Components() {
               { label: "Löschen", icon: ICONS.delete, danger: true, onSelect: () => setDialog("warning") },
             ]}
           />
+          <Menu
+            trigger={({ toggle, ...props }) => (
+              <Button icon={ICONS.ai} onClick={toggle} {...props}>
+                Menü mit Abschnitten
+              </Button>
+            )}
+            items={[
+              { label: "Entwurf schreiben", icon: ICONS.ai, onSelect: () => {} },
+              { heading: "Umschreiben" },
+              ...["Kürzer", "Länger", "Freundlicher", "Förmlicher", "Lockerer", "Einfacher", "Übersetzen"].map(
+                (label) => ({ label, icon: ICONS.rewrite, onSelect: () => {} }),
+              ),
+              { label: "Korrekturlesen", icon: ICONS.proofread, onSelect: () => {} },
+              { heading: "Mehr" },
+              { label: "Anpassen …", icon: ICONS.adjust, onSelect: () => {} },
+            ]}
+          />
           <Button onClick={() => setDialog("form")}>Dialog</Button>
           <Button onClick={() => setDialog("three")}>Dialog mit drei Buttons</Button>
           <Button

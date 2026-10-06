@@ -12,7 +12,7 @@ export type { PillProps, TagTone } from "./components/Pill.js";
 export { Dialog } from "./components/Dialog.js";
 export type { DialogProps } from "./components/Dialog.js";
 export { Menu } from "./components/Menu.js";
-export type { MenuItem, MenuProps } from "./components/Menu.js";
+export type { MenuEntry, MenuHeading, MenuItem, MenuProps } from "./components/Menu.js";
 export { Toaster, createToasts } from "./components/Toaster.js";
 export type { Toast, ToastStore, ToastTone } from "./components/Toaster.js";
 export { Tooltip } from "./components/Tooltip.js";

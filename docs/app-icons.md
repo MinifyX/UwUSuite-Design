@@ -50,6 +50,9 @@ pnpm exec uwu-icons --brand ../../brand --name uwumirror --tray --mobile
 | small cut                | the ICO's 16 and 24 px frames, and with `--tray` `tray.png` (32 px)                                    |
 | mono symbol              | with `--tray` `tray-template.png` (36 px), the macOS menu bar template; `<app>-tray-template.svg` wins |
 
+A mono symbol drawn on a canvas that is not square (wider or taller) is centred in a square one for the
+template, with room for the thicker outlines, so it needs no hand-drawn tray template.
+
 A missing taskbar or small file falls back to the next bigger one, with a
 warning. Why the Dock icon and the menu bar icon are made differently on a Mac,
 and the rules for a Liquid Glass icon on macOS 26: [macos.md](macos.md). Commit the generated files. CI does not regenerate them.

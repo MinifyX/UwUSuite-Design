@@ -266,6 +266,17 @@ describe("mac icon shapes", () => {
     expect(template).toContain(`stroke-width="${9 * TRAY_STROKE}"`);
     expect(template).toMatch(/^<svg color="#000"/);
   });
+
+  it("centres a symbol that is not square in a square canvas for the menu bar", () => {
+    const mono =
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="56 40 400 388" width="400" height="388"><g stroke-width="18"><path d="M0 0"/></g></svg>';
+    const template: string = trayTemplateSvg(mono);
+    // 400 wide plus 4.5 on each side for the outlines that got 9 thicker, the height centred.
+    expect(template).toContain('viewBox="51.5 29.5 409 409" width="409" height="409"');
+    expect(template).toContain('stroke-width="27"');
+    const square = '<svg viewBox="0 0 256 256" width="256" height="256"><g stroke-width="9"/></svg>';
+    expect(trayTemplateSvg(square)).toContain('viewBox="0 0 256 256" width="256" height="256"');
+  });
 });
 
 describe("uwu-macos crate", () => {

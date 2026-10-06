@@ -24,7 +24,10 @@ export interface DialogProps {
   held?: boolean;
 }
 
-/** Modal built on <dialog>: focus trapping, Escape and the backdrop come from the browser. */
+/**
+ * Modal built on <dialog>: focus trapping, Escape and the backdrop come from the browser. Dialogs
+ * opened from inside another stack: Escape closes only the innermost one.
+ */
 export function Dialog({
   open,
   onClose,
@@ -52,6 +55,10 @@ export function Dialog({
     <dialog
       ref={ref}
       onCancel={(event) => {
+        // The browser fires `cancel` only at the topmost modal, but React hands it on up the
+        // component tree, so a dialog opened from inside another would close both. Only the
+        // dialog it was fired at answers it.
+        if (event.target !== ref.current) return;
         event.preventDefault();
         onClose();
       }}

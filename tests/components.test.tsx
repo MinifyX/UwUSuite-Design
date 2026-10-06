@@ -4,6 +4,7 @@ import { useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Avatar, avatarColor, initials } from "../src/components/Avatar";
 import { Button, IconButton } from "../src/components/Button";
+import { Dialog } from "../src/components/Dialog";
 import { Field, TextInput } from "../src/components/Field";
 import { Menu } from "../src/components/Menu";
 import { Badge } from "../src/components/Pill";
@@ -181,6 +182,58 @@ describe("Menu", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Löschen" }));
     expect(onSelect).toHaveBeenCalledOnce();
     expect(screen.queryByRole("menu")).toBeNull();
+  });
+  it("labels its sections with headings and scrolls when long", () => {
+    render(
+      <Menu
+        open
+        trigger={(props) => (
+          <button type="button" onClick={props.toggle}>
+            KI
+          </button>
+        )}
+        items={[
+          { label: "Schreiben", onSelect: () => {} },
+          { heading: "Umschreiben" },
+          { label: "Kürzer", onSelect: () => {} },
+          { label: "Freundlicher", onSelect: () => {} },
+          { heading: "Mehr" },
+          { label: "Anpassen", onSelect: () => {} },
+        ]}
+      />,
+    );
+    const groups = screen.getAllByRole("group");
+    expect(
+      groups.map(
+        (group) =>
+          group.getAttribute("aria-labelledby") &&
+          document.getElementById(group.getAttribute("aria-labelledby")!)?.textContent,
+      ),
+    ).toEqual(["Umschreiben", "Mehr"]);
+    expect(screen.getByRole("group", { name: "Umschreiben" }).querySelectorAll("[role=menuitem]")).toHaveLength(2);
+    expect(screen.getAllByRole("menuitem")).toHaveLength(4);
+    expect(screen.getByRole("menu").className).toContain("overflow-y-auto");
+    expect(screen.getByRole("menu").className).toContain("max-h-");
+  });
+});
+
+describe("Dialog", () => {
+  it("closes only the innermost dialog on Escape when one is opened from another", () => {
+    const outer = vi.fn();
+    const inner = vi.fn();
+    render(
+      <Dialog open onClose={outer} title="Außen">
+        <Dialog open onClose={inner} title="Innen">
+          <p>Sicher?</p>
+        </Dialog>
+      </Dialog>,
+    );
+    const innerDialog = screen.getByText("Sicher?").closest("dialog")!;
+    fireEvent(innerDialog, new Event("cancel", { cancelable: true }));
+    expect(inner).toHaveBeenCalledOnce();
+    expect(outer).not.toHaveBeenCalled();
+    fireEvent(innerDialog.parentElement!.closest("dialog")!, new Event("cancel", { cancelable: true }));
+    expect(outer).toHaveBeenCalledOnce();
   });
 });
 

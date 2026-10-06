@@ -81,11 +81,40 @@ export const TRAY_STROKE = 1.5;
  * The macOS menu bar template from an app's mono symbol (`<app>-symbol-mono.svg`, outlines in
  * `currentColor`): black on transparent, outlines 1.5 times as thick, because at 18 points the
  * symbol's own stroke is barely more than a pixel. macOS tints the template for light and dark
- * menu bars. A hand-drawn `<app>-tray-template.svg` wins when it exists.
+ * menu bars. A symbol that is not square is centred in a square canvas. A hand-drawn
+ * `<app>-tray-template.svg` wins when it exists.
  */
 export function trayTemplateSvg(monoSvg, weight = TRAY_STROKE) {
   if (!/<svg\b/.test(monoSvg)) throw new Error("The mono symbol is not an SVG.");
-  return monoSvg
-    .replace(/stroke-width="([\d.]+)"/g, (_, width) => `stroke-width="${+(Number(width) * weight).toFixed(2)}"`)
-    .replace(/<svg\b/, '<svg color="#000"');
+  const thick = monoSvg.replace(
+    /stroke-width="([\d.]+)"/g,
+    (_, width) => `stroke-width="${+(Number(width) * weight).toFixed(2)}"`,
+  );
+  return squareSymbol(thick, monoSvg, weight).replace(/<svg\b/, '<svg color="#000"');
+}
+
+/**
+ * The icon renderer wants a square: a mono symbol drawn on a wider or taller canvas is centred in
+ * a square viewBox, with room for the thicker outlines at its edges. Square symbols stay as drawn.
+ */
+function squareSymbol(svg, original, weight) {
+  const open = svg.match(/<svg\b[^>]*>/)?.[0];
+  const box = open
+    ?.match(/viewBox="([^"]+)"/)?.[1]
+    .trim()
+    .split(/[\s,]+/)
+    .map(Number);
+  if (!open || !box || box.length !== 4 || box.some(Number.isNaN)) return svg;
+  const [x, y, width, height] = box;
+  if (width === height) return svg;
+  const widest = Math.max(0, ...[...original.matchAll(/stroke-width="([\d.]+)"/g)].map((m) => Number(m[1])));
+  const room = (widest * (weight - 1)) / 2;
+  const side = Math.max(width, height) + 2 * room;
+  const round = (n) => +n.toFixed(2);
+  const viewBox = [x - (side - width) / 2, y - (side - height) / 2, side, side].map(round).join(" ");
+  const squared = open
+    .replace(/viewBox="[^"]*"/, `viewBox="${viewBox}"`)
+    .replace(/\swidth="[^"]*"/, ` width="${round(side)}"`)
+    .replace(/\sheight="[^"]*"/, ` height="${round(side)}"`);
+  return svg.replace(open, squared);
 }
