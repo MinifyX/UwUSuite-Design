@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.4.0
+
+- **Icons:** `ICONS` gets the meanings UwULock needs to move onto the
+  package, all from Lucide (no new suite icons):
+  - vault and secrets: `vault`, `website`, `card`, `identity`, `note`,
+    `sshKey`, `wifi`, `passkey`, `securityKey`, `fingerprint`,
+    `masterPassword`, `oneTimeCode`, `generate`, `maskedAddress`, `inbox`,
+    `travelMode`, `securityCheck`, `review`, `reminder`, `organization`,
+    `collection`, `qrCode`, `import`, `image`, `moveUp`, `moveDown`;
+  - remote access: `terminal`, `computer`, `network`;
+  - installers and media: `sound`, `soundOff`.
+- docs/icons.md explains the new meanings and where they differ from close
+  neighbours (`secret` vs `sshKey`, `locked` vs `masterPassword`,
+  `notifications` vs `reminder`).
+
 ## 1.3.0
 
 - **Fix: the package loads in plain Node.** The JavaScript in `dist/` had

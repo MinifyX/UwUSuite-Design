@@ -40,7 +40,24 @@ for one meaning only.
 The groups: navigation and structure, actions, files and editing (file,
 folder, save, print, compare, replace, outline, bookmark, notebook, restore
 from the bin, sidebar show/hide; from UwUNotes), state and feedback, settings
-pages, and the suite icons below.
+pages (with sound on/off), vault and secrets, remote access, and the suite
+icons below.
+
+Vault and secrets (from UwULock): `vault` (all items), item kinds `website`,
+`card`, `identity`, `note`, `sshKey`, `wifi`; `passkey` (the person with a
+key), `securityKey` (a hardware key), `fingerprint` (host keys, known hosts),
+`masterPassword` (asks for the master password again; `locked` stays the
+state of a locked vault), `oneTimeCode` (TOTP), `generate` (the dice of a
+generator), `maskedAddress`, `inbox` (file requests, incoming uploads),
+`travelMode`, `securityCheck` (password health), `review` (go through a list
+one by one), `reminder` (a due date the user set; `notifications` stays the
+app's notifications), `organization`, `collection`, `qrCode`, `import` (take
+something in as an item), `image`, `moveUp`/`moveDown` (reorder). Remote
+access: `terminal` (SSH, snippets), `computer` (a desktop host, RDP),
+`network` (the local network, a device on it).
+
+`secret` (the round key) is a password or a secret value. A key that is a
+file or a format, like an SSH key, is `sshKey`.
 
 Need a new meaning? Add it to `ICONS` (`src/icons/vocabulary.ts`) in this
 package, not in the app.
