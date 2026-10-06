@@ -40,7 +40,7 @@ for one meaning only.
 The groups: navigation and structure, actions, files and editing (file,
 folder, save, print, compare, replace, outline, bookmark, notebook, restore
 from the bin, sidebar show/hide; from UwUNotes), state and feedback, settings
-pages (with sound on/off), vault and secrets, remote access, and the suite
+pages (with sound on/off), vault and secrets, remote access, sessions, mail, calendar and contacts, and the suite
 icons below.
 
 Vault and secrets (from UwULock): `vault` (all items), item kinds `website`,
@@ -68,6 +68,41 @@ keys, like Ctrl+Alt+Del), `fit` (fit a remote desktop into the window;
 transfer), `export` (into a file; the counterpart of `import`), `signIn`
 (the counterpart of `signOut`) and `work` (the work space; `home` is also the
 private space and a home folder).
+
+Mail, calendar and contacts (from UwUMail): `mail` (an e-mail, an address,
+the mail section), `compose` (write a new mail, continue a draft), `reply`,
+`replyAll`, `forward`, `drafts`, `allMailboxes` (the unified view), `unread`
+(the read state: one icon for "mark read" and "mark unread", the label says
+which way, like a toggle), `move` (into a folder), `label` (put a label on)
+and `labels` (labels as a whole: settings, grouping, suggestions), `spam`,
+`notSpam`, `spamCheck` (is this spam? also the "suspicious" verdict),
+`block` (a sender or a domain), `attachment`, `signature`, `sendLater`,
+`imagesBlocked` (remote images held back), `redirect` (a link that goes via
+another address, Safe Links), `quote`, `rules` (mail rules), `select` and
+`selectAll`, `automatic` (set by itself: rule labels, push mail), `offline`,
+`verified` (the sender passed SPF/DKIM), `score` (a spam filter score).
+Writing: `bold`, `italic`, `bulletList`, `addImage`, `insert` (put text into
+the draft). The assistant: `summary`, `rewrite` (a style preset), `adjust`,
+`proofread`, `localModel` (a model on this computer), `experimental`; `ai`
+stays the sparkles. Calendar: `calendar`, `agenda`, `addEvent`, `findEvent`
+(dates in a mail), `invitation`, `removeEvent`, `time` (when: a date and
+time, a time zone), `repeat`, `location`, `description`, `videoCall`,
+`comment`, `maybe` (neither yes nor no: a tentative answer). Contacts:
+`contacts` (the contacts section, an address book), `contact` (one person's
+card), `addContact`, `people` (several people: attendees, shared with, a
+shared mailbox), `profile` (your own name and picture; `account` stays the
+account), `phone`, `birthday`, `anniversary`, `celebration`, `camera`. Kinds
+of files: `document`, `imageFile`, `codeFile`, `spreadsheet`, `audioFile`,
+`videoFile`, `archiveFile` (`file` stays any other file). App settings:
+`appearance`, `addons`, `layout`, `device` (this phone or computer, as
+opposed to `server`), `loading` (a spinner that turns), `zoomIn`, `zoomOut`,
+`mixed` (a check box where some are checked).
+
+Close neighbours: `pending` (the clock) is waiting for something, `time` is
+a point in time, `sendLater` is a mail that waits for its time, `history` is
+the past ("first seen"). `share` is the action, `people` who it is shared
+with. `delete` is also "empty the bin". `warning` covers security warnings
+(an unconfirmed sender, a dangerous attachment); `spam` is only spam.
 
 `secret` (the round key) is a password or a secret value. A key that is a
 file or a format, like an SSH key, is `sshKey`.

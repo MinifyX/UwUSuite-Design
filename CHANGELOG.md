@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.6.0
+
+- **Icons:** `ICONS` gets the meanings UwUMail-Client needs to move onto the
+  package (77 new, all Lucide glyphs):
+  - mail: `mail`, `compose`, `reply`, `replyAll`, `forward`, `drafts`,
+    `allMailboxes`, `unread`, `move`, `label`, `labels`, `spam`, `notSpam`,
+    `spamCheck`, `block`, `attachment`, `signature`, `sendLater`,
+    `imagesBlocked`, `redirect`, `quote`, `rules`, `select`, `selectAll`,
+    `automatic`, `offline`, `verified`, `score`;
+  - writing: `bold`, `italic`, `bulletList`, `addImage`, `insert`;
+  - assistant: `summary`, `rewrite`, `adjust`, `proofread`, `localModel`,
+    `experimental`;
+  - calendar: `calendar`, `agenda`, `addEvent`, `findEvent`, `invitation`,
+    `removeEvent`, `time`, `repeat`, `location`, `description`, `videoCall`,
+    `comment`, `maybe`;
+  - contacts: `contacts`, `contact`, `addContact`, `people`, `profile`,
+    `phone`, `birthday`, `anniversary`, `celebration`, `camera`;
+  - kinds of files: `document`, `imageFile`, `codeFile`, `spreadsheet`,
+    `audioFile`, `videoFile`, `archiveFile`;
+  - app settings: `appearance`, `addons`, `layout`, `device`, `loading`,
+    `zoomIn`, `zoomOut`, `mixed`.
+- docs/icons.md explains them and their close neighbours (`pending` vs
+  `time` vs `sendLater`, `share` vs `people`, `warning` vs `spam`).
+
 ## 1.5.0
 
 - **Icons:** `ICONS` gets the meanings UwUSSH and UwURDP need to move onto

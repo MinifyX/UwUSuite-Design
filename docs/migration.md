@@ -7,7 +7,7 @@ with no release of its own: the change ships with the app's next release.
 ## Steps for every app
 
 1. **Add the dependency** in the app's `package.json`:
-   `"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.5.0/uwusuite-design-1.5.0.tgz"`.
+   `"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.6.0/uwusuite-design-1.6.0.tgz"`.
    After `pnpm install`, check that the package's entry in `pnpm-lock.yaml`
    keeps `tarball: https://github.com/…` in its `resolution`. pnpm 11 can
    rewrite it as `integrity` only when the URL changes; then a fresh install
@@ -69,7 +69,7 @@ with no release of its own: the change ships with the app's next release.
 | App                          | Today                                                                   | Notable work                                                                                                                                                                                                      |
 | ---------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | UwUMirror                    | Manrope, own `Icon.tsx` (stroke 1.8), plain CSS, no Tailwind in desktop | Add Tailwind v4, move to UwU Sans, move CSS classes to components. The stage stays (`stage-*` tokens). Good pilot: small app, its TitleBar is the model                                                           |
-| UwUMail-Client               | UwU Sans + picker, lucide (stroke 2), Tailwind                          | Closest to the package. Stroke 2 → 1.8 through `Icon`. Toast tokens. The font source has moved here: delete `brand/fonts/uwu-sans` after the switch                                                               |
+| UwUMail-Client               | UwU Sans + picker, lucide (stroke 2), Tailwind                          | Closest to the package. Stroke 2 → 1.8 through `Icon`. Toast tokens. The font source has moved here: delete `brand/fonts/uwu-sans` after the switch. Its icon meanings are in `ICONS` since 1.6.0                 |
 | UwUMail-Webmail              | Same as the client                                                      | Same as the client. `branding.css` still overrides the pink tokens. Keep the mail frame font injection                                                                                                            |
 | UwUMail-Server web           | Manrope, Tailwind                                                       | Switch to UwU Sans. Card and PageHeader become package `Card` plus a local header                                                                                                                                 |
 | UwUNotes-Client              | Done: 0.7.0 on design 1.1, design 1.3.0 since PR #31                    | Keeps `code.css`, `--uwu-deep`, UwU Console and the Nyu notebook in the app. Its menu bar and quit guard (`menu.rs`, `quit.rs`) can move to `setMacMenu()` and `uwu-macos`                                        |
