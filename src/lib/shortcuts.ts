@@ -87,3 +87,44 @@ export function shortcutText(accelerator: string, platform: Platform, lang: "de"
 export function withShortcut(label: string, accelerator: string, platform: Platform, lang: "de" | "en" = "de") {
   return `${label} (${shortcutText(accelerator, platform, lang)})`;
 }
+
+/** The parts of a keyboard event an accelerator is matched against. */
+export interface KeyChord {
+  key: string;
+  code?: string;
+  metaKey: boolean;
+  ctrlKey: boolean;
+  altKey: boolean;
+  shiftKey: boolean;
+}
+
+/**
+ * Whether a key press is the accelerator. `CmdOrCtrl` is ⌘ on Apple devices (Mac, iPad with a
+ * keyboard) and Ctrl elsewhere; every other modifier must match exactly, so ⌘F is not ⇧⌘F. Letters
+ * match by `code` too, so a German or French layout still finds `KeyF`.
+ */
+export function matchesAccelerator(event: KeyChord, accelerator: string, apple: boolean): boolean {
+  const { modifiers, key } = split(accelerator);
+  const want = { meta: false, ctrl: false, alt: false, shift: false };
+  for (const part of modifiers) {
+    if (/^(?:cmdorctrl|commandorcontrol)$/i.test(part)) want[apple ? "meta" : "ctrl"] = true;
+    else if (/^(?:cmd|command|super|meta)$/i.test(part)) want.meta = true;
+    else if (/^(?:ctrl|control)$/i.test(part)) want.ctrl = true;
+    else if (/^(?:alt|option)$/i.test(part)) want.alt = true;
+    else if (/^shift$/i.test(part)) want.shift = true;
+  }
+  if (
+    event.metaKey !== want.meta ||
+    event.ctrlKey !== want.ctrl ||
+    event.altKey !== want.alt ||
+    event.shiftKey !== want.shift
+  )
+    return false;
+  const name = String(keyName(key));
+  if (event.key.toUpperCase() === name.toUpperCase() || event.key === key) return true;
+  return (
+    name.length === 1 &&
+    /[A-Z0-9]/i.test(name) &&
+    event.code === (/\d/.test(name) ? `Digit${name}` : `Key${name.toUpperCase()}`)
+  );
+}

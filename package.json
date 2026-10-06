@@ -45,6 +45,7 @@
     "./base.css": "./dist/css/base.css",
     "./nyu.css": "./dist/css/nyu.css",
     "./titlebar.css": "./dist/css/titlebar.css",
+    "./mobile.css": "./dist/css/mobile.css",
     "./fonts/*": "./fonts/*",
     "./brand/*": "./brand/*",
     "./package.json": "./package.json"

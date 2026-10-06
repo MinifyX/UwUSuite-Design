@@ -1,7 +1,7 @@
 /*
- * Everything without Tailwind: tokens, fonts, base, motion, Nyu and the title bar. For apps and
- * pages that write their own CSS against the --uwu-* tokens. The React components need
- * tailwind.css instead.
+ * Everything without Tailwind: tokens, fonts, base, motion, Nyu, the title bar and the mobile
+ * patterns. For apps and pages that write their own CSS against the --uwu-* tokens. The React
+ * components need tailwind.css instead.
  */
 @import "./tokens.css";
 @import "./fonts.css";
@@ -9,3 +9,4 @@
 @import "./motion.css";
 @import "./nyu.css";
 @import "./titlebar.css";
+@import "./mobile.css";

@@ -12,6 +12,8 @@ export interface Toast {
   action?: { label: string; run: () => void };
   /** Replaces the tone icon, e.g. the app's own symbol for "sent". */
   icon?: ReactNode;
+  /** A second, quieter line (the iOS toast shows it under the message). */
+  detail?: ReactNode;
 }
 
 type Listener = () => void;
@@ -41,6 +43,7 @@ export function createToasts({ infoMs = 5000, errorMs = 9000, max = 4 } = {}) {
       tone: options.tone ?? "info",
       action: options.action,
       icon: options.icon,
+      detail: options.detail,
     };
     const drop = Math.max(0, list.length - (max - 1));
     list.slice(0, drop).forEach((old) => clearTimeout(timers.get(old.id)));
@@ -94,7 +97,10 @@ export function Toaster({ store }: { store: ToastStore }) {
                 />
               )}
             </span>
-            <span className="flex-1">{item.message}</span>
+            <span className="flex-1">
+              {item.message}
+              {item.detail && <span className="block font-normal opacity-75">{item.detail}</span>}
+            </span>
             {item.action && (
               <button
                 type="button"

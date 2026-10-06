@@ -24,6 +24,12 @@ const TEXT: [string, string][] = [
   ["--uwu-stage-muted", "--uwu-stage"],
   ["--uwu-canvas", "--uwu-ink"], // tooltips
   ["--uwu-pink-solid", "--uwu-surface"], // the wordmark's "UwU", link-like text
+  // Android: Material 3 surface tones carry rows, the search bar, sheets and the navigation bar.
+  ...["--uwu-m3-surface", "--uwu-m3-container", "--uwu-m3-container-high"].flatMap((bg) =>
+    ["--uwu-ink", "--uwu-muted", "--uwu-pink-ink", "--uwu-danger-ink"].map((fg) => [fg, bg] as [string, string]),
+  ),
+  ["--uwu-pink-ink", "--uwu-m3-indicator"], // the active tab, the FAB, chosen chips
+  ["--uwu-ink", "--uwu-m3-indicator"],
   ...["pink", "violet", "sky", "mint", "amber", "coral"].map(
     (c) => [`--uwu-avatar-${c}-ink`, `--uwu-avatar-${c}`] as [string, string],
   ),
@@ -39,6 +45,9 @@ const MARKS: [string, string][] = [
   ["--uwu-ink", "--uwu-canvas"],
   // The brand pink only needs 3:1 on cards; on the canvas it is decoration (tokens.css).
   ["--uwu-pink", "--uwu-surface"],
+  // Android: the on switch, the selected tab icon and sliders on M3 containers.
+  ["--uwu-pink-solid", "--uwu-m3-container"],
+  ["--uwu-pink-solid", "--uwu-m3-container-high"],
 ];
 
 // High contrast promises 7:1 for text (WCAG AAA); everything else AA.
