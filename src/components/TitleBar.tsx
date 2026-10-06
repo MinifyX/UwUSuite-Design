@@ -22,6 +22,11 @@ export interface TitleBarProps {
   /** From useTauriWindow() (`@uwusuite/design/tauri`) or your own. */
   controls: WindowControls;
   /**
+   * false for windows that cannot be maximized (an installer, a fixed-size dialog): no maximize
+   * button, and a double-click on the bar does nothing. Default true.
+   */
+  maximizable?: boolean;
+  /**
    * "mac" renders nothing: on macOS the app keeps the native title bar and menu bar
    * (docs/window.md). Pass the result of detectPlatform().
    */
@@ -34,7 +39,15 @@ export interface TitleBarProps {
  * region in the middle, actions and the window controls on the right. Double-clicking the empty
  * bar maximizes, as everywhere on Windows. From UwUMirror.
  */
-export function TitleBar({ brand, children, actions, controls, platform = "windows", className }: TitleBarProps) {
+export function TitleBar({
+  brand,
+  children,
+  actions,
+  controls,
+  maximizable = true,
+  platform = "windows",
+  className,
+}: TitleBarProps) {
   const labels = useLabels();
   if (platform === "mac") return null;
   const drag = { "data-tauri-drag-region": true } as const;
@@ -43,7 +56,8 @@ export function TitleBar({ brand, children, actions, controls, platform = "windo
       className={clsx("uwu-titlebar", className)}
       {...drag}
       onDoubleClick={(event) => {
-        if ((event.target as HTMLElement).hasAttribute("data-tauri-drag-region")) controls.toggleMaximize();
+        if (maximizable && (event.target as HTMLElement).hasAttribute("data-tauri-drag-region"))
+          controls.toggleMaximize();
       }}
     >
       <span className="uwu-titlebar-brand" {...drag}>
@@ -64,17 +78,19 @@ export function TitleBar({ brand, children, actions, controls, platform = "windo
             <path d="M0 5.5h10" />
           </svg>
         </button>
-        <button
-          type="button"
-          className="uwu-window-control"
-          onClick={controls.toggleMaximize}
-          title={controls.maximized ? labels.restore : labels.maximize}
-          aria-label={controls.maximized ? labels.restore : labels.maximize}
-        >
-          <svg viewBox="0 0 10 10" aria-hidden>
-            {controls.maximized ? <path d="M2.5 2.5V.5h7v7h-2 M.5 2.5h7v7h-7z" /> : <path d="M.5.5h9v9h-9z" />}
-          </svg>
-        </button>
+        {maximizable && (
+          <button
+            type="button"
+            className="uwu-window-control"
+            onClick={controls.toggleMaximize}
+            title={controls.maximized ? labels.restore : labels.maximize}
+            aria-label={controls.maximized ? labels.restore : labels.maximize}
+          >
+            <svg viewBox="0 0 10 10" aria-hidden>
+              {controls.maximized ? <path d="M2.5 2.5V.5h7v7h-2 M.5 2.5h7v7h-7z" /> : <path d="M.5.5h9v9h-9z" />}
+            </svg>
+          </button>
+        )}
         <button
           type="button"
           className="uwu-window-control"

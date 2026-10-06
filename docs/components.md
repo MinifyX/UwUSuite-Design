@@ -50,7 +50,8 @@ default, `labels="en"` gives English, or pass your own.
   popovers (`shadow-float`). Primary buttons get `shadow-primary`. Cards have a
   hairline, never a shadow.
 - **Focus:** `:focus-visible` gets a 3 px pink ring (`--uwu-focus`). Never
-  remove it without a replacement.
+  remove it without a replacement. A primary button swaps its own shadow for
+  the ring while focused (`focus-visible:shadow-focus`).
 
 ## Layout patterns
 

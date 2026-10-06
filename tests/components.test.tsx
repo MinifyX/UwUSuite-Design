@@ -219,6 +219,19 @@ describe("TitleBar", () => {
     expect(screen.getByRole("button", { name: "Maximize" })).toBeTruthy();
   });
 
+  it("leaves out maximize for a window that cannot be maximized", () => {
+    const toggleMaximize = vi.fn();
+    const { container } = render(
+      <UwuLabels labels="en">
+        <TitleBar brand="x" controls={{ ...controls, toggleMaximize }} maximizable={false} />
+      </UwuLabels>,
+    );
+    expect(screen.queryByRole("button", { name: "Maximize" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Minimize" })).toBeTruthy();
+    fireEvent.doubleClick(container.querySelector("header")!);
+    expect(toggleMaximize).not.toHaveBeenCalled();
+  });
+
   it("stays away on macOS", () => {
     const { container } = render(<TitleBar brand="x" controls={controls} platform="mac" />);
     expect(container.innerHTML).toBe("");

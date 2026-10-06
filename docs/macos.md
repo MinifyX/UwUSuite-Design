@@ -108,7 +108,7 @@ The Rust side, with `uwu-macos` from this repo:
 
 ```toml
 # src-tauri/Cargo.toml
-uwu-macos = { git = "https://github.com/MinifyX/UwUSuite-Design", tag = "v1.6.0" }
+uwu-macos = { git = "https://github.com/MinifyX/UwUSuite-Design", tag = "v1.6.1" }
 ```
 
 ```rust

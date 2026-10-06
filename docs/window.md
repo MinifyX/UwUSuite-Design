@@ -36,6 +36,8 @@ From UwUMirror:
 - **Window controls:** 46 px wide, full height, 10 px glyphs at stroke 1. Hover
   is `elevated`. Close hover is `pink-solid` with `on-pink`.
 - **Double-click:** on the empty bar it maximizes or restores.
+- **Fixed-size windows** (an installer): `maximizable={false}` leaves out the
+  maximize button and the double-click.
 - **Capabilities:** `useTauriWindow()` needs `core:window:allow-minimize`,
   `-toggle-maximize`, `-close`, `-is-maximized` and `-start-dragging`. The
   resize listener is covered by `core:default`.

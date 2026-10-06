@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.1
+
+- **Button:** a focused primary button shows the focus ring; its own
+  `shadow-primary` used to cover it (`focus-visible:shadow-focus`).
+- **TitleBar:** `maximizable={false}` for fixed-size windows such as an
+  installer: no maximize button, and a double-click on the bar does nothing.
+
 ## 1.6.0
 
 - **Icons:** `ICONS` gets the meanings UwUMail-Client needs to move onto the

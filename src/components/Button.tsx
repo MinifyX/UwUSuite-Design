@@ -63,6 +63,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       type={type}
       className={clsx(
         "inline-flex shrink-0 items-center justify-center rounded-full font-semibold whitespace-nowrap transition-[background,box-shadow,transform,border-color] duration-150 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-55",
+        // The ring replaces the primary pill's own shadow while focused; otherwise that shadow hides it.
+        "focus-visible:shadow-focus",
         // Long German words wrap on a phone instead of pushing the button off the screen.
         "phone:h-auto phone:min-h-10 phone:whitespace-normal",
         BUTTON_VARIANTS[variant],
