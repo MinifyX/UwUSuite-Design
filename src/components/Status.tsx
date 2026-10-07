@@ -19,7 +19,7 @@ export function StatusDot({ state, className }: { state: StatusState; className?
 /** "● Bereit als „Wohnzimmer“": the dot plus one line of text that says the same. */
 export function StatusLine({ state, children }: { state: StatusState; children: ReactNode }) {
   return (
-    <p className="flex items-center gap-2 text-[13.5px]" data-state={state}>
+    <p className="flex items-center gap-2 text-[calc(var(--uwu-text-meta)+0.5px)]" data-state={state}>
       <StatusDot state={state} />
       <span className={clsx(state === "error" && "text-warning-ink")}>{children}</span>
     </p>

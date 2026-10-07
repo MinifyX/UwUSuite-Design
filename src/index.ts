@@ -59,6 +59,44 @@ export {
   SYSTEM_STACK,
 } from "./lib/fonts.js";
 export type { FontChoice } from "./lib/fonts.js";
+export {
+  applyType,
+  currentTypePlatform,
+  detectTypePlatform,
+  FONT_X_HEIGHT,
+  isTextSizeChoice,
+  MAX_TYPE_SCALE,
+  measureEngineTextZoom,
+  measureSystemBody,
+  MIN_TYPE_SCALE,
+  opticalFactor,
+  readSystemType,
+  resolveType,
+  ROLE_POINTS,
+  roleSize,
+  SYSTEM_BODY_DEFAULT,
+  SYSTEM_X_HEIGHT,
+  systemTextScale,
+  TEXT_POINTS,
+  TEXT_SIZE_CHOICES,
+  TEXT_SIZE_FACTORS,
+  TEXT_SIZE_LABELS,
+  TEXT_TOKENS,
+  tokenSize,
+  TYPE_PLATFORMS,
+  TYPE_ROLES,
+  useTypeScale,
+} from "./lib/type.js";
+export type {
+  ResolvedType,
+  TextSizeChoice,
+  TextToken,
+  TypePlatform,
+  TypePlatformSignals,
+  TypeRole,
+  TypeSettings,
+  UseTypeScaleOptions,
+} from "./lib/type.js";
 export { LABELS_DE, LABELS_EN, UwuLabels, useLabels } from "./lib/labels.js";
 export type { Labels } from "./lib/labels.js";
 export { macShortcut, matchesAccelerator, shortcutText, withShortcut } from "./lib/shortcuts.js";

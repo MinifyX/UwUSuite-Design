@@ -118,6 +118,18 @@
   --text-reading: var(--uwu-text-reading);
   --text-section: var(--uwu-text-section);
   --text-title: var(--uwu-text-title);
+  --text-large: var(--uwu-text-large);
+  --text-type-caption2: var(--uwu-type-caption2);
+  --text-type-caption1: var(--uwu-type-caption1);
+  --text-type-footnote: var(--uwu-type-footnote);
+  --text-type-subheadline: var(--uwu-type-subheadline);
+  --text-type-callout: var(--uwu-type-callout);
+  --text-type-body: var(--uwu-type-body);
+  --text-type-headline: var(--uwu-type-headline);
+  --text-type-title3: var(--uwu-type-title3);
+  --text-type-title2: var(--uwu-type-title2);
+  --text-type-title1: var(--uwu-type-title1);
+  --text-type-large-title: var(--uwu-type-large-title);
 
   --ease-uwu: var(--uwu-ease-out);
   --ease-pop: var(--uwu-ease-pop);

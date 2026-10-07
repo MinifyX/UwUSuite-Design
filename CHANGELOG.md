@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.8.0
+
+Text sizes per platform and the system's text size ([typography.md](docs/typography.md)):
+
+- **Platform scales:** every size token (`--uwu-text-*`) and the new roles
+  (`--uwu-type-*`, Tailwind `text-type-*`, named after Apple's text styles)
+  follow `<html data-type>`: macOS after the HIG (body 13 pt), iOS/iPadOS
+  after Dynamic Type "Large" (body 17), Android after Material 3 (body large
+  16), Windows and Linux the desktop scale as before (body 14). New token
+  `--uwu-text-large` (`text-large`) for large titles.
+- **Optical size:** UwU Sans is set larger by its x-height against the system
+  font (SF Pro, Roboto: × 1.06), so it reads as large as the system's text.
+  The picker fonts get their own factors.
+- **System text size:** `useTypeScale` (or `resolveType` + `applyType`) reads
+  Dynamic Type on iOS through `-apple-system-body`, leaves Android's WebView
+  text zoom alone (it already applies the system size) and re-reads when the
+  app comes back to the front. Darstellung → Textgröße:
+  `TEXT_SIZE_CHOICES` (Kleiner · System · Größer · Sehr groß) on top.
+- **iPhone/iPad app on a Mac:** `currentTypePlatform(build)` takes the build
+  platform, so the iOS build on an Apple silicon Mac keeps the iOS scale
+  (macOS shows it at 77 %; with desktop sizes its text ended up at 10 pt).
+- **Mobile components:** every text size in mobile.css is a role now (no px);
+  `MobileShell` carries `data-type`. Search fields stay at 16 px or more on
+  iOS. Button `lg`, EmptyState, Card and StatusLine sizes follow the tokens;
+  avatar initials stay fixed with their circle.
+- **base.css:** `text-size-adjust: 100%` (iOS no longer enlarges text when
+  the phone turns) and `font-synthesis: none` (no fake bold or italic).
+- **Weights:** rows, counts and metadata are regular (400); labels and the
+  selected row 500. Documented in typography.md.
+- **macOS menu:** `setMacMenu` without `lang` follows `<html lang>`
+  (`menuLanguage()`) instead of always German.
+
 ## 1.7.1
 
 Fixes from integrating the mobile components into UwULock:

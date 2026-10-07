@@ -62,6 +62,14 @@ useEffect(() => {
 
 - It replaces the whole bar every time, so call it again when the language or
   a check mark changes. Off macOS it does nothing.
+- `lang` is the app's language, the same one its window shows. Left out, the
+  menu takes `<html lang>` (`menuLanguage()`: German for `de*`, English
+  otherwise), never a fixed German.
+- Only the Mac build has this menu bar. The iPhone/iPad build on an Apple
+  silicon Mac ("Designed for iPad") gets UIKit's menu bar in the languages its
+  bundle declares, at 77 % size: treat it as an iPad (`currentTypePlatform`,
+  [typography.md](typography.md#following-the-system)) and point Mac users to
+  the Mac build.
 - Capability: `core:menu:default`.
 - An entry with `…` opens something that asks for more (a dialog); without it,
   the entry acts at once. Apple's German writes a space before the ellipsis:

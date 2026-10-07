@@ -119,18 +119,35 @@
   --uwu-space-8: 32px;
   --uwu-space-10: 40px;
 
-  /* Type (docs/typography.md). --font-ui and --tracking-ui are set by applyUiFont(). */
+  /* Type (docs/typography.md). --font-ui and --tracking-ui are set by applyUiFont(); data-type,
+     --uwu-type-optical and --uwu-type-scale by applyType(). Every size is the platform's points
+     (--uwu-pt-*, the desktop's here, the others below) × optical × scale; the sizes themselves are
+     computed below, next to the platform scales. */
   --font-ui: "UwU Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif;
   --tracking-ui: -0.008em;
   --uwu-font: var(--font-ui);
   --uwu-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
-  --uwu-text-badge: 11px;
-  --uwu-text-caption: 12px;
-  --uwu-text-meta: 13px;
-  --uwu-text-body: 14px;
-  --uwu-text-reading: 16px;
-  --uwu-text-section: 18px;
-  --uwu-text-title: 22px;
+  --uwu-type-optical: 1;
+  --uwu-type-scale: 1;
+  --uwu-pt-text-badge: 11;
+  --uwu-pt-text-caption: 12;
+  --uwu-pt-text-meta: 13;
+  --uwu-pt-text-body: 14;
+  --uwu-pt-text-reading: 16;
+  --uwu-pt-text-section: 18;
+  --uwu-pt-text-title: 22;
+  --uwu-pt-text-large: 28;
+  --uwu-pt-type-caption2: 11;
+  --uwu-pt-type-caption1: 12;
+  --uwu-pt-type-footnote: 12;
+  --uwu-pt-type-subheadline: 13;
+  --uwu-pt-type-callout: 13;
+  --uwu-pt-type-body: 14;
+  --uwu-pt-type-headline: 14;
+  --uwu-pt-type-title3: 16;
+  --uwu-pt-type-title2: 18;
+  --uwu-pt-type-title1: 22;
+  --uwu-pt-type-large-title: 28;
   --uwu-leading: 1.45;
   --uwu-leading-reading: 1.55;
   --uwu-leading-tight: 1.25;
@@ -171,6 +188,101 @@
   --uwu-scrim: rgb(25 10 20 / 0.3);
 
   color-scheme: light;
+}
+
+/*
+ * The platform scales (docs/typography.md, src/lib/type.ts holds the same numbers and a test keeps
+ * them equal): macOS after the HIG, iOS and iPadOS after Dynamic Type "Large", Android after
+ * Material 3. Without data-type an app keeps the desktop scale above. data-type sits on <html>
+ * (applyType); the mobile shell carries it too, so a phone frame on a desktop page gets its scale.
+ */
+:root,
+[data-type] {
+  --uwu-text-badge: calc(var(--uwu-pt-text-badge) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-text-caption: calc(var(--uwu-pt-text-caption) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-text-meta: calc(var(--uwu-pt-text-meta) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-text-body: calc(var(--uwu-pt-text-body) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-text-reading: calc(var(--uwu-pt-text-reading) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-text-section: calc(var(--uwu-pt-text-section) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-text-title: calc(var(--uwu-pt-text-title) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-text-large: calc(var(--uwu-pt-text-large) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-type-caption2: calc(var(--uwu-pt-type-caption2) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-type-caption1: calc(var(--uwu-pt-type-caption1) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-type-footnote: calc(var(--uwu-pt-type-footnote) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-type-subheadline: calc(var(--uwu-pt-type-subheadline) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-type-callout: calc(var(--uwu-pt-type-callout) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-type-body: calc(var(--uwu-pt-type-body) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-type-headline: calc(var(--uwu-pt-type-headline) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-type-title3: calc(var(--uwu-pt-type-title3) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-type-title2: calc(var(--uwu-pt-type-title2) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-type-title1: calc(var(--uwu-pt-type-title1) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+  --uwu-type-large-title: calc(var(--uwu-pt-type-large-title) * var(--uwu-type-optical) * var(--uwu-type-scale) * 1px);
+}
+
+[data-type="macos"] {
+  --uwu-pt-text-badge: 10;
+  --uwu-pt-text-caption: 11;
+  --uwu-pt-text-meta: 12;
+  --uwu-pt-text-body: 13;
+  --uwu-pt-text-reading: 15;
+  --uwu-pt-text-section: 17;
+  --uwu-pt-text-title: 22;
+  --uwu-pt-text-large: 26;
+  --uwu-pt-type-caption2: 10;
+  --uwu-pt-type-caption1: 10;
+  --uwu-pt-type-footnote: 10;
+  --uwu-pt-type-subheadline: 11;
+  --uwu-pt-type-callout: 12;
+  --uwu-pt-type-body: 13;
+  --uwu-pt-type-headline: 13;
+  --uwu-pt-type-title3: 15;
+  --uwu-pt-type-title2: 17;
+  --uwu-pt-type-title1: 22;
+  --uwu-pt-type-large-title: 26;
+}
+
+[data-type="ios"] {
+  --uwu-pt-text-badge: 11;
+  --uwu-pt-text-caption: 13;
+  --uwu-pt-text-meta: 15;
+  --uwu-pt-text-body: 17;
+  --uwu-pt-text-reading: 17;
+  --uwu-pt-text-section: 20;
+  --uwu-pt-text-title: 28;
+  --uwu-pt-text-large: 34;
+  --uwu-pt-type-caption2: 11;
+  --uwu-pt-type-caption1: 12;
+  --uwu-pt-type-footnote: 13;
+  --uwu-pt-type-subheadline: 15;
+  --uwu-pt-type-callout: 16;
+  --uwu-pt-type-body: 17;
+  --uwu-pt-type-headline: 17;
+  --uwu-pt-type-title3: 20;
+  --uwu-pt-type-title2: 22;
+  --uwu-pt-type-title1: 28;
+  --uwu-pt-type-large-title: 34;
+}
+
+[data-type="android"] {
+  --uwu-pt-text-badge: 11;
+  --uwu-pt-text-caption: 12;
+  --uwu-pt-text-meta: 14;
+  --uwu-pt-text-body: 16;
+  --uwu-pt-text-reading: 16;
+  --uwu-pt-text-section: 22;
+  --uwu-pt-text-title: 24;
+  --uwu-pt-text-large: 32;
+  --uwu-pt-type-caption2: 11;
+  --uwu-pt-type-caption1: 12;
+  --uwu-pt-type-footnote: 12;
+  --uwu-pt-type-subheadline: 14;
+  --uwu-pt-type-callout: 14;
+  --uwu-pt-type-body: 16;
+  --uwu-pt-type-headline: 16;
+  --uwu-pt-type-title3: 18;
+  --uwu-pt-type-title2: 22;
+  --uwu-pt-type-title1: 24;
+  --uwu-pt-type-large-title: 32;
 }
 
 :root[data-theme="dark"] {

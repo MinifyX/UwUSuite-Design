@@ -1,14 +1,115 @@
+import { useState, type CSSProperties } from "react";
+import {
+  resolveType,
+  ROLE_POINTS,
+  Segmented,
+  TEXT_POINTS,
+  TEXT_SIZE_CHOICES,
+  TEXT_SIZE_LABELS,
+  tokenSize,
+  TYPE_ROLES,
+  type TextSizeChoice,
+  type TextToken,
+  type TypePlatform,
+} from "../../src";
 import { Rules, Section, Sub, Panel } from "./ui";
 
-const SCALE: [string, string, string, string][] = [
-  ["title · 22", "text-title", "font-bold tracking-[-0.01em]", "Seitentitel"],
-  ["section · 18", "text-section", "font-bold", "Dialogtitel, Abschnitte"],
-  ["reading · 16", "text-reading", "", "Lesetext: Mails, Notizen, Erklärungen"],
-  ["body · 14", "text-body", "", "Standard für Oberfläche und Listen"],
-  ["meta · 13", "text-meta", "", "Buttons, Menüs, Metadaten"],
-  ["caption · 12", "text-caption", "", "Hinweise unter Feldern, Gruppentitel"],
-  ["badge · 11", "text-badge", "font-bold", "Zähler und Abzeichen"],
+const PLATFORMS: { value: TypePlatform; label: string }[] = [
+  { value: "desktop", label: "Windows/Linux" },
+  { value: "macos", label: "macOS" },
+  { value: "ios", label: "iOS" },
+  { value: "android", label: "Android" },
 ];
+
+const PLATFORM_NOTES: Record<TypePlatform, string> = {
+  desktop: "Fluent-nah: Text 14. Bleibt wie bisher.",
+  macos: "HIG: body 13 pt SF. UwU Sans hat die kleinere x-Höhe, darum × 1,06.",
+  ios: "Dynamic Type „Large“: body 17 pt, folgt der Textgröße des Systems.",
+  android: "Material 3: body large 16. Die WebView vergrößert selbst nach der Systemschrift.",
+};
+
+const SCALE: [TextToken, string, string, string][] = [
+  ["large", "text-large", "font-bold tracking-[-0.015em]", "Großer Titel (Handy, Startseiten)"],
+  ["title", "text-title", "font-bold tracking-[-0.01em]", "Seitentitel"],
+  ["section", "text-section", "font-semibold", "Dialogtitel, Abschnitte"],
+  ["reading", "text-reading", "", "Lesetext: Mails, Notizen, Erklärungen"],
+  ["body", "text-body", "", "Standard für Oberfläche und Listen"],
+  ["meta", "text-meta", "", "Buttons, Menüs, Metadaten"],
+  ["caption", "text-caption", "", "Hinweise unter Feldern, Gruppentitel"],
+  ["badge", "text-badge", "font-semibold", "Zähler und Abzeichen"],
+];
+
+function PlatformScale() {
+  const [platform, setPlatform] = useState<TypePlatform>("macos");
+  const [size, setSize] = useState<TextSizeChoice>("system");
+  const resolved = resolveType({ platform, textSize: size });
+  const frame = {
+    "--uwu-type-optical": resolved.optical,
+    "--uwu-type-scale": resolved.scale,
+  } as CSSProperties;
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-center gap-3">
+        <Segmented label="Plattform" value={platform} onChange={setPlatform} options={PLATFORMS} />
+        <Segmented
+          label="Textgröße"
+          value={size}
+          onChange={setSize}
+          options={TEXT_SIZE_CHOICES.map((value) => ({ value, label: TEXT_SIZE_LABELS.de[value] }))}
+        />
+      </div>
+      <p className="text-meta text-muted">{PLATFORM_NOTES[platform]}</p>
+      <div
+        data-type={platform}
+        style={frame}
+        className="flex flex-col divide-y divide-hairline rounded-card border border-hairline bg-surface"
+      >
+        {SCALE.map(([token, utility, extra, use]) => (
+          <div key={token} className="flex flex-wrap items-baseline gap-x-6 gap-y-1 px-5 py-3">
+            <code className="w-36 shrink-0 text-caption text-muted">
+              {token} · {TEXT_POINTS[platform][token]} → {tokenSize(token, resolved).toFixed(1)}
+            </code>
+            <span className={`${utility} ${extra} min-w-0 flex-1`}>Die Katze im Umschlag</span>
+            <span className="text-caption text-muted">{use}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RoleTable() {
+  return (
+    <div className="overflow-x-auto rounded-card border border-hairline bg-surface">
+      <table className="w-full text-left text-meta tabular-nums">
+        <thead className="text-caption text-muted">
+          <tr>
+            <th className="px-4 py-2 font-semibold">Rolle (--uwu-type-*)</th>
+            {PLATFORMS.map((platform) => (
+              <th key={platform.value} className="px-4 py-2 font-semibold">
+                {platform.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-hairline">
+          {[...TYPE_ROLES].reverse().map((role) => (
+            <tr key={role}>
+              <td className="px-4 py-1.5">
+                <code>{role}</code>
+              </td>
+              {PLATFORMS.map((platform) => (
+                <td key={platform.value} className="px-4 py-1.5">
+                  {ROLE_POINTS[platform.value][role]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 export function Typography() {
   return (
@@ -21,6 +122,7 @@ export function Typography() {
           Herz und Pfeilen. Sie ist variabel von 200 bis 800, rund 48 KB groß, steht unter der OFL und ist gebündelt.{" "}
           <strong>JetBrains Mono</strong> ist die Schrift für Code, Adressen, Fingerabdrücke und Versionen. Die
           Schriftauswahl darf zusätzlich Manrope, Rubik, DM Sans und die Systemschrift anbieten. Probier es oben aus.
+          Die Größen folgen der Plattform und der Textgröße des Systems.
         </>
       }
     >
@@ -38,16 +140,11 @@ export function Typography() {
           ))}
         </div>
       </Panel>
-      <Sub title="Größen">
-        <div className="flex flex-col divide-y divide-hairline rounded-card border border-hairline bg-surface">
-          {SCALE.map(([name, size, extra, use]) => (
-            <div key={name} className="flex flex-wrap items-baseline gap-x-6 gap-y-1 px-5 py-3">
-              <code className="w-28 shrink-0 text-caption text-muted">{name}</code>
-              <span className={`${size} ${extra} min-w-0 flex-1`}>Die Katze im Umschlag</span>
-              <span className="text-caption text-muted">{use}</span>
-            </div>
-          ))}
-        </div>
+      <Sub title="Größen je Plattform">
+        <PlatformScale />
+      </Sub>
+      <Sub title="Rollen">
+        <RoleTable />
       </Sub>
       <Sub title="Nyu und Herz">
         <div className="grid gap-3 sm:grid-cols-2">
@@ -81,9 +178,17 @@ export function Typography() {
           [true, "Zahlen in Listen, Zählern und Zeiten mit tabular-nums."],
           [
             true,
-            "Gewichte: 400 Text, 500 Menüs, 600 Titel und Buttons, 700 Dialogtitel und Labels, 800 nur die Wortmarke.",
+            "Gewichte: 400 Text, Zeilen und Zähler, 500 Menüs und Labels, 600 Titel und Buttons, 700 Dialogtitel und Gruppentitel, 800 nur die Wortmarke.",
           ],
-          [true, "Gruppentitel: 12 px, fett, Großbuchstaben, gesperrt, muted."],
+          [true, "Gruppentitel: caption, fett, Großbuchstaben, gesperrt, muted."],
+          [
+            true,
+            "Größen nur über Tokens (text-body, --uwu-type-headline …). Sie folgen der Plattform und der Textgröße des Systems.",
+          ],
+          [
+            false,
+            "Keine festen px-Schriftgrößen in Apps, außer an Dingen mit fester Größe (Avatar-Initialen, App-Icons).",
+          ],
           [false, "Keine Schrift aus dem Netz, keine eigene Kopie von UwU Sans in einer App."],
           [
             false,

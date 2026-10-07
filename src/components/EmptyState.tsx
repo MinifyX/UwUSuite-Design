@@ -26,7 +26,7 @@ export function EmptyState({ art, title, body, action, compact = false, classNam
           {art}
         </div>
       )}
-      <p className="max-w-[320px] text-[15px] font-bold text-ink">{title}</p>
+      <p className="max-w-[320px] text-[calc(var(--uwu-text-body)+1px)] font-bold text-ink">{title}</p>
       {body && <p className="max-w-[300px] text-meta text-muted">{body}</p>}
       {action}
     </div>
