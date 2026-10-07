@@ -26,7 +26,7 @@ export const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
 export const BUTTON_SIZES: Record<ButtonSize, string> = {
   sm: "h-8 gap-1.5 px-3 text-meta",
   md: "h-10 gap-2 px-4 text-body",
-  lg: "h-12 gap-2 px-6 text-[15px]",
+  lg: "h-12 gap-2 px-6 text-[calc(var(--uwu-text-body)+1px)]",
 };
 
 /** The busy button's turning ring. */

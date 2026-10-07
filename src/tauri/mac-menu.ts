@@ -30,6 +30,7 @@ export type MacMenuEntry =
 export interface MacMenuOptions {
   /** The app's name as in the Dock: "UwUMail". */
   appName: string;
+  /** The app's language. Left out, it is <html lang> (German or English, like the apps decide). */
   lang?: "de" | "en";
   /** The About panel. Leave it out to use `tauri.conf.json`. */
   about?: AboutMetadata;
@@ -102,6 +103,15 @@ export const MAC_MENU_LABELS = {
   },
 } as const;
 
+/** The page's language for the menu: German when <html lang> (or the system) says German, English otherwise. */
+export function menuLanguage(): "de" | "en" {
+  const tag =
+    (typeof document !== "undefined" && document.documentElement.lang) ||
+    (typeof navigator !== "undefined" && navigator.language) ||
+    "de";
+  return tag.toLowerCase().startsWith("de") ? "de" : "en";
+}
+
 type Item = MenuItemOptions | CheckMenuItemOptions | PredefinedMenuItemOptions;
 
 /** One submenu of the bar as plain data; `role` marks the menus macOS adds to. */
@@ -129,7 +139,7 @@ function section(items: Item[]) {
 
 /** The whole menu bar as plain data, without touching Tauri. */
 export function macMenuSpec(options: MacMenuOptions): MacSubmenuSpec[] {
-  const { appName, lang = "de", about = null, onSettings } = options;
+  const { appName, lang = menuLanguage(), about = null, onSettings } = options;
   const t = MAC_MENU_LABELS[lang];
   const settings: Item[] = onSettings
     ? [{ id: "app.settings", text: t.settings, accelerator: "CmdOrCtrl+,", action: () => onSettings() }]

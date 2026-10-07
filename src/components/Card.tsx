@@ -32,8 +32,8 @@ export function Card({ title, subtitle, icon, aside, className, children, ...res
             </span>
           )}
           <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-            {title && <h2 className="text-[15px] font-bold">{title}</h2>}
-            {subtitle && <span className="text-[12.5px] text-muted">{subtitle}</span>}
+            {title && <h2 className="text-[calc(var(--uwu-text-body)+1px)] font-bold">{title}</h2>}
+            {subtitle && <span className="text-[calc(var(--uwu-text-caption)+0.5px)] text-muted">{subtitle}</span>}
           </span>
           {aside}
         </header>
@@ -59,7 +59,7 @@ export function SettingRow({ label, description, children, htmlFor }: SettingRow
         <label htmlFor={htmlFor} className="text-body font-semibold">
           {label}
         </label>
-        {description && <p className="text-[12.5px] text-muted">{description}</p>}
+        {description && <p className="text-[calc(var(--uwu-text-caption)+0.5px)] text-muted">{description}</p>}
       </div>
       <div className="shrink-0">{children}</div>
     </div>

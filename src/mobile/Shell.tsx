@@ -25,18 +25,21 @@ export interface MobileShellProps {
 
 /**
  * The full-screen root of a phone or iPad layout. Tab bar, sheets, menus and toasts position
- * themselves inside it, and it carries `data-platform` for the CSS. In an app it fills the
+ * themselves inside it, and it carries `data-platform` for the CSS and `data-type` for the platform's
+ * text sizes (docs/typography.md), so a phone frame on a desktop page reads like the phone. In an app it fills the
  * viewport (`height: 100dvh` on its parent); in the styleguide it is the device frame.
  */
 export function MobileShell({ kind, children, className, style }: MobileShellProps) {
   const detected = useDeviceKind();
   const device = kind ?? detected;
   const [element, setElement] = useState<HTMLDivElement | null>(null);
+  const platform = platformOf(device) ?? "ios";
   const content = (
     <div
       ref={setElement}
       className={clsx("uwu-mshell", className)}
-      data-platform={platformOf(device) ?? "ios"}
+      data-platform={platform}
+      data-type={platform === "android" ? "android" : "ios"}
       style={style}
     >
       {/* The content waits for the shell element (one synchronous commit), so overlays portal into

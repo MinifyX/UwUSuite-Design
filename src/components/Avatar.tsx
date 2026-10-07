@@ -12,7 +12,8 @@ const COLOR_CLASSES: Record<AvatarColor, string> = {
   coral: "bg-avatar-coral text-avatar-coral-ink",
 };
 
-const SIZES = { sm: "size-7 text-[11px]", md: "size-9 text-meta", lg: "size-12 text-[17px]" } as const;
+/** The initials keep their size with the circle: they don't follow the text size. */
+const SIZES = { sm: "size-7 text-[11px]", md: "size-9 text-[13px]", lg: "size-12 text-[17px]" } as const;
 
 /** A stable colour for a name or address, so the same person always looks the same. */
 export function avatarColor(seed: string): AvatarColor {

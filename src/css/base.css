@@ -9,6 +9,13 @@
     height: 100%;
   }
 
+  /* The sizes come from the tokens (docs/typography.md): iOS must not enlarge text on its own when
+     the phone turns sideways. */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   body {
     margin: 0;
     background: var(--uwu-canvas);
@@ -19,6 +26,9 @@
     letter-spacing: var(--tracking-ui);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* UwU Sans has every weight from 200 to 800 and no italic: never let the engine smear a fake
+       bold or slant one. */
+    font-synthesis: none;
     /* German compounds must not push a phone screen sideways. */
     overflow-wrap: break-word;
   }

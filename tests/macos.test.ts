@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { checkIcns, decodePng, ICNS_SIZES, packBits, writeIcns } from "../bin/icns.mjs";
 import { MAC_GRID, macMasterSvg, TRAY_STROKE, trayTemplateSvg } from "../bin/mac-icon.mjs";
 import { macShortcut, shortcutText, withShortcut } from "../src/lib/shortcuts";
-import { macMenuSpec, setMacMenu, type MacSubmenuSpec } from "../src/tauri/mac-menu";
+import { macMenuSpec, menuLanguage, setMacMenu, type MacSubmenuSpec } from "../src/tauri/mac-menu";
 import { hideWindowOnClose, MAC_QUIT_EVENT, onMacQuit } from "../src/tauri/mac-lifecycle";
 
 const tauri = vi.hoisted(() => ({
@@ -78,6 +78,23 @@ describe("shortcuts", () => {
 });
 
 describe("mac menu", () => {
+  // The page's language decides when the app passes none (menuLanguage).
+  beforeEach(() => {
+    document.documentElement.lang = "de";
+  });
+
+  it("speaks the page's language when the app doesn't say", () => {
+    expect(menuLanguage()).toBe("de");
+    expect(macMenuSpec({ appName: "UwULock" })[1]!.text).toBe("Ablage");
+    document.documentElement.lang = "en";
+    expect(menuLanguage()).toBe("en");
+    expect(macMenuSpec({ appName: "UwULock" })[2]!.text).toBe("Edit");
+    document.documentElement.lang = "fr";
+    expect(menuLanguage()).toBe("en");
+    document.documentElement.lang = "de-AT";
+    expect(menuLanguage()).toBe("de");
+  });
+
   const texts = (spec: MacSubmenuSpec) =>
     spec.items.map((item) =>
       "item" in item

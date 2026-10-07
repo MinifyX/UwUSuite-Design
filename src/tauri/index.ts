@@ -45,5 +45,5 @@ export function useTauriWindow(): WindowControls {
 
 export { hideWindowOnClose, MAC_QUIT_EVENT, onMacQuit } from "./mac-lifecycle.js";
 export type { MacQuitOptions } from "./mac-lifecycle.js";
-export { MAC_MENU_LABELS, macMenuSpec, setMacMenu } from "./mac-menu.js";
+export { MAC_MENU_LABELS, macMenuSpec, menuLanguage, setMacMenu } from "./mac-menu.js";
 export type { MacMenuEntry, MacMenuOptions, MacSubmenuSpec } from "./mac-menu.js";

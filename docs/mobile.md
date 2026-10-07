@@ -52,7 +52,7 @@ render.
   search button sits right of it. Searching shrinks the bar to a round button
   on the left and grows the search field beside it, riding on top of the
   keyboard (`visualViewport`, `useKeyboardInset()`).
-- **Navigation bar:** large title (34 px, 750) on a tab's root page; it
+- **Navigation bar:** large title (`large-title`, 34 pt at the default size, 750) on a tab's root page; it
   collapses into a small centred title with a gradient behind it as the page
   scrolls. Pushed pages have the small title only. Toolbar buttons are round
   44 px glass buttons (`NavButton`), the primary action of a sheet is pink
@@ -161,6 +161,17 @@ The navigation bar is a three-column grid: the sides take what their buttons
 need, the small title gets the rest and ends in "…". A short title stays
 centred; a wide text button ("Bearbeiten") moves it aside instead of covering
 it.
+
+## Text
+
+Every text size in the mobile components is a role from
+[typography.md](typography.md#roles) (`--uwu-type-body`, `--uwu-type-headline` …),
+never a px value. `MobileShell` sets `data-type="ios"` or `"android"`, so the
+iPhone and iPad get Dynamic Type's scale (body 17, footnote 13, large title 34)
+and Android Material 3's (body large 16, title large 22), each × UwU Sans'
+optical factor × the system's text size (`useTypeScale`). Larger text makes
+rows taller: rows and fields use `min-height`. Bars (navigation, tab) keep
+their height and truncate their titles, as the systems do.
 
 ## Text fields
 
