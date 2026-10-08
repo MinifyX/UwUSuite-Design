@@ -11,7 +11,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { platformOf, type DeviceKind } from "./device.js";
-import { visibleArea, type VisibleArea } from "./gestures.js";
+import { visibleArea } from "./gestures.js";
 import { DeviceKindProvider, prefersReducedMotion, useDeviceKind } from "./hooks.js";
 
 const ShellContext = createContext<HTMLElement | null>(null);
@@ -41,26 +41,14 @@ export function MobileShell({ kind, children, className, style }: MobileShellPro
   const device = kind ?? detected;
   const [element, setElement] = useState<HTMLDivElement | null>(null);
   const platform = platformOf(device) ?? "ios";
-  const area = useVisibleArea(element, !kind);
-  const follow = !!area && (area.keyboard > 0 || area.top > 0);
-  const keyboard = !!area && area.keyboard > 0;
+  const keyboard = useVisibleArea(element, !kind);
   const content = (
     <div
       ref={setElement}
       className={clsx("uwu-mshell", className)}
       data-platform={platform}
       data-type={platform === "android" ? "android" : "ios"}
-      data-follow={follow ? "" : undefined}
-      data-keyboard={keyboard ? "" : undefined}
-      style={
-        follow
-          ? ({
-              ...style,
-              "--uwu-visible-top": `${area.top}px`,
-              "--uwu-visible-height": `${area.height}px`,
-            } as CSSProperties)
-          : style
-      }
+      style={style}
     >
       {/* The content waits for the shell element (one synchronous commit), so overlays portal into
           it from their first render instead of moving there and losing focus and state. */}
@@ -74,32 +62,51 @@ export function MobileShell({ kind, children, className, style }: MobileShellPro
   return kind ? <DeviceKindProvider kind={kind}>{content}</DeviceKindProvider> : content;
 }
 
-/** The visible part of the page while it differs from the window (keyboard up, page scrolled). */
-function useVisibleArea(element: HTMLElement | null, enabled: boolean): VisibleArea | null {
-  const [area, setArea] = useState<VisibleArea | null>(null);
+/**
+ * Follows the visible part of the page while it differs from the window (keyboard up, page
+ * scrolled): sets `data-follow`, `data-keyboard` and the `--uwu-visible-*` variables on the shell
+ * directly, once per frame, so the shell keeps up with the viewport without a React render. Returns
+ * whether the keyboard is up. Pinch zoom (UwUMail's mail view) is left alone.
+ */
+function useVisibleArea(element: HTMLElement | null, enabled: boolean): boolean {
+  const [keyboard, setKeyboard] = useState(false);
   useEffect(() => {
     const viewport = typeof window === "undefined" ? undefined : window.visualViewport;
     if (!enabled || !element || !viewport) return;
-    const update = () => {
+    let frame = 0;
+    const apply = () => {
+      frame = 0;
+      const zoomed = Math.abs(viewport.scale - 1) > 0.01;
       // iOS sometimes leaves the page scrolled after the keyboard went away.
-      if (viewport.height >= window.innerHeight - 1 && (window.scrollY > 0 || viewport.offsetTop > 0)) {
+      if (!zoomed && viewport.height >= window.innerHeight - 1 && (window.scrollY > 0 || viewport.offsetTop > 0)) {
         window.scrollTo(0, 0);
       }
       const containerTop = element.parentElement?.getBoundingClientRect().top ?? 0;
-      const next = visibleArea(window.innerHeight, viewport.height, viewport.offsetTop, containerTop);
-      setArea((last) =>
-        last && last.top === next.top && last.height === next.height && last.keyboard === next.keyboard ? last : next,
-      );
+      const area = zoomed ? null : visibleArea(window.innerHeight, viewport.height, viewport.offsetTop, containerTop);
+      const follow = !!area && (area.keyboard > 0 || area.top > 0);
+      element.toggleAttribute("data-follow", follow);
+      element.toggleAttribute("data-keyboard", !!area && area.keyboard > 0);
+      if (area && follow) {
+        element.style.setProperty("--uwu-visible-top", `${area.top}px`);
+        element.style.setProperty("--uwu-visible-height", `${area.height}px`);
+      }
+      setKeyboard(!!area && area.keyboard > 0);
     };
-    update();
+    const update = () => {
+      if (!frame) frame = requestAnimationFrame(apply);
+    };
+    apply();
     viewport.addEventListener("resize", update);
     viewport.addEventListener("scroll", update);
     return () => {
+      cancelAnimationFrame(frame);
       viewport.removeEventListener("resize", update);
       viewport.removeEventListener("scroll", update);
+      element.removeAttribute("data-follow");
+      element.removeAttribute("data-keyboard");
     };
   }, [element, enabled]);
-  return area;
+  return keyboard;
 }
 
 /** True while the on-screen keyboard is up (inside a `MobileShell` that follows it). */

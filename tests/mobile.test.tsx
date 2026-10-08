@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Copy, KeyRound, Plus, Settings, ShieldCheck, Star, Trash2, Vault } from "lucide-react";
 import { useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -347,5 +347,40 @@ describe("Fab and SplitView", () => {
     expect(screen.queryByRole("navigation")).toBeNull();
     rerender(<SplitView overlaySidebar sidebarOpen sidebar={sidebar} list="Liste" detail="Detail" />);
     expect(screen.getByRole("button", { name: /Alle Einträge/ }).getAttribute("aria-current")).toBe("page");
+  });
+});
+
+describe("MobileShell and the keyboard", () => {
+  function fakeViewport(values: { height: number; offsetTop: number; scale: number }) {
+    const target = new EventTarget();
+    Object.assign(target, values);
+    Object.defineProperty(window, "visualViewport", { configurable: true, value: target });
+    return target as EventTarget & typeof values;
+  }
+
+  it("follows the part above the keyboard and leaves pinch zoom alone", async () => {
+    const viewport = fakeViewport({ height: window.innerHeight, offsetTop: 0, scale: 1 });
+    const { container } = render(
+      <MobileShell>
+        <p>Inhalt</p>
+      </MobileShell>,
+    );
+    const shell = container.querySelector<HTMLElement>(".uwu-mshell")!;
+    expect(shell.hasAttribute("data-follow")).toBe(false);
+
+    Object.assign(viewport, { height: window.innerHeight - 300, offsetTop: 300 });
+    act(() => {
+      viewport.dispatchEvent(new Event("resize"));
+    });
+    await waitFor(() => expect(shell.hasAttribute("data-keyboard")).toBe(true));
+    expect(shell.style.getPropertyValue("--uwu-visible-top")).toBe("300px");
+
+    Object.assign(viewport, { height: window.innerHeight / 2, offsetTop: 100, scale: 2 });
+    act(() => {
+      viewport.dispatchEvent(new Event("scroll"));
+    });
+    await waitFor(() => expect(shell.hasAttribute("data-follow")).toBe(false));
+    expect(shell.hasAttribute("data-keyboard")).toBe(false);
+    Reflect.deleteProperty(window, "visualViewport");
   });
 });

@@ -152,7 +152,7 @@ render.
 | `useEdgeBack`, `usePredictiveBack`           | `(pageRef, { onBack, enabled, underRef })`, used by `Screen`                                                                                                                                                                                                  |
 | `useHaptics()` / `haptic(kind)`              | `selection` · `light` · `medium` · `heavy` · `success` · `warning` · `error`; `setHapticsEnabled(false)` turns all off                                                                                                                                        |
 | `useKeyboardShortcut(accelerator, handler)`  | Tauri accelerator syntax, `matchesAccelerator()` underneath                                                                                                                                                                                                   |
-| `useKeyboardInset()`, `useScrolledPast(ref)` | Keyboard height from the visual viewport; large-title collapse                                                                                                                                                                                                |
+| `useKeyboardInset()`, `useScrolledPast(ref)` | Keyboard height from the visual viewport (outside a `MobileShell`; inside use `useKeyboardOpen()`); large-title collapse                                                                                                                                      |
 
 Their words (Zurück, Suchen, Suche schließen, Wird aktualisiert …, the
 "kopieren" screen readers hear after a tap-to-copy row) come from `UwuLabels`

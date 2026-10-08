@@ -55,6 +55,7 @@
   .uwu-mshell[data-follow] {
     height: var(--uwu-visible-height);
     transform: translateY(var(--uwu-visible-top));
+    overscroll-behavior: none;
   }
 
   .uwu-mshell[data-platform="android"] {
@@ -497,10 +498,16 @@
     z-index: 50;
   }
 
+  /* As tall as the tab bar, so the switch keeps the middle line. */
   .uwu-searchrow {
     display: flex;
     align-items: center;
     gap: 8px;
+    height: 64px;
+  }
+
+  .uwu-mshell[data-keyboard] .uwu-searchrow {
+    height: 56px;
   }
 
   .uwu-mshell[data-keyboard] :is(.uwu-searchrow, .uwu-searchfield) {
@@ -593,6 +600,17 @@
     width: 36px;
     height: 36px;
     border-radius: 18px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .uwu-searchback,
+    .uwu-searchfield {
+      animation: none;
+    }
+  }
+
+  :root[data-motion="reduced"] :is(.uwu-searchback, .uwu-searchfield) {
+    animation: none;
   }
 
   @keyframes uwu-search-back {

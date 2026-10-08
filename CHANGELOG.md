@@ -14,7 +14,13 @@ iPhone search with the keyboard up:
 - **Back button in the row:** while searching, a round glass back button
   (chevron, "Zurück") sits in one row with the field instead of the shrunken
   tab bar with the tab's icon; both line up with and without the keyboard.
-- `--uwu-keyboard` is gone; `SearchField` no longer reads the keyboard itself.
+- **Breaking:** `--uwu-keyboard` is gone and `SearchField` no longer reads the
+  keyboard itself. A standalone `SearchField` now starts 12 px from the left
+  edge (was 76 px, beside the shrunken tab bar); in search mode the TabBar's
+  `className` sits on the row. Inside a following shell `useKeyboardInset()`
+  must not lift anything (the shell already shrank).
+- The shell leaves pinch zoom alone and needs a fixed or unscrolled container
+  (it scrolls the page back to the top when the keyboard closes).
 
 ## 1.8.0
 
