@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- **Docs:** native SwiftUI sheets (AutoFill and other extensions) in
+  `docs/mobile.md`: token colours as dynamic colours, header, search, grouped
+  lists, empty states. First user: UwULock's AutoFill sheet (0.6.0-beta.5).
+
 ## 1.8.1
 
 iPhone search with the keyboard up:

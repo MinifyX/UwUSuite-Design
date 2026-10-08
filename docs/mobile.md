@@ -112,6 +112,33 @@ render.
   button is the app's (Tauri's back-button event), not the package's.
 - **Pull to sync:** a round indicator slides down over the content.
 
+## Native sheets (SwiftUI)
+
+Some screens can't be the webview: an AutoFill credential provider, share or
+action extensions. They are SwiftUI and still look like the app, not like a
+bare system form (first: UwULock's AutoFill sheet, `PasskeyProvider/`).
+
+- **Colours:** the `tokens.css` values, light and dark, as dynamic colours
+  (`UIColor { traits in … }` / `NSColor(name:dynamicProvider:)`): `canvas`
+  behind everything, `surface` cards with a 1 px `border`, `ink` and `muted`
+  text, `faint` chevrons, `hairline` dividers, `pink-solid` with `on-pink`
+  for the main button, `pink-tint` with `pink-ink` for badges and the pressed
+  row. Copy the hex values; there is no Swift package yet.
+- **Header:** a 36 pt `pink-tint` badge with the app's SF Symbol, a small
+  `pink-ink` app name over the title (headline, two lines at most), "Abbrechen"
+  in pink on the right.
+- **Search:** the app's search field: magnifier, `surface`, radius 14,
+  `border` that turns pink (1.5 px) while focused, a clear button; no
+  autocorrection or capitalisation. It searches name, user and the hosts of
+  the addresses, every word, ignoring case and accents.
+- **Lists:** grouped inset cards (radius 16, 16 px from the edges) with
+  section headers in small caps above: what fits the page or app first ("Passend
+  zu dieser Seite"), then everything A–Z ("Alle Logins"). Rows: a round
+  `pink-tint` initial, title and a muted subtitle (user · host), a chevron.
+- **States:** a pink spinner with a line while loading; empty states and
+  messages as a `surface` card with a `pink-ink` icon that says what to do
+  ("Öffne UwULock und entsperre den Tresor"), never a bare grey line.
+
 ## Material
 
 - **Liquid Glass** (`.uwu-glass`): a translucent fill
