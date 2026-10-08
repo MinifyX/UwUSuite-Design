@@ -174,14 +174,21 @@ export interface VisibleArea {
 }
 
 /**
- * The part of the page the user sees. iOS keeps the layout viewport when the keyboard comes up: it
- * shrinks the visual viewport and scrolls the page until the focused field shows, which pushes a
- * full-screen layout out at the top. `MobileShell` follows this area instead (moved down by `top`,
- * `height` tall), so its top stays visible and the bottom bar sits on the keyboard.
+ * The part of the page the user sees, measured from the top of the shell's container (`top`, in
+ * the layout viewport like `getBoundingClientRect`). iOS keeps the layout viewport when the
+ * keyboard comes up: it shrinks the visual viewport and moves it down until the focused field
+ * shows, which pushes a full-screen layout out at the top. `MobileShell` follows this area instead
+ * (moved down by `top`, `height` tall), so its top stays visible and the bottom bar sits on the
+ * keyboard.
  */
-export function visibleArea(innerHeight: number, viewportHeight: number, viewportPageTop = 0): VisibleArea {
+export function visibleArea(
+  innerHeight: number,
+  viewportHeight: number,
+  viewportOffsetTop = 0,
+  containerTop = 0,
+): VisibleArea {
   return {
-    top: Math.max(0, Math.round(viewportPageTop)),
+    top: Math.max(0, Math.round(viewportOffsetTop - containerTop)),
     height: Math.round(viewportHeight),
     keyboard: Math.max(0, Math.round(innerHeight - viewportHeight)),
   };

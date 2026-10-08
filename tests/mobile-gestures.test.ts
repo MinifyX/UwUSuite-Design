@@ -169,8 +169,10 @@ describe("keyboard and steppers", () => {
 
   it("finds the visible part of the page with the keyboard up", () => {
     expect(visibleArea(844, 844)).toEqual({ top: 0, height: 844, keyboard: 0 });
-    // iOS scrolled the page by the keyboard to show the field at the bottom.
+    // iOS moved the visual viewport down by the keyboard to show the field at the bottom.
     expect(visibleArea(844, 508.4, 336)).toEqual({ top: 336, height: 508, keyboard: 336 });
+    // A container in the scrolled page (not fixed) moved up with it.
+    expect(visibleArea(844, 508, 0, -336)).toEqual({ top: 336, height: 508, keyboard: 336 });
     expect(visibleArea(844, 844, -2)).toEqual({ top: 0, height: 844, keyboard: 0 });
   });
 

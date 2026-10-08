@@ -41,7 +41,7 @@ export function MobileShell({ kind, children, className, style }: MobileShellPro
   const device = kind ?? detected;
   const [element, setElement] = useState<HTMLDivElement | null>(null);
   const platform = platformOf(device) ?? "ios";
-  const area = useVisibleArea(!kind);
+  const area = useVisibleArea(element, !kind);
   const follow = !!area && (area.keyboard > 0 || area.top > 0);
   const keyboard = !!area && area.keyboard > 0;
   const content = (
@@ -75,18 +75,18 @@ export function MobileShell({ kind, children, className, style }: MobileShellPro
 }
 
 /** The visible part of the page while it differs from the window (keyboard up, page scrolled). */
-function useVisibleArea(enabled: boolean): VisibleArea | null {
+function useVisibleArea(element: HTMLElement | null, enabled: boolean): VisibleArea | null {
   const [area, setArea] = useState<VisibleArea | null>(null);
   useEffect(() => {
     const viewport = typeof window === "undefined" ? undefined : window.visualViewport;
-    if (!enabled || !viewport) return;
+    if (!enabled || !element || !viewport) return;
     const update = () => {
-      const next = visibleArea(window.innerHeight, viewport.height, viewport.pageTop);
       // iOS sometimes leaves the page scrolled after the keyboard went away.
-      if (next.keyboard === 0 && next.top > 0) {
+      if (viewport.height >= window.innerHeight - 1 && (window.scrollY > 0 || viewport.offsetTop > 0)) {
         window.scrollTo(0, 0);
-        next.top = 0;
       }
+      const containerTop = element.parentElement?.getBoundingClientRect().top ?? 0;
+      const next = visibleArea(window.innerHeight, viewport.height, viewport.offsetTop, containerTop);
       setArea((last) =>
         last && last.top === next.top && last.height === next.height && last.keyboard === next.keyboard ? last : next,
       );
@@ -98,7 +98,7 @@ function useVisibleArea(enabled: boolean): VisibleArea | null {
       viewport.removeEventListener("resize", update);
       viewport.removeEventListener("scroll", update);
     };
-  }, [enabled]);
+  }, [element, enabled]);
   return area;
 }
 
