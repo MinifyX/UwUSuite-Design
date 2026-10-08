@@ -57,8 +57,13 @@ describe("TabBar", () => {
     fireEvent.change(field, { target: { value: "git" } });
     fireEvent.click(screen.getByRole("button", { name: "Suche leeren" }));
     expect((screen.getByRole("searchbox") as HTMLInputElement).value).toBe("");
-    fireEvent.click(screen.getByRole("button", { name: "Suche schließen" }));
+    // The back button and the field share one row in place of the tab bar.
+    const back = screen.getByRole("button", { name: "Zurück" });
+    expect(back.parentElement).toBe(screen.getByRole("search").parentElement);
+    expect(screen.queryByRole("navigation")).toBeNull();
+    fireEvent.click(back);
     expect(screen.queryByRole("searchbox")).toBeNull();
+    expect(screen.getByRole("navigation")).toBeTruthy();
   });
 
   it("is a navigation bar without search button on Android, a top bar on the iPad", () => {

@@ -18,7 +18,7 @@ export {
 export type { BackGestureOptions, LongPressHandlers, LongPressPoint } from "./hooks.js";
 export { useDrag } from "./drag.js";
 export type { DragHandlers, DragPoint } from "./drag.js";
-export { MobileShell, ShellPortal, useShellElement } from "./Shell.js";
+export { MobileShell, ShellPortal, useKeyboardOpen, useShellElement } from "./Shell.js";
 export type { MobileShellProps } from "./Shell.js";
 export { SearchBar, SearchButton, SearchField, TabBar } from "./TabBar.js";
 export type { SearchBarProps, SearchFieldProps, TabBarProps, TabItem, TabSearch } from "./TabBar.js";

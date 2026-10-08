@@ -10,6 +10,7 @@ import {
   detentHeight,
   dragAxis,
   keyboardInset,
+  visibleArea,
   PULL_ARM_DISTANCE,
   PULL_MAX,
   pullArmed,
@@ -164,6 +165,13 @@ describe("keyboard and steppers", () => {
     expect(keyboardInset(844, 844)).toBe(0);
     expect(keyboardInset(844, 508)).toBe(336);
     expect(keyboardInset(844, 508, 20)).toBe(316);
+  });
+
+  it("finds the visible part of the page with the keyboard up", () => {
+    expect(visibleArea(844, 844)).toEqual({ top: 0, height: 844, keyboard: 0 });
+    // iOS scrolled the page by the keyboard to show the field at the bottom.
+    expect(visibleArea(844, 508.4, 336)).toEqual({ top: 336, height: 508, keyboard: 336 });
+    expect(visibleArea(844, 844, -2)).toEqual({ top: 0, height: 844, keyboard: 0 });
   });
 
   it("keeps steppers inside their range", () => {

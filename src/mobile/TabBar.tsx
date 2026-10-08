@@ -1,10 +1,10 @@
 import { clsx } from "clsx";
-import { Search, X, type LucideIcon } from "lucide-react";
+import { ChevronLeft, Search, X, type LucideIcon } from "lucide-react";
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { useLabels } from "../lib/labels.js";
 import type { MobilePlatform } from "./device.js";
 import { haptic } from "./haptics.js";
-import { useKeyboardInset, useMobilePlatform } from "./hooks.js";
+import { useMobilePlatform } from "./hooks.js";
 
 export interface TabItem<T extends string = string> {
   id: T;
@@ -30,8 +30,8 @@ export interface TabBarProps<T extends string = string> {
   /** `ios`: floating glass capsule · `android`: M3 navigation bar · `ipad`: floating at the top. */
   platform?: MobilePlatform;
   /**
-   * iPhone only: the round glass search button right of the bar. While `open`, the bar shrinks to
-   * a round button and the field rides on top of the keyboard.
+   * iPhone only: the round glass search button right of the bar. While `open`, a round back
+   * button and the field take the bar's place in one row, on top of the keyboard.
    */
   search?: TabSearch;
   label?: string;
@@ -52,40 +52,25 @@ export function TabBar<T extends string>({
   const labels = useLabels();
   const glass = platform !== "android";
   const withSearch = platform === "ios" && search;
-  const searching = withSearch && search.open;
-  const keyboard = useKeyboardInset();
-  const style = { "--uwu-keyboard": `${keyboard}px` } as CSSProperties;
-  const current = tabs.find((tab) => tab.id === value);
 
-  if (searching && current) {
+  if (withSearch && search.open) {
     return (
-      <>
-        <nav
-          aria-label={label}
-          data-platform={platform}
-          data-searching=""
-          style={style}
-          className={clsx("uwu-tabbar uwu-glass", className)}
+      <div className={clsx("uwu-searchrow", className)}>
+        <button
+          type="button"
+          className="uwu-searchback uwu-glass"
+          aria-label={labels.back}
+          onClick={() => search.onOpenChange(false)}
         >
-          <button
-            type="button"
-            className="uwu-tab"
-            aria-label={labels.closeSearch}
-            onClick={() => search.onOpenChange(false)}
-          >
-            <span className="uwu-tab-icon">
-              <current.icon aria-hidden />
-            </span>
-          </button>
-        </nav>
+          <ChevronLeft aria-hidden strokeWidth={2} />
+        </button>
         <SearchField
           value={search.value}
           onChange={search.onChange}
           placeholder={search.placeholder}
           onClose={() => search.onOpenChange(false)}
-          style={style}
         />
-      </>
+      </div>
     );
   }
 
@@ -163,8 +148,9 @@ export interface SearchFieldProps {
 }
 
 /**
- * iPhone: the search field at the bottom. It sits on top of the on-screen keyboard (it reads the
- * visual viewport), so the thumb that tapped the search button types right there. Escape closes.
+ * iPhone: the search field at the bottom. It sits on top of the on-screen keyboard (the shell
+ * follows the visible area), so the thumb that tapped the search button types right there.
+ * Escape closes.
  */
 export function SearchField({
   value,
@@ -177,16 +163,11 @@ export function SearchField({
 }: SearchFieldProps) {
   const labels = useLabels();
   const input = useRef<HTMLInputElement>(null);
-  const keyboard = useKeyboardInset();
   useEffect(() => {
     if (autoFocus) input.current?.focus();
   }, [autoFocus]);
   return (
-    <div
-      role="search"
-      className={clsx("uwu-searchfield uwu-glass", className)}
-      style={{ "--uwu-keyboard": `${keyboard}px`, ...style } as CSSProperties}
-    >
+    <div role="search" className={clsx("uwu-searchfield uwu-glass", className)} style={style}>
       <Search aria-hidden />
       <input
         ref={input}
