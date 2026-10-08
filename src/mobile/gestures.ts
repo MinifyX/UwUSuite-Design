@@ -165,6 +165,35 @@ export function keyboardInset(innerHeight: number, viewportHeight: number, viewp
   return Math.max(0, Math.round(innerHeight - viewportHeight - viewportOffsetTop));
 }
 
+export interface VisibleArea {
+  /** How far the visible part starts below the top of the page (iOS scrolls to the field). */
+  top: number;
+  height: number;
+  /** How much of the window the on-screen keyboard covers, 0 when it is closed. */
+  keyboard: number;
+}
+
+/**
+ * The part of the page the user sees, measured from the top of the shell's container (`top`, in
+ * the layout viewport like `getBoundingClientRect`). iOS keeps the layout viewport when the
+ * keyboard comes up: it shrinks the visual viewport and moves it down until the focused field
+ * shows, which pushes a full-screen layout out at the top. `MobileShell` follows this area instead
+ * (moved down by `top`, `height` tall), so its top stays visible and the bottom bar sits on the
+ * keyboard.
+ */
+export function visibleArea(
+  innerHeight: number,
+  viewportHeight: number,
+  viewportOffsetTop = 0,
+  containerTop = 0,
+): VisibleArea {
+  return {
+    top: Math.max(0, Math.round(viewportOffsetTop - containerTop)),
+    height: Math.round(viewportHeight),
+    keyboard: Math.max(0, Math.round(innerHeight - viewportHeight)),
+  };
+}
+
 /** Steppers: the next value, inside min…max. */
 export function stepValue(value: number, delta: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value + delta));

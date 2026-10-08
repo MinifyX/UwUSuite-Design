@@ -49,9 +49,11 @@ render.
 ## iPhone (iOS 26)
 
 - **Tab bar:** a floating Liquid Glass capsule at the bottom; a round glass
-  search button sits right of it. Searching shrinks the bar to a round button
-  on the left and grows the search field beside it, riding on top of the
-  keyboard (`visualViewport`, `useKeyboardInset()`).
+  search button sits right of it. Searching replaces the bar with a round
+  back button and the search field in one row, riding on top of the keyboard.
+  iOS scrolls the page for the keyboard instead of resizing it, so
+  `MobileShell` follows the visible part (`visualViewport`, `data-keyboard`,
+  `useKeyboardOpen()` e.g. for a small title while typing).
 - **Navigation bar:** large title (`large-title`, 34 pt at the default size, 750) on a tab's root page; it
   collapses into a small centred title with a gradient behind it as the page
   scrolls. Pushed pages have the small title only. Toolbar buttons are round
@@ -150,7 +152,7 @@ render.
 | `useEdgeBack`, `usePredictiveBack`           | `(pageRef, { onBack, enabled, underRef })`, used by `Screen`                                                                                                                                                                                                  |
 | `useHaptics()` / `haptic(kind)`              | `selection` · `light` · `medium` · `heavy` · `success` · `warning` · `error`; `setHapticsEnabled(false)` turns all off                                                                                                                                        |
 | `useKeyboardShortcut(accelerator, handler)`  | Tauri accelerator syntax, `matchesAccelerator()` underneath                                                                                                                                                                                                   |
-| `useKeyboardInset()`, `useScrolledPast(ref)` | Keyboard height from the visual viewport; large-title collapse                                                                                                                                                                                                |
+| `useKeyboardInset()`, `useScrolledPast(ref)` | Keyboard height from the visual viewport (outside a `MobileShell`; inside use `useKeyboardOpen()`); large-title collapse                                                                                                                                      |
 
 Their words (Zurück, Suchen, Suche schließen, Wird aktualisiert …, the
 "kopieren" screen readers hear after a tap-to-copy row) come from `UwuLabels`

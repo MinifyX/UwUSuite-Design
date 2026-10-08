@@ -11,12 +11,15 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { platformOf, type DeviceKind } from "./device.js";
+import { visibleArea } from "./gestures.js";
 import { DeviceKindProvider, prefersReducedMotion, useDeviceKind } from "./hooks.js";
 
 const ShellContext = createContext<HTMLElement | null>(null);
+const KeyboardContext = createContext(false);
 
 export interface MobileShellProps {
-  /** Pins the device (styleguide frames, tests); detected when left out. */
+  /** Pins the device (styleguide frames, tests); detected when left out. A pinned shell is a frame
+   * on a page and does not follow the keyboard. */
   kind?: DeviceKind;
   children: ReactNode;
   className?: string;
@@ -28,12 +31,17 @@ export interface MobileShellProps {
  * themselves inside it, and it carries `data-platform` for the CSS and `data-type` for the platform's
  * text sizes (docs/typography.md), so a phone frame on a desktop page reads like the phone. In an app it fills the
  * viewport (`height: 100dvh` on its parent); in the styleguide it is the device frame.
+ *
+ * While the on-screen keyboard is up, the shell shrinks to the part of the page above it (iOS
+ * scrolls the page instead of resizing it) and carries `data-keyboard`, so the content stays at the
+ * top and the bottom bar sits on the keyboard (`useKeyboardOpen()`).
  */
 export function MobileShell({ kind, children, className, style }: MobileShellProps) {
   const detected = useDeviceKind();
   const device = kind ?? detected;
   const [element, setElement] = useState<HTMLDivElement | null>(null);
   const platform = platformOf(device) ?? "ios";
+  const keyboard = useVisibleArea(element, !kind);
   const content = (
     <div
       ref={setElement}
@@ -44,10 +52,66 @@ export function MobileShell({ kind, children, className, style }: MobileShellPro
     >
       {/* The content waits for the shell element (one synchronous commit), so overlays portal into
           it from their first render instead of moving there and losing focus and state. */}
-      {element && <ShellContext.Provider value={element}>{children}</ShellContext.Provider>}
+      {element && (
+        <ShellContext.Provider value={element}>
+          <KeyboardContext.Provider value={keyboard}>{children}</KeyboardContext.Provider>
+        </ShellContext.Provider>
+      )}
     </div>
   );
   return kind ? <DeviceKindProvider kind={kind}>{content}</DeviceKindProvider> : content;
+}
+
+/**
+ * Follows the visible part of the page while it differs from the window (keyboard up, page
+ * scrolled): sets `data-follow`, `data-keyboard` and the `--uwu-visible-*` variables on the shell
+ * directly, once per frame, so the shell keeps up with the viewport without a React render. Returns
+ * whether the keyboard is up. Pinch zoom (UwUMail's mail view) is left alone.
+ */
+function useVisibleArea(element: HTMLElement | null, enabled: boolean): boolean {
+  const [keyboard, setKeyboard] = useState(false);
+  useEffect(() => {
+    const viewport = typeof window === "undefined" ? undefined : window.visualViewport;
+    if (!enabled || !element || !viewport) return;
+    let frame = 0;
+    const apply = () => {
+      frame = 0;
+      const zoomed = Math.abs(viewport.scale - 1) > 0.01;
+      // iOS sometimes leaves the page scrolled after the keyboard went away.
+      if (!zoomed && viewport.height >= window.innerHeight - 1 && (window.scrollY > 0 || viewport.offsetTop > 0)) {
+        window.scrollTo(0, 0);
+      }
+      const containerTop = element.parentElement?.getBoundingClientRect().top ?? 0;
+      const area = zoomed ? null : visibleArea(window.innerHeight, viewport.height, viewport.offsetTop, containerTop);
+      const follow = !!area && (area.keyboard > 0 || area.top > 0);
+      element.toggleAttribute("data-follow", follow);
+      element.toggleAttribute("data-keyboard", !!area && area.keyboard > 0);
+      if (area && follow) {
+        element.style.setProperty("--uwu-visible-top", `${area.top}px`);
+        element.style.setProperty("--uwu-visible-height", `${area.height}px`);
+      }
+      setKeyboard(!!area && area.keyboard > 0);
+    };
+    const update = () => {
+      if (!frame) frame = requestAnimationFrame(apply);
+    };
+    apply();
+    viewport.addEventListener("resize", update);
+    viewport.addEventListener("scroll", update);
+    return () => {
+      cancelAnimationFrame(frame);
+      viewport.removeEventListener("resize", update);
+      viewport.removeEventListener("scroll", update);
+      element.removeAttribute("data-follow");
+      element.removeAttribute("data-keyboard");
+    };
+  }, [element, enabled]);
+  return keyboard;
+}
+
+/** True while the on-screen keyboard is up (inside a `MobileShell` that follows it). */
+export function useKeyboardOpen(): boolean {
+  return useContext(KeyboardContext);
 }
 
 /** Renders overlays (sheets, menus, toasts) at the top of the shell, or in place without one. */

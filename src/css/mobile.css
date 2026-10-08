@@ -29,8 +29,6 @@
     --uwu-safe-bottom: env(safe-area-inset-bottom, 0px);
     --uwu-safe-left: env(safe-area-inset-left, 0px);
     --uwu-safe-right: env(safe-area-inset-right, 0px);
-    /* How far the on-screen keyboard covers the bottom; set by the components that rise above it. */
-    --uwu-keyboard: 0px;
     --uwu-ease-sheet: cubic-bezier(0.2, 0.9, 0.25, 1);
     --uwu-ease-push: cubic-bezier(0.2, 0.85, 0.25, 1);
   }
@@ -51,6 +49,13 @@
     -webkit-user-select: none;
     /* A long press opens the app's own menu, not WebKit's callout. */
     -webkit-touch-callout: none;
+  }
+
+  /* The keyboard is up: the shell is the part of the page above it (see MobileShell). */
+  .uwu-mshell[data-follow] {
+    height: var(--uwu-visible-height);
+    transform: translateY(var(--uwu-visible-top));
+    overscroll-behavior: none;
   }
 
   .uwu-mshell[data-platform="android"] {
@@ -482,27 +487,50 @@
     height: 25px;
   }
 
-  /* Searching: the tab bar shrinks to a round button on the left, the field grows beside it, and
-   both ride on top of the keyboard. */
-  .uwu-tabbar[data-searching] {
-    right: auto;
-    bottom: calc(var(--uwu-keyboard) + 10px);
-    left: calc(var(--uwu-safe-left) + 12px);
-    width: 56px;
-    height: 56px;
-    padding: 0;
-  }
-
-  .uwu-tabbar[data-searching] .uwu-tab {
-    color: var(--uwu-pink-solid);
-  }
-
+  /* Searching: a round back button and the field share one row where the tab bar was; with the
+   keyboard up the row sits right on it. */
+  .uwu-searchrow,
   .uwu-searchfield {
     position: absolute;
     right: calc(var(--uwu-safe-right) + 12px);
-    bottom: calc(max(12px, var(--uwu-keyboard)) + 10px);
-    left: calc(var(--uwu-safe-left) + 76px);
+    bottom: max(12px, calc(var(--uwu-safe-bottom) - 10px));
+    left: calc(var(--uwu-safe-left) + 12px);
     z-index: 50;
+  }
+
+  /* As tall as the tab bar, so the switch keeps the middle line. */
+  .uwu-searchrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 64px;
+  }
+
+  .uwu-mshell[data-keyboard] .uwu-searchrow {
+    height: 56px;
+  }
+
+  .uwu-mshell[data-keyboard] :is(.uwu-searchrow, .uwu-searchfield) {
+    bottom: 8px;
+  }
+
+  .uwu-searchback {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 28px;
+    color: var(--uwu-pink-solid);
+    animation: uwu-search-back 250ms var(--uwu-ease-push);
+  }
+
+  .uwu-searchback svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .uwu-searchfield {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -510,6 +538,12 @@
     padding: 0 8px 0 18px;
     border-radius: 28px;
     animation: uwu-search-grow 350ms var(--uwu-ease-push);
+  }
+
+  .uwu-searchrow > .uwu-searchfield {
+    position: static;
+    flex: 1;
+    min-width: 0;
   }
 
   .uwu-searchfield svg {
@@ -566,6 +600,24 @@
     width: 36px;
     height: 36px;
     border-radius: 18px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .uwu-searchback,
+    .uwu-searchfield {
+      animation: none;
+    }
+  }
+
+  :root[data-motion="reduced"] :is(.uwu-searchback, .uwu-searchfield) {
+    animation: none;
+  }
+
+  @keyframes uwu-search-back {
+    from {
+      opacity: 0;
+      transform: scale(0.6);
+    }
   }
 
   @keyframes uwu-search-grow {

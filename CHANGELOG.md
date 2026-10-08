@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.8.1
+
+iPhone search with the keyboard up:
+
+- **The page stays in sight:** iOS does not resize the page for the
+  keyboard, it scrolls it until the focused field shows. With the search
+  field at the bottom that pushed the whole layout out at the top, so the
+  results were hidden until the keyboard went away. `MobileShell` now follows
+  the visible part of the page (`visibleArea`, `data-keyboard`) and scrolls
+  the page back when the keyboard closes. `useKeyboardOpen()` tells a page
+  that the keyboard is up (e.g. for a small title).
+- **Back button in the row:** while searching, a round glass back button
+  (chevron, "Zurück") sits in one row with the field instead of the shrunken
+  tab bar with the tab's icon; both line up with and without the keyboard.
+- **Breaking:** `--uwu-keyboard` is gone and `SearchField` no longer reads the
+  keyboard itself. A standalone `SearchField` now starts 12 px from the left
+  edge (was 76 px, beside the shrunken tab bar); in search mode the TabBar's
+  `className` sits on the row. Inside a following shell `useKeyboardInset()`
+  must not lift anything (the shell already shrank).
+- The shell leaves pinch zoom alone and needs a fixed or unscrolled container
+  (it scrolls the page back to the top when the keyboard closes).
+
 ## 1.8.0
 
 Text sizes per platform and the system's text size ([typography.md](docs/typography.md)):

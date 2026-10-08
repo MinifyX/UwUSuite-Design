@@ -84,7 +84,8 @@ export function prefersReducedMotion(): boolean {
 /**
  * How many pixels the on-screen keyboard covers at the bottom (0 when it is closed). iOS keeps the
  * layout viewport and only shrinks the visual viewport, so a field pinned to the bottom has to
- * rise by this much to stay above the keyboard.
+ * rise by this much to stay above the keyboard — but only outside a `MobileShell`: the shell
+ * already shrinks to the area above the keyboard (use `useKeyboardOpen()` there).
  */
 export function useKeyboardInset(): number {
   const [inset, setInset] = useState(0);

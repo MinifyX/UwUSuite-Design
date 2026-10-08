@@ -1,11 +1,11 @@
 # The suite's Rust helpers. Apps take them as a git dependency at a release tag:
-#   uwu-macos = { git = "https://github.com/MinifyX/UwUSuite-Design", tag = "v1.8.0" }
+#   uwu-macos = { git = "https://github.com/MinifyX/UwUSuite-Design", tag = "v1.8.1" }
 [workspace]
 members = ["crates/*"]
 resolver = "2"
 
 [workspace.package]
-version = "1.8.0"
+version = "1.8.1"
 edition = "2021"
 rust-version = "1.85"
 license = "MIT"
