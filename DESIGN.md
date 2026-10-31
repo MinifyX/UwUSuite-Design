@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: UwUSuite
-description: "The design system of the UwUSuite (UwUMail, UwUMirror, UwUNotes, UwULock, UwUSSH, UwURDP, UwUAuth and the servers' web UIs), shipped as @uwusuite/design. A soft, warm, grey-pink canvas (#f8f4f6) carries white surfaces with hairline borders; one brand pink in two strengths does all the accent work: #ff4d8d for dots, selection, focus and the logo, #e11d74 for every fill that carries text. Plum-black ink (#1c1420), never pure black. Type is UwU Sans (Atkinson Hyperlegible Next plus Nyu and a heart), bundled, never loaded from the network, with a size scale that follows the platform and the system's text size. Buttons are pills, cards are 16 px rounded rectangles without shadows, only floating things cast shadows. Motion is short with a little spring. Nyu the cat is the mascot, drawn as a die-cut sticker. Playful words by default, plain when it matters. Light, dark and high contrast are first-class themes, all checked against WCAG AA."
+description: "The design system of the UwUSuite (UwUMail, UwUMirror, UwUNotes, UwULock, UwUSSH, UwURDP, UwUAuth and the servers' web UIs), shipped as @uwusuite/design. A soft, warm, grey-pink canvas (#f8f4f6) carries white surfaces with hairline borders; one brand pink in two strengths does all the accent work: #ff4d8d for dots, selection and the logo, #e11d74 for every fill that carries text and for the focus ring. Plum-black ink (#1c1420), never pure black. Type is UwU Sans (Atkinson Hyperlegible Next plus Nyu and a heart), bundled, never loaded from the network, with a size scale that follows the platform and the system's text size. Buttons are pills, cards are 16 px rounded rectangles without shadows, only floating things cast shadows. Motion is short with a little spring. Nyu the cat is the mascot, drawn as a die-cut sticker. Playful words by default, plain when it matters. Light, dark and high contrast are first-class themes, all checked against WCAG AA."
 
 colors:
   # Light theme (the default, <html data-theme="light">). Every name is a --uwu-* custom property
@@ -288,7 +288,7 @@ components:
   text-input:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
-    borderColor: "color-mix(in srgb, #8a7d8b 60%, transparent)"
+    borderColor: "{colors.control}"
     typography: "{typography.body}"
     rounded: "{rounded.control}"
     height: 44px
@@ -306,7 +306,7 @@ components:
     width: 44px
     height: 24px
   switch-off:
-    backgroundColor: "color-mix(in srgb, #8a7d8b 70%, transparent)"
+    backgroundColor: "{colors.control}"
     rounded: "{rounded.full}"
     width: 44px
     height: 24px
@@ -459,7 +459,7 @@ components:
 This file describes the UwUSuite look for coding agents and design tools, in
 the [DESIGN.md format](https://github.com/google-labs-code/design.md). The
 tokens above are a snapshot of `src/css/tokens.css` and the components in
-`src/components/` at version 1.8.1. **The package is the source of truth:** if
+`src/components/` at version 1.9.0. **The package is the source of truth:** if
 this file and the code disagree, the code wins. Build UI by importing
 `@uwusuite/design`, not by copying these values (see [For agents](#for-agents)).
 
@@ -489,8 +489,8 @@ Liquid Glass on iOS 26, Material 3 on Android.
 **Key characteristics**
 
 - **One accent: pink, in two strengths.** `pink` (#ff4d8d) for marks without
-  text: dots, selection, focus, the logo. `pink-solid` (#e11d74) for every fill
-  that carries text. No second accent colour.
+  text: dots, selection, the logo. `pink-solid` (#e11d74) for every fill that
+  carries text and for the focus ring. No second accent colour.
 - **Warm neutrals with a pink cast.** Canvas #f8f4f6, ink #1c1420 (a plum
   black), muted #716672. Never pure grey, never pure black (except in high
   contrast).
@@ -525,22 +525,22 @@ every mark (dots, outlines, switches) against 3:1 and high contrast against
 | `elevated`        | `#fcf8fa` | `#241e28` | Hover rows, popovers, hints                                |
 | `ink`             | `#1c1420` | `#f8f2f6` | Text                                                       |
 | `muted`           | `#716672` | `#b3a8b3` | Secondary text, labels, quiet icons                        |
-| `faint`           | `#a69ba5` | `#7d717d` | Placeholders, chevrons; never for text that must be read   |
+| `faint`           | `#a69ba5` | `#7d717d` | Chevrons, quiet marks; never for text that must be read    |
 | `hairline`        | `#f2e8ee` | `#2c2430` | Dividers, card borders                                     |
 | `border` (`line`) | `#e9dde4` | `#3a3040` | Button, menu and dialog borders                            |
 | `control`         | `#8a7d8b` | `#7d7185` | Outline of what takes input, switch off (3:1, WCAG 1.4.11) |
 
 ### Brand: two pinks
 
-| Token              | Light     | Dark      | Role                                                                     |
-| ------------------ | --------- | --------- | ------------------------------------------------------------------------ |
-| `pink`             | `#ff4d8d` | `#ff7fac` | **Brand.** Dots, selection, focus ring, logo, sparkles                   |
-| `pink-solid`       | `#e11d74` | `#ff7fac` | Fills with text: primary button, badge, switch on, the "UwU" of the logo |
-| `pink-solid-hover` | `#c8165f` | `#ff9dbf` | Hover on `pink-solid`                                                    |
-| `on-pink`          | `#ffffff` | `#1c1420` | Text on `pink-solid` (dark text in dark mode)                            |
-| `pink-ink`         | `#a3154f` | `#ffa3c4` | Pink text, mostly on tints                                               |
-| `pink-tint`        | `#ffe4ef` | `#3a1a2a` | Active row, selected pill, nav item; hover at 45–60 %                    |
-| `pink-tint-strong` | `#ffd0e2` | `#4d2338` | Pressed, text selection (`::selection`)                                  |
+| Token              | Light     | Dark      | Role                                                                      |
+| ------------------ | --------- | --------- | ------------------------------------------------------------------------- |
+| `pink`             | `#ff4d8d` | `#ff7fac` | **Brand.** Dots, selection, the focused field's border, logo, sparkles    |
+| `pink-solid`       | `#e11d74` | `#ff7fac` | Fills with text, focus ring, primary button, badge, switch on, logo "UwU" |
+| `pink-solid-hover` | `#c8165f` | `#ff9dbf` | Hover on `pink-solid`                                                     |
+| `on-pink`          | `#ffffff` | `#1c1420` | Text on `pink-solid` (dark text in dark mode)                             |
+| `pink-ink`         | `#a3154f` | `#ffa3c4` | Pink text, mostly on tints                                                |
+| `pink-tint`        | `#ffe4ef` | `#3a1a2a` | Active row, selected pill, nav item; hover at 45–60 %                     |
+| `pink-tint-strong` | `#ffd0e2` | `#4d2338` | Pressed, text selection (`::selection`)                                   |
 
 White text on `#ff4d8d` reaches only 3.1:1, so text on a pink fill always uses
 `pink-solid` (4.5:1). `pink` reaches 3:1 on `surface` but not on `canvas`;
@@ -703,8 +703,9 @@ Apple's text styles:
 | `caption1`    | 12        | 10    | 12         | 12 label medium   |
 | `caption2`    | 11        | 10    | 11         | 11 label small    |
 
-Line heights: `--uwu-leading` 1.45 (body), `--uwu-leading-reading` 1.55,
-`--uwu-leading-tight` 1.25. The iOS large title is weight 750, line height
+Line heights: `--uwu-leading` 1.45 (body, set on `<body>`),
+`--uwu-leading-reading` 1.55 (`leading-reading`), `--uwu-leading-tight` 1.25
+(`leading-tight`, titles). The iOS large title is weight 750, line height
 1.15, -0.01em.
 
 ### Weights
@@ -714,6 +715,7 @@ Line heights: `--uwu-leading` 1.45 (body), `--uwu-leading-reading` 1.55,
 | 400    | Text, list and sidebar rows, counts, metadata                           |
 | 500    | Menu items, pills, toasts                                               |
 | 600    | Item names, buttons, field labels, segmented choices, the headline role |
+| 650    | Mobile bar titles, tab labels, list and sidebar headings, sheet titles  |
 | 700    | Card, dialog and group titles, badges                                   |
 | 750    | The iOS large title                                                     |
 | 800    | The wordmark only                                                       |
@@ -725,9 +727,11 @@ and mark the selection with colour; UwU Sans is sturdy enough already.
 ## Layout
 
 - **Spacing:** one 4 px scale, `--uwu-space-1…10` = 4, 8, 12, 16, 20, 24, 32,
-  40 px (Tailwind's spacing steps). The components also use Tailwind's half
-  steps 6, 10 and 14 px (`gap-1.5`, `py-2.5`, `px-3.5`) for padding inside
-  controls; don't go off the 2 px grid.
+  40 px (Tailwind's spacing steps). Layout (gaps between cards, sections,
+  page padding) stays on that scale. Inside a control the components also use
+  Tailwind's half steps 6, 10 and 14 px (`gap-1.5`, `py-2.5`, `px-3.5`): the
+  `Field` gap, menu padding, the `Hint` padding, the input's side padding.
+  These are the only exceptions; nothing goes off the 2 px grid.
 - **Canvas and cards:** grey-pink canvas, white cards on it. Lists are rounded
   rows with a small gap and no dividers. Hover tints `pink-tint` at 45 %,
   selected is `pink-tint`.
@@ -765,7 +769,12 @@ by 1 px `hairline` or `border`. Cards never have a shadow.
 | `--uwu-shadow-float`   | `0 12px 32px rgb(28 20 32 / 0.12), 0 2px 8px rgb(28 20 32 / 0.06)` | `0 12px 32px rgb(0 0 0 / 0.45), 0 2px 8px rgb(0 0 0 / 0.3)` | Menus, dialogs, toasts, popovers, tooltips |
 | `--uwu-shadow-primary` | `0 2px 10px rgb(225 29 116 / 0.25)`                                | `0 2px 10px rgb(255 127 172 / 0.2)`                         | The primary button                         |
 | `--uwu-shadow-nyu`     | `0 6px 10px rgb(194 48 111 / 0.12)`                                | (same)                                                      | Nyu (`drop-shadow-nyu`)                    |
-| `--uwu-focus`          | `0 0 0 3px rgb(255 77 141 / 0.35)`                                 | `0 0 0 3px rgb(255 127 172 / 0.4)`                          | Focus ring (`shadow-focus`)                |
+| `--uwu-focus`          | `0 0 0 3px #e11d74` (`pink-solid`)                                 | `0 0 0 3px #ff7fac` (`pink-solid`)                          | Focus ring (`shadow-focus`), opaque, 3:1   |
+
+The mobile components (`mobile.css`) draw the platform's own shadows instead:
+sheets, pushed pages, context menus, the iPad sidebar, snackbars and the
+Android FAB use plain black (`rgb(0 0 0 / 0.2–0.4)`) as iOS and Material 3 do.
+They are the one place with raw shadow values; app code still uses the tokens.
 
 Modal dialogs sit on `backdrop` with a 2 px backdrop blur. Layers:
 `--uwu-z-sticky` 30, `--uwu-z-menu` 40, `--uwu-z-cameo` 45, `--uwu-z-toast`
@@ -825,10 +834,28 @@ from; it is never the point, and it can always be turned off.
 | `animate-pulse-soft` | `uwu-pulse` 1s, opacity 1 → 0.35, infinite      | Connecting dots                    |
 | `animate-spin`       | `uwu-spin`                                      | Spinners                           |
 
-Pressed buttons scale to 0.97 (`active:scale-[0.97]`). The mobile sheets and
-pushed pages have their own curves in `mobile.css` (`--uwu-ease-sheet`
-`cubic-bezier(0.2, 0.9, 0.25, 1)`, `--uwu-ease-push`
-`cubic-bezier(0.2, 0.85, 0.25, 1)`, 300–420 ms) to match iOS.
+Pressed buttons scale to 0.97 (`active:scale-[0.97]`).
+
+**Platform motion (the exception).** The mobile components copy the system's
+own timing, which is slower than the desktop tokens. They live in `mobile.css`
+with two curves, `--uwu-ease-sheet` `cubic-bezier(0.2, 0.9, 0.25, 1)` and
+`--uwu-ease-push` `cubic-bezier(0.2, 0.85, 0.25, 1)`, and are the only
+durations outside the tokens above:
+
+| Motion                                  | iOS / iPadOS                   | Android      |
+| --------------------------------------- | ------------------------------ | ------------ |
+| Push a page / go back                   | 420 / 380 ms, ease-push        | 320 / 300 ms |
+| Sheet in / resize / full-screen sheet   | 420 / 320 / 360 ms, ease-sheet | (same)       |
+| Full-screen sheet, menu, iPad sheet out | 260 / 200 / 200 ms, ease-in    | (same)       |
+| Context menu and its preview            | 300 ms, ease-pop               | (same)       |
+| iPad form sheet                         | 260 ms, ease-pop               | –            |
+| Tab bar resize, search field grow/back  | 350 / 250 ms, ease-push        | –            |
+| Swipe action settles                    | 280 ms, ease-push              | (same)       |
+| Pull to refresh settles                 | 250–300 ms                     | (same)       |
+| Glass toast drops in                    | 420 ms with a little overshoot | –            |
+| Scrim fades                             | 300 ms                         | (same)       |
+
+Apps use the components and never copy these numbers.
 
 With `data-motion="reduced"` every animation and transition collapses to 1 ms
 and runs once, Nyu holds still, the flying Nyu is hidden and gestures finish
@@ -901,12 +928,12 @@ and the tooltip.
   error (`text-meta`, `danger-ink`, `role="alert"`) or a hint (`text-caption`,
   `muted`), 6 px apart. The render prop receives `(id, describedBy)`.
 - **`TextInput`, `TextArea`, `Select`**: 44 px high (text area at least 96 px),
-  `rounded-control`, `surface`, 1 px outline in `control` at 60 %, 14 px side
-  padding, `text-body`, placeholder in `faint`. Focus: border `pink` plus the
-  3 px focus ring. `aria-invalid` turns the border `danger`. Disabled at 55 %.
+  `rounded-control`, `surface`, 1 px outline in `control`, 14 px side
+  padding, `text-body`, placeholder in `muted` (4.5:1). Focus: border `pink`
+  plus the 3 px focus ring. `aria-invalid` turns the border `danger`. Disabled at 55 %.
   On iOS text fields stay at 16 px or more, or Safari zooms in.
-- **`Switch`**: 44 × 24 (`sm` 36 × 20), on `pink-solid`, off `control` at
-  70 %, a white 20 px knob that slides 20 px in 200 ms. `role="switch"`.
+- **`Switch`**: 44 × 24 (`sm` 36 × 20), on `pink-solid`, off `control`, a
+  white 20 px knob that slides 20 px in 200 ms. `role="switch"`.
 - **`Toggle`**: a labelled setting (label 600, description `text-meta`
   `muted`) with a switch on the right.
 - **`Segmented`**: 2–4 exclusive choices on a `canvas` pill with 4 px padding;
@@ -1006,9 +1033,10 @@ installers and build scripts.
 - **Sticker style**, fixed artwork that is never themed: outline plum
   `#4B1D3F`, body `#FF6FA6`, light face or glass `#FFB8D3`, blush `#FF4D8D` at
   50 % (`#FF7FB0` on the mail envelope), a white die-cut edge. Props: star
-  `#FFD66E`, tear `#9ED8FF`, lilac `#CDB8FF`, mint `#B9F0D0`, sky `#BDE6FF`,
-  kraft `#F2C58F` / `#F8DDB8` / `#E3AE6F`. The white edge keeps her readable
-  on dark ground.
+  `#FFD66E`, tear `#9ED8FF`, lilac `#CDB8FF`, violet `#A78BFA`, mint
+  `#B9F0D0`, sky `#BDE6FF`, kraft `#F2C58F` / `#F8DDB8` / `#E3AE6F`, cloud
+  `#ECE6F4`, pink tile `#FFE4EF`, a status light `#6EE7B0`. All of them are
+  `NYU` in `src/nyu/svg.ts`. The white edge keeps her readable on dark ground.
 - **Moods:** `uwu` (idle), `happy` (it worked, welcome), `cheer` (done, sent),
   `sparkle` (new, AI, a nice surprise), `sad` (failed, offline), `puzzled`
   (not found, no blush), `sleepy` (empty, waiting, no blink).
@@ -1021,7 +1049,9 @@ installers and build scripts.
   `rx="116"`, vertical gradient `#FFF3F8` → `#FFD3E5`), about 330 px wide, drop
   shadow `#C2306F` at 25 % (dy 10, blur 10), two or three props. Never on a
   saturated pink tile, never another tile colour, a photo or text.
-  `uwu-icons` generates the platform files.
+  `uwu-icons` generates the platform files. A web manifest uses
+  `theme_color` `pink` #ff4d8d and `background_color` `canvas` #f8f4f6, so the
+  splash screen turns into the app without a flash.
 - **Mascot off:** a server admin can turn her off. Then there is no cat and no
   kaomoji, and the logo becomes the app's line icon in `text-pink`.
 
@@ -1128,14 +1158,19 @@ capitalised), the family is the UwUSuite, the cat is Nyu; never "Uwu Mail" or
 
 The suite targets **WCAG 2.1 AA** everywhere, and 7:1 in high contrast.
 
-- **Contrast:** text 4.5:1, marks and outlines 3:1, enforced by
-  `tests/contrast.test.ts` for every token pair in all four themes (including
-  the Material 3 tones). Use the tested pairs: `-ink` tokens for text, `on-pink`
-  only on `pink-solid`, `faint` never for text that must be read.
+- **Contrast:** text 4.5:1 (placeholders too), marks and outlines 3:1,
+  enforced by `tests/contrast.test.ts` for every token pair in all four themes
+  (including the Material 3 tones). Use the tested pairs at full strength:
+  `-ink` tokens for text, `on-pink` only on `pink-solid`, `control` for the
+  outline of anything that takes input, `faint` never for text that must be
+  read. An opacity modifier (`border-control/60`) breaks the tested ratio;
+  only disabled controls may fade.
 - **Not by colour alone:** a status dot always comes with text; the selected
   segment gets an outline in high contrast.
 - **Focus:** every interactive element shows the 3 px `--uwu-focus` ring on
-  `:focus-visible`. Never remove it without a replacement.
+  `:focus-visible`: opaque `pink-solid`, 3:1 or more against canvas, surface
+  and elevated in every theme (tested), black or white in high contrast. Never
+  remove it without a replacement.
 - **Names:** icon-only buttons need `label`; decorative icons are
   `aria-hidden` (the default of `<Icon>`); a standalone icon gets a `label`.
 - **Targets:** at least 32 px on the desktop (`IconButton size="sm"`), 36 px by
@@ -1186,8 +1221,10 @@ The suite targets **WCAG 2.1 AA** everywhere, and 7:1 in high contrast.
   actions that delete data, or add a second mascot.
 - Don't put kaomoji in buttons that act on data, or jokes in safety messages.
 - Don't draw a custom title bar or fake traffic lights on macOS.
-- Don't use durations outside the motion tokens, endless loops outside Nyu
-  scenes and connecting dots, or animations `data-motion` can't turn off.
+- Don't use durations outside the motion tokens (the platform motion inside
+  the mobile components is the one exception), endless loops outside Nyu
+  scenes, connecting dots and spinners, or animations `data-motion` can't turn
+  off.
 - Don't put body text on Liquid Glass.
 
 ## For Agents
@@ -1200,7 +1237,7 @@ or UwU website.
 
    ```jsonc
    // package.json
-   "@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.8.1/uwusuite-design-1.8.1.tgz"
+   "@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.9.0/uwusuite-design-1.9.0.tgz"
    ```
 
    ```css
@@ -1260,13 +1297,9 @@ or UwU website.
 
 - The `components` tokens describe the light theme; dark and high contrast
   values come from the same tokens, listed in [Colors](#colors).
-- `TextInput`, `TextArea` and `Select` draw their outline in `control` at 60 %
-  and the `Switch` track off in `control` at 70 %. That is about 2.1:1 and
-  2.4:1 on `surface`, below the 3:1 the full `control` token is tested for.
-  Until the package changes, custom controls should use `control` at full
-  strength.
-- The `Switch` knob is Tailwind's `bg-white` and the Android FAB's shadow raw
-  `rgb()` values; both are outside the token set.
-- `--uwu-leading-reading` and `--uwu-leading-tight` are defined but not mapped
-  to Tailwind names yet.
+- The `Switch` knob is Tailwind's `bg-white`, outside the token set.
+- The mobile shadows and the platform motion in `mobile.css` are raw values on
+  purpose (see [Elevation](#elevation--depth) and [Motion](#motion)).
+- The chosen `Segmented` option is told apart by `surface`, `pink-ink` and a
+  small shadow; only high contrast adds an outline.
 - There is no Swift package for the tokens; native sheets copy the hex values.

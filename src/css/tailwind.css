@@ -131,6 +131,9 @@
   --text-type-title1: var(--uwu-type-title1);
   --text-type-large-title: var(--uwu-type-large-title);
 
+  --leading-reading: var(--uwu-leading-reading);
+  --leading-tight: var(--uwu-leading-tight);
+
   --ease-uwu: var(--uwu-ease-out);
   --ease-pop: var(--uwu-ease-pop);
   --ease-spring: var(--uwu-ease-spring);

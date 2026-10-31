@@ -231,7 +231,12 @@ export function Tone() {
       title="Ton"
       lead="Standardmäßig verspielt: Kaomoji, kleine Witze, weiche Animationen. „Ton: Neutral“ tauscht nur die Wörter, nie Layout oder Farben. Deutsch ist die Ausgangssprache, wir duzen."
     >
-      <div className="overflow-x-auto rounded-card border border-hairline bg-surface">
+      <div
+        tabIndex={0}
+        role="region"
+        aria-label="Beispiele: neutral und verspielt"
+        className="max-w-full min-w-0 overflow-x-auto rounded-card border border-hairline bg-surface"
+      >
         <table className="w-full min-w-[640px] text-left text-meta">
           <thead className="text-caption font-bold tracking-wide text-muted uppercase">
             <tr className="border-b border-hairline">

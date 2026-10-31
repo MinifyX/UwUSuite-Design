@@ -49,7 +49,8 @@ default, `labels="en"` gives English, or pass your own.
 - **Elevation:** shadows only for what floats: menus, dialogs, toasts,
   popovers (`shadow-float`). Primary buttons get `shadow-primary`. Cards have a
   hairline, never a shadow.
-- **Focus:** `:focus-visible` gets a 3 px pink ring (`--uwu-focus`). Never
+- **Focus:** `:focus-visible` gets a 3 px opaque `pink-solid` ring
+  (`--uwu-focus`, 3:1 on every surface; black or white in high contrast). Never
   remove it without a replacement. A primary button swaps its own shadow for
   the ring while focused (`focus-visible:shadow-focus`).
 

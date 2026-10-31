@@ -80,7 +80,12 @@ function PlatformScale() {
 
 function RoleTable() {
   return (
-    <div className="overflow-x-auto rounded-card border border-hairline bg-surface">
+    <div
+      tabIndex={0}
+      role="region"
+      aria-label="Rollen je Plattform"
+      className="max-w-full min-w-0 overflow-x-auto rounded-card border border-hairline bg-surface"
+    >
       <table className="w-full text-left text-meta tabular-nums">
         <thead className="text-caption text-muted">
           <tr>

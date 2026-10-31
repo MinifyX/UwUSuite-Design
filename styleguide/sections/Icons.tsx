@@ -109,7 +109,7 @@ export function Icons() {
           <span className="inline-flex items-center gap-1.5 text-meta text-danger-ink">
             <Icon icon={ICONS.error} /> Nicht gesendet
           </span>
-          <span className="inline-flex items-center gap-1.5 text-meta text-pink">
+          <span className="inline-flex items-center gap-1.5 text-meta text-pink-ink">
             <Icon icon={Heart} className="fill-pink" /> Gefüllt nur als Zustand
           </span>
         </Panel>

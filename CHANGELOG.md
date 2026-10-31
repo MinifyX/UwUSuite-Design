@@ -1,6 +1,39 @@
 # Changelog
 
-## Unreleased
+## 1.9.0
+
+Accessibility (WCAG 2.1 AA, 1.4.3 and 1.4.11). Token values change, so the
+look shifts a little: input outlines and the switch track are darker and the
+focus ring is solid.
+
+- **Focus ring:** `--uwu-focus` is now an opaque 3 px `pink-solid` ring
+  (`#e11d74` light, `#ff7fac` dark) instead of pink at 35–40 %. That is 4.1:1
+  or more against canvas, surface and elevated (was 1.5:1 light, 2.3:1 dark);
+  a test checks it in every theme. High contrast keeps black or white.
+- **Inputs:** `TextInput`, `TextArea` and `Select` draw their outline in
+  `control` at full strength (was 60 %, 2.1:1; now 3.5–4.1:1). Placeholders
+  are `muted` instead of `faint` (2.7:1 → 5.5:1).
+- **Switch:** the track off is `control` at full strength (was 70 %, 2.4:1;
+  now 3.5–4.1:1).
+- **High contrast:** glass buttons and the glass search field keep their focus
+  ring (the high-contrast glass rule removed it).
+- **`Screen` (`NavBar`):** new `label` prop for the region's name when the
+  title is not unique on the page (several demo phones, split views).
+- **Tailwind:** `leading-reading` and `leading-tight` map
+  `--uwu-leading-reading` and `--uwu-leading-tight`.
+- **Styleguide:** the demo phones have unique region names and scale down on
+  narrow screens (no side scrolling at 375 px), code blocks and wide tables are
+  keyboard-scrollable regions, the contrast grid draws its failing samples as
+  labelled negative examples, icon labels use `pink-ink`.
+- **Docs:** `DESIGN.md` at the root: the whole system in one file for coding
+  agents and design tools (DESIGN.md format), with rules for agents. It is now
+  part of the package (`files`). It matches the code: weights (650 for mobile
+  titles), spacing exceptions, the mobile shadows and platform motion as
+  documented exceptions, every Nyu colour, the manifest `background_color`
+  (`canvas` #f8f4f6).
+- **Docs:** native SwiftUI sheets (AutoFill and other extensions) in
+  `docs/mobile.md`: token colours as dynamic colours, header, search, grouped
+  lists, empty states. First user: UwULock's AutoFill sheet (0.6.0-beta.5).
 
 - **Docs:** `DESIGN.md` at the root: the whole system in one file for coding
   agents and design tools (DESIGN.md format), with rules for agents.

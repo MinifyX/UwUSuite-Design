@@ -122,6 +122,12 @@
     box-shadow: none;
   }
 
+  /* …but keeps the focus ring (the rule above outranks the plain focus rules). */
+  :root[data-contrast="high"] .uwu-glass:focus-visible,
+  :root[data-contrast="high"] .uwu-glass.uwu-searchfield:focus-within {
+    box-shadow: var(--uwu-focus);
+  }
+
   /* ── Screen, navigation bar, large title ─────────────────────────────────────────────────────── */
 
   .uwu-screen {
