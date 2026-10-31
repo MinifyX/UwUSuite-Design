@@ -107,6 +107,8 @@ export function NavBar({
 
 export interface ScreenProps {
   title: string;
+  /** The page's name for screen readers, when the title alone is not unique on the page. */
+  label?: string;
   /** A line under the large title ("Synchronisiert gerade eben"). */
   subtitle?: ReactNode;
   /** Root pages of a tab have a large title that collapses into the bar; pushed pages don't. */
@@ -132,6 +134,7 @@ export interface ScreenProps {
  */
 export function Screen({
   title,
+  label,
   subtitle,
   largeTitle = false,
   leading,
@@ -168,7 +171,7 @@ export function Screen({
   return (
     <section
       ref={page}
-      aria-label={title}
+      aria-label={label ?? title}
       className={clsx("uwu-screen", className)}
       data-platform={platform}
       data-search={searchBar ? "" : undefined}

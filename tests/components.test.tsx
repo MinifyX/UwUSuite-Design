@@ -56,6 +56,14 @@ describe("Field", () => {
     expect(screen.getByRole("alert").textContent).toBe("Nur Zahlen");
     expect(screen.queryByText("Meist 7000")).toBeNull();
   });
+
+  it("draws the outline in the full control colour and a readable placeholder (WCAG 1.4.11, 1.4.3)", () => {
+    render(<TextInput aria-label="Name" placeholder="Mini" />);
+    const classes = screen.getByLabelText("Name").className.split(/\s+/);
+    expect(classes).toContain("border-control");
+    expect(classes).toContain("placeholder:text-muted");
+    expect(classes.some((c) => /^(border|bg)-control\//.test(c) || c === "placeholder:text-faint")).toBe(false);
+  });
 });
 
 describe("Toggle and Segmented", () => {
@@ -66,6 +74,7 @@ describe("Toggle and Segmented", () => {
     }
     render(<Harness />);
     const toggle = screen.getByRole("switch", { name: "AirPlay" });
+    expect(toggle.className.split(/\s+/)).toContain("bg-control");
     fireEvent.click(toggle);
     expect(toggle.getAttribute("aria-checked")).toBe("true");
   });

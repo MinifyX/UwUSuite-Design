@@ -44,7 +44,7 @@ export function Field({ label, hint, error, children, className }: FieldProps) {
 }
 
 export const CONTROL_CLASS =
-  "h-11 w-full rounded-control border border-control/60 bg-surface px-3.5 text-body text-ink placeholder:text-faint transition-shadow focus:border-pink focus:shadow-focus focus:outline-none aria-invalid:border-danger disabled:opacity-55";
+  "h-11 w-full rounded-control border border-control bg-surface px-3.5 text-body text-ink placeholder:text-muted transition-shadow focus:border-pink focus:shadow-focus focus:outline-none aria-invalid:border-danger disabled:opacity-55";
 
 export const TextInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function TextInput(
   { className, ...rest },

@@ -19,22 +19,22 @@ all four themes. A token change that breaks a pair fails the build.
 | `elevated`        | `#fcf8fa` | `#241e28` | Hover rows, popovers, hints                      |
 | `ink`             | `#1c1420` | `#f8f2f6` | Text                                             |
 | `muted`           | `#716672` | `#b3a8b3` | Secondary text, labels, quiet icons              |
-| `faint`           | `#a69ba5` | `#7d717d` | Placeholders, group titles in the portal         |
+| `faint`           | `#a69ba5` | `#7d717d` | Chevrons, group titles in the portal             |
 | `hairline`        | `#f2e8ee` | `#2c2430` | Dividers, card borders                           |
 | `border` (`line`) | `#e9dde4` | `#3a3040` | Button and menu borders                          |
 | `control`         | `#8a7d8b` | `#7d7185` | Outline of inputs, switch off (3:1, WCAG 1.4.11) |
 
 ## Brand: two pinks
 
-| Token              | Light     | Dark      | Use                                                                       |
-| ------------------ | --------- | --------- | ------------------------------------------------------------------------- |
-| `pink`             | `#ff4d8d` | `#ff7fac` | **Brand.** Dots, selection, focus, logo                                   |
-| `pink-solid`       | `#e11d74` | `#ff7fac` | Fills with text: primary buttons, badges, switch on, the wordmark's "UwU" |
-| `pink-solid-hover` | `#c8165f` | `#ff9dbf` | Hover on it                                                               |
-| `on-pink`          | `#ffffff` | `#1c1420` | Text on `pink-solid`                                                      |
-| `pink-ink`         | `#a3154f` | `#ffa3c4` | Pink text on tints                                                        |
-| `pink-tint`        | `#ffe4ef` | `#3a1a2a` | Active row, selected pill, nav item                                       |
-| `pink-tint-strong` | `#ffd0e2` | `#4d2338` | Pressed, text selection                                                   |
+| Token              | Light     | Dark      | Use                                                                     |
+| ------------------ | --------- | --------- | ----------------------------------------------------------------------- |
+| `pink`             | `#ff4d8d` | `#ff7fac` | **Brand.** Dots, selection, logo                                        |
+| `pink-solid`       | `#e11d74` | `#ff7fac` | Fills with text (primary buttons, badges, switch on, "UwU"), focus ring |
+| `pink-solid-hover` | `#c8165f` | `#ff9dbf` | Hover on it                                                             |
+| `on-pink`          | `#ffffff` | `#1c1420` | Text on `pink-solid`                                                    |
+| `pink-ink`         | `#a3154f` | `#ffa3c4` | Pink text on tints                                                      |
+| `pink-tint`        | `#ffe4ef` | `#3a1a2a` | Active row, selected pill, nav item                                     |
+| `pink-tint-strong` | `#ffd0e2` | `#4d2338` | Pressed, text selection                                                 |
 
 **Why two pinks?** White text on `#ff4d8d` reaches only 3.1:1. Anything with
 text on a pink fill uses `pink-solid` (4.5:1). `pink` reaches 3:1 on

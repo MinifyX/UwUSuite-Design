@@ -17,7 +17,7 @@ export function Section({
     <section id={id} className="flex flex-col gap-6">
       <header className="flex flex-col gap-2">
         <h2 className="text-[28px] font-extrabold tracking-[-0.02em]">{title}</h2>
-        {lead && <p className="max-w-[720px] text-reading leading-[var(--uwu-leading-reading)] text-muted">{lead}</p>}
+        {lead && <p className="max-w-[720px] text-reading leading-reading text-muted">{lead}</p>}
       </header>
       {children}
     </section>
@@ -59,7 +59,11 @@ export function Rules({ items }: { items: [boolean, ReactNode][] }) {
 
 export function Code({ children }: { children: string }) {
   return (
-    <pre className="selectable overflow-x-auto rounded-card border border-hairline bg-surface p-4 text-[12.5px] leading-relaxed">
+    // Focusable so keyboard users can scroll long lines sideways (WCAG 2.1.1).
+    <pre
+      tabIndex={0}
+      className="selectable max-w-full min-w-0 overflow-x-auto rounded-card border border-hairline bg-surface p-4 text-[12.5px] leading-relaxed"
+    >
       <code>{children}</code>
     </pre>
   );

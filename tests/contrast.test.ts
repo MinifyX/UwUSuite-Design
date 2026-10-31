@@ -40,6 +40,8 @@ const MARKS: [string, string][] = [
   ...["--uwu-pink-solid", "--uwu-control", "--uwu-danger", "--uwu-success", "--uwu-warning"].flatMap((fg) =>
     ["--uwu-canvas", "--uwu-surface"].map((bg) => [fg, bg] as [string, string]),
   ),
+  // Fields and switches sit on cards and in dialogs too; they use --uwu-control at full strength.
+  ["--uwu-control", "--uwu-elevated"],
   // Segmented's chosen option in high contrast: an ink outline on the track (canvas), because
   // there canvas and surface are the same colour and the choice must not rely on colour alone.
   ["--uwu-ink", "--uwu-canvas"],
@@ -71,6 +73,12 @@ describe.each(Object.keys(THEMES) as ThemeName[])("%s theme", (name) => {
 
   it.each(MARKS)("%s on %s is visible", (fg, bg) => {
     expect(contrast(value(fg), value(bg))).toBeGreaterThanOrEqual(MARK_MIN);
+  });
+
+  it.each(SURFACES)("the focus ring is opaque and visible on %s", (bg) => {
+    const ring = /^0 0 0 3px (#[0-9a-f]{6})$/i.exec(value("--uwu-focus"));
+    expect(ring, "--uwu-focus must be a solid 3 px ring in a hex colour").not.toBeNull();
+    expect(contrast(ring![1]!, value(bg))).toBeGreaterThanOrEqual(MARK_MIN);
   });
 });
 

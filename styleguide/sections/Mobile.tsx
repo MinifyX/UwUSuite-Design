@@ -76,6 +76,9 @@ function DemoApp({ kind, portrait = false }: { kind: DeviceKind; portrait?: bool
   const tap = useHaptics();
   const android = kind === "phone-android";
   const ipad = kind === "ipad";
+  // Three demo apps share the page: each names its landmarks after its device.
+  const device = android ? "Android" : ipad ? "iPad" : "iPhone";
+  const named = (title: string) => `${title} (${device})`;
   const [tab, setTab] = useState<Tab>("home");
   const [stack, setStack] = useState<Item[]>([]);
   const [selected, setSelected] = useState<Item>(ITEMS[0]!);
@@ -133,6 +136,7 @@ function DemoApp({ kind, portrait = false }: { kind: DeviceKind; portrait?: bool
   const detail = (item: Item, back?: () => void) => (
     <Screen
       title={item.name}
+      label={named(item.name)}
       onBack={back}
       platform={ipad ? "ipad" : undefined}
       trailing={<NavButton label="Bearbeiten" text onClick={() => setSheet(true)} />}
@@ -155,6 +159,7 @@ function DemoApp({ kind, portrait = false }: { kind: DeviceKind; portrait?: bool
   const home = (
     <Screen
       title="Übersicht"
+      label={named("Übersicht")}
       largeTitle
       subtitle={`Synchronisiert ${synced}`}
       leading={android ? undefined : <Avatar />}
@@ -171,7 +176,7 @@ function DemoApp({ kind, portrait = false }: { kind: DeviceKind; portrait?: bool
   );
 
   const generator = (
-    <Screen title="Generator" largeTitle>
+    <Screen title="Generator" label={named("Generator")} largeTitle>
       <ListSection header="Mindestens" footer="Die Länge wächst mit, wenn die Minimums mehr verlangen.">
         <ListRow
           title="Ziffern 0–9"
@@ -186,7 +191,7 @@ function DemoApp({ kind, portrait = false }: { kind: DeviceKind; portrait?: bool
   );
 
   const settings = (
-    <Screen title="Einstellungen" largeTitle>
+    <Screen title="Einstellungen" label={named("Einstellungen")} largeTitle>
       <ListSection header="Darstellung">
         <ListRow icon={ICONS.appearance} iconTone="solid" title="Design" value="System" onClick={() => {}} />
         <ListRow
@@ -203,7 +208,7 @@ function DemoApp({ kind, portrait = false }: { kind: DeviceKind; portrait?: bool
   );
 
   const check = (
-    <Screen title="Prüfung" largeTitle onRefresh={refresh}>
+    <Screen title="Prüfung" label={named("Prüfung")} largeTitle onRefresh={refresh}>
       <ListSection header="Zu tun">
         <ListRow
           icon={ICONS.warning}
@@ -239,6 +244,7 @@ function DemoApp({ kind, portrait = false }: { kind: DeviceKind; portrait?: bool
           list={
             <Screen
               title="Alle Einträge"
+              label={named("Alle Einträge")}
               largeTitle
               platform="ipad"
               leading={
@@ -266,6 +272,7 @@ function DemoApp({ kind, portrait = false }: { kind: DeviceKind; portrait?: bool
       )}
       {!pushed && (
         <TabBar
+          label={named("Bereiche")}
           tabs={TABS}
           value={tab}
           onChange={(next) => {

@@ -159,20 +159,46 @@ export function Colors() {
           {PAIRS.map(([fg, bg, label]) => {
             const value = ratio(values[fg], values[bg]);
             const ok = value !== null && value >= 4.5;
+            const shown = value ? `${value.toFixed(1).replace(".", ",")} : 1` : "–";
             return (
               <div
                 key={label}
                 className="flex items-center justify-between gap-3 rounded-control border border-hairline p-3"
                 style={{ background: `var(${bg})`, color: `var(${fg})` }}
               >
-                <span className="text-body font-semibold">{label}</span>
-                <span className="rounded-full bg-surface px-2 py-0.5 text-caption font-bold text-ink tabular-nums">
-                  {value ? `${value.toFixed(1)} : 1 ${ok ? "✓" : "✗"}` : "–"}
+                {ok || value === null ? (
+                  <span className="text-body font-semibold">{label}</span>
+                ) : (
+                  // The failing pair is a picture of what not to do, not text to read (WCAG 1.4.3
+                  // exempts it as an example): drawn as an image with its verdict as the name.
+                  <svg
+                    role="img"
+                    aria-label={`Negativbeispiel: ${label}, ${shown}, zu wenig Kontrast für Text`}
+                    className="h-[1.4em] min-w-0 flex-1 overflow-visible text-body font-semibold"
+                  >
+                    <text x="0" y="1.05em" fill="currentColor">
+                      {label}
+                    </text>
+                  </svg>
+                )}
+                <span className="shrink-0 rounded-full bg-surface px-2 py-0.5 text-caption font-bold text-ink tabular-nums">
+                  {shown}
+                  {value !== null && (
+                    <>
+                      {" "}
+                      <span aria-hidden>{ok ? "✓" : "✗"}</span>
+                      <span className="sr-only">{ok ? "besteht AA" : "fällt durch"}</span>
+                    </>
+                  )}
                 </span>
               </div>
             );
           })}
         </div>
+        <p className="text-meta text-muted">
+          ✓ besteht WCAG AA (4,5 : 1 für Text). ✗ ist ein Negativbeispiel: So nicht, Text auf Pink gehört auf
+          pink-solid.
+        </p>
       </Sub>
       <Rules
         items={[

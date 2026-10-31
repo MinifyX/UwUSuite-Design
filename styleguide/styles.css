@@ -106,6 +106,22 @@
   width: 320px;
 }
 
+/* Phones on a phone: the frames shrink so the page does not scroll sideways (WCAG 1.4.10);
+   their layout still sees the real size. */
+@media (max-width: 480px) {
+  .sg-iphone,
+  .sg-android {
+    zoom: 0.76;
+  }
+}
+
+@media (max-width: 360px) {
+  .sg-iphone,
+  .sg-android {
+    zoom: 0.64;
+  }
+}
+
 /* The iPad at 72 %, so it fits the page; its layout still sees the real size. */
 .sg-ipad {
   zoom: 0.72;

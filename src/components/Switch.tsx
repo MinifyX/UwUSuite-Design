@@ -25,7 +25,7 @@ export function Switch({ checked, onChange, label, id, disabled, size = "md" }: 
       className={clsx(
         "relative shrink-0 rounded-full transition-colors duration-200 disabled:opacity-55",
         size === "md" ? "h-6 w-11" : "h-5 w-9",
-        checked ? "bg-pink-solid" : "bg-control/70",
+        checked ? "bg-pink-solid" : "bg-control",
       )}
     >
       <span

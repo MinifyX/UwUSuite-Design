@@ -34,6 +34,7 @@ export const NYU = {
   kraftDark: "#E3AE6F",
   cloud: "#ECE6F4",
   tile: "#FFE4EF",
+  led: "#6EE7B0",
 } as const;
 
 export const MOODS = ["uwu", "happy", "cheer", "sparkle", "sad", "puzzled", "sleepy"] as const;
@@ -350,7 +351,7 @@ export function serverScene({ label = "Nyu" }: { label?: string } = {}) {
   const bay = (y: number, led: string) =>
     `<rect x="168" y="${y}" width="176" height="34" rx="10" fill="${NYU.cloud}" stroke="${NYU.ink}" stroke-width="8"/>` +
     `<path d="M186 ${y + 17} H258" stroke="${NYU.lilac}" stroke-width="7" stroke-linecap="round"/>` +
-    `<circle class="led ${led}" cx="320" cy="${y + 17}" r="7" fill="${led === "led-a" ? "#6EE7B0" : NYU.body}" stroke="${NYU.ink}" stroke-width="4"/>`;
+    `<circle class="led ${led}" cx="320" cy="${y + 17}" r="7" fill="${led === "led-a" ? NYU.led : NYU.body}" stroke="${NYU.ink}" stroke-width="4"/>`;
   const rack =
     `<rect x="146" y="316" width="220" height="172" rx="26" fill="${NYU.lilac}" stroke="${NYU.ink}" stroke-width="12"/>` +
     bay(340, "led-a") +

@@ -60,6 +60,6 @@ and the rules for a Liquid Glass icon on macOS 26: [macos.md](macos.md). Commit 
 ## Web
 
 - Favicon: `<link rel="icon" type="image/svg+xml" href="/<app>-app-icon.svg">`.
-- Web manifest: the app icon with `sizes: "any"`, `theme_color: "#ff4d8d"` and
-  `background_color: "#fff7fb"`.
+- Web manifest: the app icon with `sizes: "any"`, `theme_color: "#ff4d8d"` (`pink`)
+  and `background_color: "#f8f4f6"` (`canvas`).
 - Link previews (`og:image`) show Nyu on the tile gradient, 1200 × 630.

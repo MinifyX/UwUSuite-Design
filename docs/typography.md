@@ -156,13 +156,15 @@ settings, on this device.
 
 ### Weights
 
-| Weight | Use                                                       |
-| ------ | --------------------------------------------------------- |
-| 400    | Text, list and sidebar rows, counts, metadata             |
-| 500    | Menu items, pills, field labels, the selected sidebar row |
-| 600    | Titles, item names, buttons, headline role                |
-| 700    | Dialog titles, group titles, badges                       |
-| 800    | The wordmark only                                         |
+| Weight | Use                                                                     |
+| ------ | ----------------------------------------------------------------------- |
+| 400    | Text, list and sidebar rows, counts, metadata                           |
+| 500    | Menu items, pills, toasts                                               |
+| 600    | Item names, buttons, field labels, segmented choices, the headline role |
+| 650    | Mobile bar titles, tab labels, list and sidebar headings, sheet titles  |
+| 700    | Card, dialog and group titles, badges                                   |
+| 750    | The iOS large title                                                     |
+| 800    | The wordmark only                                                       |
 
 macOS and iOS draw sidebar and list rows in the regular weight and mark the
 selection with colour only; UwU Sans is a sturdy face already, so a 500 or 600
