@@ -10,6 +10,11 @@ UwURDP, UwUAuth and the servers' web UIs into one family. It takes its design
 from UwUMail, adds the stage, title bar and state colours from UwUMirror, and
 the high-contrast theme from UwULock.
 
+Coding agents and design tools: [DESIGN.md](DESIGN.md) sums the whole system
+up in one file (tokens, components, rules, in the
+[DESIGN.md format](https://github.com/google-labs-code/design.md)). The
+package stays the source of truth.
+
 | What                                                                  | Where                                    | Rules                                                      |
 | --------------------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------------------- |
 | Tokens (light, dark, high contrast), Tailwind v4 theme, base styles   | `src/css/`                               | [color](docs/color.md)                                     |
