@@ -1165,7 +1165,7 @@ capitalised), the family is the UwUSuite, the cat is Nyu; never "Uwu Mail" or
 
 ## Accessibility
 
-The suite targets **WCAG 2.1 AA** everywhere, and 7:1 in high contrast.
+The suite targets **WCAG 2.2 AA** everywhere, and 7:1 in high contrast.
 
 - **Contrast:** text 4.5:1 (placeholders too), marks and outlines 3:1,
   enforced by `tests/contrast.test.ts` for every token pair in all four themes
@@ -1320,7 +1320,7 @@ or UwU website.
    GDPR-compliant without a cookie banner, and uwu.minifyx.de has a strict CSP
    (`script-src`/`font-src 'self'`, so no inline scripts; ship `bootScript`
    as a file).
-4. **WCAG 2.1 AA, always.** Use tested token pairs, keep the focus ring, give
+4. **WCAG 2.2 AA, always.** Use tested token pairs, keep the focus ring, give
    every icon-only control a name, keep targets at 32 px or more (44 px on
    touch), never signal state by colour alone, let layouts grow with the text.
    If you add a token, add its pairs to `tests/contrast.test.ts`.
