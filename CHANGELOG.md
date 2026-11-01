@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.10.0
+
+Stickerbogen: the look of the new uwu.minifyx.de, as plain CSS for marketing
+pages (not for app chrome).
+
+- **`sticker.css`** (`@uwusuite/design/sticker.css`, also in `plain.css` and
+  `tailwind.css`, in the `components` layer): `.uwu-dotgrid`, `.uwu-sheet`,
+  `.uwu-sticker` (`--l`), `.uwu-tape` with `.uwu-tape__window` and
+  `.uwu-tape__track`, `.uwu-chip` (`--beta`, `--new`), `.uwu-fact`,
+  `.uwu-tilt`, `.uwu-mark`, `.uwu-hop`. Runs under a strict CSP (tilt via
+  `--tilt`, set through CSSOM). Every animation and transition only runs under
+  `prefers-reduced-motion: no-preference` and without `data-motion="reduced"`
+  (tested); without motion the tape is a static list.
+- **Tokens** in light, dark and high contrast: `--uwu-tape` / `--uwu-tape-ink`
+  (7.8:1 light, 8.8:1 dark, ≥13:1 high contrast), `--uwu-dot`,
+  `--uwu-sticker-edge`, `--uwu-sticker-shadow`, `--uwu-tilt-sm` (0.7°),
+  `--uwu-tilt-md` (4°). Tailwind: `tape`, `tape-ink`, `dot`, `sticker-edge`.
+- **Tests:** contrast pairs for tape, chips and the mark in every theme.
+- **Styleguide:** new section „Stickerbogen“ with every class.
+- **Docs:** `DESIGN.md` section "Website / Stickerbogen" (when to use it, tilt,
+  motion and tape rules); `CLAUDE.md` with the accessibility rules (WCAG 2.2
+  AA) for this package.
+
 ## 1.9.0
 
 Accessibility (WCAG 2.1 AA, 1.4.3 and 1.4.11). Token values change, so the
