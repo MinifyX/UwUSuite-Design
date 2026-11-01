@@ -21,6 +21,7 @@ import { Intro, Usage } from "./sections/Intro";
 import { Mobile } from "./sections/Mobile";
 import { Motion, Tone, Window } from "./sections/More";
 import { NyuSection } from "./sections/Nyu";
+import { Sticker } from "./sections/Sticker";
 import { Typography } from "./sections/Typography";
 import "./styles.css";
 
@@ -51,6 +52,7 @@ const SECTIONS = [
   ["nyu", "Nyu"],
   ["komponenten", "Komponenten"],
   ["mobil", "Mobil"],
+  ["stickerbogen", "Stickerbogen"],
   ["fenster", "Fenster"],
   ["bewegung", "Bewegung"],
   ["ton", "Ton"],
@@ -147,6 +149,7 @@ function App() {
           <NyuSection />
           <Components />
           <Mobile />
+          <Sticker />
           <Window />
           <Motion />
           <Tone />

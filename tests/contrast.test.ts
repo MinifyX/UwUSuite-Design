@@ -33,6 +33,13 @@ const TEXT: [string, string][] = [
   ...["pink", "violet", "sky", "mint", "amber", "coral"].map(
     (c) => [`--uwu-avatar-${c}-ink`, `--uwu-avatar-${c}`] as [string, string],
   ),
+  // Stickerbogen (sticker.css): the ticker on tape, the chips, the highlighter mark.
+  ["--uwu-tape-ink", "--uwu-tape"],
+  ["--uwu-ink", "--uwu-elevated"], // .uwu-chip
+  ["--uwu-pink-ink", "--uwu-pink-tint"], // .uwu-chip--beta, the .uwu-mark underlay
+  ["--uwu-on-pink", "--uwu-pink-solid"], // .uwu-chip--new
+  ...["--uwu-canvas", "--uwu-surface", "--uwu-elevated"].map((bg) => ["--uwu-pink-ink", bg] as [string, string]), // .uwu-mark
+  ["--uwu-pink-ink", "--uwu-surface"], // .uwu-fact number
 ];
 
 /** [mark, background] pairs without text: dots, outlines, switches, focus (WCAG 1.4.11, 3:1). */
