@@ -1,0 +1,238 @@
+/*
+ * Stickerbogen: the look of uwu.minifyx.de and other marketing pages (DESIGN.md "Website /
+ * Stickerbogen"). Never app chrome. Plain CSS against the tokens, no JavaScript needed, and it runs
+ * under a strict Content-Security-Policy: a page sets dynamic values (a sticker's --tilt) through
+ * CSSOM `style.setProperty`, never through style attributes.
+ *
+ * Classes:
+ *   .uwu-dotgrid            the page canvas with a 22 px dot grid
+ *   .uwu-sheet              a sticker sheet: a surface card with a dashed die line inside
+ *   .uwu-sticker(--l)       an img or svg with a die-cut edge and a drop shadow, tilted by --tilt
+ *   .uwu-tape               yellow masking tape for a ticker; .uwu-tape__window clips the row,
+ *                           .uwu-tape__track is the row that rolls
+ *   .uwu-chip(--beta|--new) a small pill: a version, a platform, "Beta"
+ *   .uwu-fact               a big fact pill: <b>11</b> Programme
+ *   .uwu-tilt               a card that tilts a little, alternating with its siblings
+ *   .uwu-mark               a highlighter mark in running text or a headline
+ *   .uwu-hop                makes a descendant .nyu hop once (add the class, remove it on animationend)
+ *
+ * Motion only runs under prefers-reduced-motion: no-preference and without
+ * <html data-motion="reduced">. Without motion the tape shows a static, wrapping list.
+ *
+ * The classes live in the `components` layer, so Tailwind utilities and a page's own (unlayered)
+ * CSS on the same elements win.
+ */
+
+@layer components {
+  /* ---- Canvas ---- */
+  .uwu-dotgrid {
+    /* Clips what tilted children (tape, cards) push past the edge, without becoming a scroll
+       container, so position: sticky inside keeps working. */
+    overflow-x: clip;
+    background:
+      radial-gradient(circle, var(--uwu-dot) 1.2px, transparent 1.4px) 0 0 / 22px 22px,
+      var(--uwu-canvas);
+  }
+
+  /* ---- Sheet ---- */
+  .uwu-sheet {
+    position: relative;
+    background: var(--uwu-surface);
+    border: 1px solid var(--uwu-hairline);
+    border-radius: 28px;
+    box-shadow: var(--uwu-shadow-float);
+  }
+
+  .uwu-sheet::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border: 2px dashed var(--uwu-border);
+    border-radius: 14px;
+    pointer-events: none;
+  }
+
+  /* ---- Sticker ---- */
+  .uwu-sticker {
+    --uwu-sticker-turn: var(--tilt, var(--uwu-tilt-md));
+    display: inline-block;
+    transform: rotate(var(--uwu-sticker-turn));
+    /* Four hard shadows draw the die-cut edge along the artwork's outline, then the soft shadow. */
+    filter: drop-shadow(2px 0 0 var(--uwu-sticker-edge)) drop-shadow(-2px 0 0 var(--uwu-sticker-edge))
+      drop-shadow(0 2px 0 var(--uwu-sticker-edge)) drop-shadow(0 -2px 0 var(--uwu-sticker-edge))
+      var(--uwu-sticker-shadow);
+  }
+
+  .uwu-sticker--l {
+    --uwu-sticker-turn: calc(-1 * var(--tilt, var(--uwu-tilt-md)));
+  }
+
+  .uwu-sticker > :is(img, svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .uwu-sticker:is(:hover, :focus-within) {
+    transform: translateY(-4px) rotate(0deg) scale(1.04);
+  }
+
+  /* ---- Tape ---- */
+  .uwu-tape {
+    background: var(--uwu-tape);
+    color: var(--uwu-tape-ink);
+    transform: rotate(-1.2deg);
+    box-shadow: 0 4px 0 rgb(0 0 0 / 0.05);
+  }
+
+  /* The visible part of the row: it clips and fades the ends. */
+  .uwu-tape__window {
+    /* In a wrapping flex row it takes its own line when less than 16rem is left. */
+    flex: 1 1 16rem;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  /* Without motion: a static list that wraps. Copies for the loop (aria-hidden) stay hidden. */
+  .uwu-tape__track {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .uwu-tape__track > * {
+    margin-inline-end: 32px;
+  }
+
+  .uwu-tape__track > [aria-hidden="true"] {
+    display: none;
+  }
+
+  html:root[data-contrast="high"] .uwu-tape {
+    box-shadow: inset 0 0 0 2px var(--uwu-tape-ink);
+  }
+
+  /* ---- Chips and facts ---- */
+  .uwu-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--uwu-radius-pill);
+    background: var(--uwu-elevated);
+    box-shadow: inset 0 0 0 1px var(--uwu-border);
+    color: var(--uwu-ink);
+    font: 600 var(--uwu-text-meta) / 1.3 var(--uwu-mono);
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .uwu-chip--beta {
+    background: var(--uwu-pink-tint);
+    box-shadow: none;
+    color: var(--uwu-pink-ink);
+  }
+
+  .uwu-chip--new {
+    background: var(--uwu-pink-solid);
+    box-shadow: none;
+    color: var(--uwu-on-pink);
+  }
+
+  .uwu-fact {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 6px 16px;
+    border: 1px solid var(--uwu-hairline);
+    border-radius: var(--uwu-radius-pill);
+    background: var(--uwu-surface);
+    color: var(--uwu-ink);
+    font-size: var(--uwu-text-reading);
+  }
+
+  .uwu-fact > b {
+    color: var(--uwu-pink-ink);
+    font-size: 1.35em;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Tilted cards ---- */
+  .uwu-tilt:nth-child(odd) {
+    transform: rotate(var(--uwu-tilt-sm));
+  }
+
+  .uwu-tilt:nth-child(even) {
+    transform: rotate(calc(-1 * var(--uwu-tilt-sm)));
+  }
+
+  .uwu-tilt:is(:hover, :focus-within) {
+    transform: translateY(-4px) rotate(0deg);
+  }
+
+  /* ---- Highlighter ---- */
+  .uwu-mark {
+    padding-inline: 0.08em;
+    background: linear-gradient(transparent 58%, var(--uwu-pink-tint) 0);
+    color: var(--uwu-pink-ink);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  /* ---- Motion ---- */
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="reduced"]) :is(.uwu-sticker, .uwu-tilt) {
+      transition: transform var(--uwu-duration-base) var(--uwu-ease-spring);
+    }
+
+    :root:not([data-motion="reduced"]) .uwu-tape__window {
+      mask-image: linear-gradient(90deg, transparent, black 4%, black 96%, transparent);
+    }
+
+    :root:not([data-motion="reduced"]) .uwu-tape__track {
+      flex-wrap: nowrap;
+      width: max-content;
+      animation: uwu-tape-roll 60s linear infinite;
+    }
+
+    :root:not([data-motion="reduced"]) .uwu-tape__track > * {
+      white-space: nowrap;
+    }
+
+    :root:not([data-motion="reduced"]) .uwu-tape__track > [aria-hidden="true"] {
+      display: revert;
+    }
+
+    :root:not([data-motion="reduced"]) .uwu-tape:is(:hover, :focus-within, [data-paused]) .uwu-tape__track {
+      animation-play-state: paused;
+    }
+
+    :root:not([data-motion="reduced"]) .uwu-hop .nyu {
+      transform-origin: 50% 100%;
+      animation: uwu-hop 600ms var(--uwu-ease-spring);
+    }
+  }
+}
+
+/* The track holds its items twice (the copy aria-hidden), so -50% is exactly one loop. */
+@keyframes uwu-tape-roll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes uwu-hop {
+  18% {
+    transform: scale(1.1, 0.88);
+  }
+  50% {
+    transform: translateY(-22%) scale(0.94, 1.08);
+  }
+  82% {
+    transform: scale(1.06, 0.94);
+  }
+}

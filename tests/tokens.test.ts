@@ -36,10 +36,31 @@ describe("tokens.css", () => {
   });
 });
 
+describe("sticker.css", () => {
+  const sticker = readFileSync(join(ROOT, "src/css/sticker.css"), "utf8");
+
+  it("keeps every animation and transition behind no-preference and data-motion", () => {
+    const motion = sticker.indexOf("@media (prefers-reduced-motion: no-preference)");
+    expect(motion).toBeGreaterThan(0);
+    const before = sticker.slice(0, motion).replace(/\/\*[\s\S]*?\*\//g, "");
+    expect(before).not.toMatch(/\b(animation|transition)\s*:/);
+    const rules = [...sticker.slice(motion).matchAll(/([^{}]+)\{[^{}]*\b(?:animation|transition)\s*:/g)];
+    expect(rules.length).toBeGreaterThan(2);
+    for (const [, selector] of rules) expect(selector, selector).toContain(':root:not([data-motion="reduced"])');
+  });
+
+  it("uses the tokens of the contract", () => {
+    for (const token of ["--uwu-tape", "--uwu-tape-ink", "--uwu-dot", "--uwu-sticker-shadow", "--uwu-sticker-edge"])
+      for (const theme of [light, block(':root[data-theme="dark"]')]) expect(theme, token).toHaveProperty(token);
+    expect(light["--uwu-tilt-sm"]).toBe("0.7deg");
+    expect(light["--uwu-tilt-md"]).toBe("4deg");
+  });
+});
+
 describe("css files", () => {
   it.each(["tailwind.css", "plain.css"])("%s imports every part", (file) => {
     const css = readFileSync(join(ROOT, "src/css", file), "utf8");
-    for (const part of ["tokens", "fonts", "base", "motion", "nyu", "titlebar", "mobile"])
+    for (const part of ["tokens", "fonts", "base", "motion", "nyu", "titlebar", "mobile", "sticker"])
       expect(css).toContain(`"./${part}.css"`);
   });
 
@@ -64,7 +85,7 @@ describe("css files", () => {
 
   it("uses no raw hex colours in the mobile components and their CSS", () => {
     const files = readdirSync(join(ROOT, "src/mobile")).map((file) => join(ROOT, "src/mobile", file));
-    for (const file of [...files, join(ROOT, "src/css/mobile.css")])
+    for (const file of [...files, join(ROOT, "src/css/mobile.css"), join(ROOT, "src/css/sticker.css")])
       expect(readFileSync(file, "utf8"), file).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
   });
 });

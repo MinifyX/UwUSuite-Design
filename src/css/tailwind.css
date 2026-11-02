@@ -4,9 +4,9 @@
  *   @import "tailwindcss";
  *   @import "@uwusuite/design/tailwind.css";
  *
- * It brings tokens, fonts, base styles, motion, Nyu, the title bar and the mobile patterns, maps
- * every token to a Tailwind name (bg-surface, text-muted, border-line, rounded-control, shadow-float, animate-pop…),
- * makes dark: follow <html data-theme="dark"> and lets Tailwind see the package's components.
+ * It brings tokens, fonts, base styles, motion, Nyu, the title bar, the mobile patterns and the
+ * website's sticker classes, maps every token to a Tailwind name (bg-surface, text-muted, border-line,
+ * rounded-control, shadow-float, animate-pop…), makes dark: follow <html data-theme="dark"> and lets Tailwind see the package's components.
  */
 @import "./tokens.css";
 @import "./fonts.css";
@@ -15,6 +15,7 @@
 @import "./nyu.css";
 @import "./titlebar.css";
 @import "./mobile.css";
+@import "./sticker.css";
 
 @source "../";
 
@@ -100,6 +101,10 @@
   --color-m3-container-high: var(--uwu-m3-container-high);
   --color-m3-indicator: var(--uwu-m3-indicator);
   --color-scrim: var(--uwu-scrim);
+  --color-tape: var(--uwu-tape);
+  --color-tape-ink: var(--uwu-tape-ink);
+  --color-dot: var(--uwu-dot);
+  --color-sticker-edge: var(--uwu-sticker-edge);
 
   --shadow-float: var(--uwu-shadow-float);
   --shadow-primary: var(--uwu-shadow-primary);

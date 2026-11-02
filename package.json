@@ -1,6 +1,6 @@
 {
   "name": "@uwusuite/design",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "The UwUSuite design package: tokens, Tailwind theme, UwU Sans, icon rules, React components, Nyu and the app icon tool.",
   "license": "MIT",
   "type": "module",
@@ -47,6 +47,7 @@
     "./nyu.css": "./dist/css/nyu.css",
     "./titlebar.css": "./dist/css/titlebar.css",
     "./mobile.css": "./dist/css/mobile.css",
+    "./sticker.css": "./dist/css/sticker.css",
     "./fonts/*": "./fonts/*",
     "./brand/*": "./brand/*",
     "./package.json": "./package.json"

@@ -39,6 +39,10 @@ colors:
   toast-danger: "#ff8096"
   backdrop: "rgb(28 20 32 / 0.35)"
   scrim: "rgb(25 10 20 / 0.3)"
+  tape: "#ffe9a8" # website only (sticker.css)
+  tape-ink: "#5a4300"
+  dot: "#e6d8e0"
+  sticker-edge: "#ffffff"
   # Dark theme (<html data-theme="dark">): the same roles, other values.
   canvas-dark: "#141016"
   surface-dark: "#1c171f"
@@ -72,6 +76,10 @@ colors:
   toast-danger-dark: "#b4233a"
   backdrop-dark: "rgb(0 0 0 / 0.5)"
   scrim-dark: "rgb(0 0 0 / 0.5)"
+  tape-dark: "#4a3c12"
+  tape-ink-dark: "#ffe6a3"
+  dot-dark: "#3a3040"
+  sticker-edge-dark: "#2c2430"
   # The same in every theme.
   account-pink: "#ff4d8d"
   account-violet: "#8b5cf6"
@@ -459,7 +467,7 @@ components:
 This file describes the UwUSuite look for coding agents and design tools, in
 the [DESIGN.md format](https://github.com/google-labs-code/design.md). The
 tokens above are a snapshot of `src/css/tokens.css` and the components in
-`src/components/` at version 1.9.0. **The package is the source of truth:** if
+`src/components/` at version 1.10.0. **The package is the source of truth:** if
 this file and the code disagree, the code wins. Build UI by importing
 `@uwusuite/design`, not by copying these values (see [For agents](#for-agents)).
 
@@ -605,27 +613,28 @@ and borders at 7:1 or more, and an accent dark or light enough to be text.
 `html:root[data-contrast="high"]` outranks a server admin's accent colour, so
 high contrast always wins.
 
-| Token                     | High, light | High, dark |
-| ------------------------- | ----------- | ---------- |
-| `canvas` / `surface`      | `#ffffff`   | `#000000`  |
-| `elevated`                | `#eeeeee`   | `#1f1f1f`  |
-| `ink`                     | `#000000`   | `#ffffff`  |
-| `muted`                   | `#333333`   | `#e6e6e6`  |
-| `faint`                   | `#595959`   | `#a8a8a8`  |
-| `hairline`                | `#595959`   | `#8c8c8c`  |
-| `border`                  | `#333333`   | `#d9d9d9`  |
-| `control`                 | `#000000`   | `#ffffff`  |
-| `pink` / `pink-solid`     | `#8a0046`   | `#ffa6c9`  |
-| `pink-solid-hover`        | `#6e0038`   | `#ffc2d9`  |
-| `on-pink`                 | `#ffffff`   | `#000000`  |
-| `pink-ink`                | `#7a003c`   | `#ffc2d9`  |
-| `pink-tint`               | `#ffe4ef`   | `#4a0f2c`  |
-| `pink-tint-strong`        | `#ffc2d9`   | `#5c1236`  |
-| `danger` / `danger-ink`   | `#8a0017`   | `#ff9aa8`  |
-| `success` / `success-ink` | `#00564a`   | `#7fe0c6`  |
-| `warning` / `warning-ink` | `#5c3d00`   | `#ffd08a`  |
-| `offline`                 | `#595959`   | `#a8a8a8`  |
-| focus ring                | `#000000`   | `#ffffff`  |
+| Token                     | High, light           | High, dark            |
+| ------------------------- | --------------------- | --------------------- |
+| `canvas` / `surface`      | `#ffffff`             | `#000000`             |
+| `elevated`                | `#eeeeee`             | `#1f1f1f`             |
+| `ink`                     | `#000000`             | `#ffffff`             |
+| `muted`                   | `#333333`             | `#e6e6e6`             |
+| `faint`                   | `#595959`             | `#a8a8a8`             |
+| `hairline`                | `#595959`             | `#8c8c8c`             |
+| `border`                  | `#333333`             | `#d9d9d9`             |
+| `control`                 | `#000000`             | `#ffffff`             |
+| `pink` / `pink-solid`     | `#8a0046`             | `#ffa6c9`             |
+| `pink-solid-hover`        | `#6e0038`             | `#ffc2d9`             |
+| `on-pink`                 | `#ffffff`             | `#000000`             |
+| `pink-ink`                | `#7a003c`             | `#ffc2d9`             |
+| `pink-tint`               | `#ffe4ef`             | `#4a0f2c`             |
+| `pink-tint-strong`        | `#ffc2d9`             | `#5c1236`             |
+| `danger` / `danger-ink`   | `#8a0017`             | `#ff9aa8`             |
+| `success` / `success-ink` | `#00564a`             | `#7fe0c6`             |
+| `warning` / `warning-ink` | `#5c3d00`             | `#ffd08a`             |
+| `offline`                 | `#595959`             | `#a8a8a8`             |
+| `tape` / `tape-ink`       | `#fff1b8` / `#000000` | `#1f1800` / `#ffe08a` |
+| focus ring                | `#000000`             | `#ffffff`             |
 
 ### Themes
 
@@ -1156,7 +1165,7 @@ capitalised), the family is the UwUSuite, the cat is Nyu; never "Uwu Mail" or
 
 ## Accessibility
 
-The suite targets **WCAG 2.1 AA** everywhere, and 7:1 in high contrast.
+The suite targets **WCAG 2.2 AA** everywhere, and 7:1 in high contrast.
 
 - **Contrast:** text 4.5:1 (placeholders too), marks and outlines 3:1,
   enforced by `tests/contrast.test.ts` for every token pair in all four themes
@@ -1181,6 +1190,50 @@ The suite targets **WCAG 2.1 AA** everywhere, and 7:1 in high contrast.
   Textgröße; layouts grow with the text.
 - **Motion and transparency:** `data-motion="reduced"` and reduced
   transparency are honoured; nothing essential is only animated.
+
+## Website / Stickerbogen
+
+The look of uwu.minifyx.de and other marketing pages: a dotted canvas, Nyu and
+the app icons as die-cut stickers on a sticker sheet, a strip of yellow masking
+tape for news. It lives in `sticker.css` (`@uwusuite/design/sticker.css`, also
+part of `plain.css` and `tailwind.css`, in the `components` layer), is plain
+CSS and runs under a strict Content-Security-Policy.
+
+**When:** the website, release and landing pages, the styleguide. **Not** in
+app chrome: windows, settings, lists and dialogs stay straight and calm. An
+app's about page or an empty state may use a single `.uwu-sticker`, nothing
+more.
+
+| Class                            | Use                                                                                                                    |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `.uwu-dotgrid`                   | Page canvas: 22 px dot grid in `dot` on `canvas`; clips sideways overflow (`overflow-x: clip`)                         |
+| `.uwu-sheet`                     | Sticker sheet: `surface`, radius 28 px, dashed die line 14 px inside                                                   |
+| `.uwu-sticker` / `--l`           | Wraps an `img`/`svg`: 2 px `sticker-edge`, `sticker-shadow`, rotated by `--tilt` (default `tilt-md`, `--l` mirrors it) |
+| `.uwu-tape`                      | Tape strip at −1.2°: `tape` with `tape-ink` text                                                                       |
+| `.uwu-tape__window` / `__track`  | The clipping window and the rolling row (items twice, the copy `aria-hidden`)                                          |
+| `.uwu-chip` / `--beta` / `--new` | Small mono pill: `elevated`+`ink`; `pink-tint`+`pink-ink`; `pink-solid`+`on-pink`                                      |
+| `.uwu-fact`                      | Big fact pill, `<b>` number in `pink-ink`                                                                              |
+| `.uwu-tilt`                      | Card tilted ±`tilt-sm` (0.7°), alternating by `:nth-child`, straight on hover and focus                                |
+| `.uwu-mark`                      | Highlighter: `pink-ink` text on a `pink-tint` underlay                                                                 |
+| `.uwu-hop`                       | A descendant `.nyu` hops once (600 ms spring); remove the class on `animationend`                                      |
+
+Rules:
+
+- **Tilt:** stickers at most 10°, cards `tilt-sm` (0.7°), the tape −1.2°.
+  Nothing that must be read closely or hit precisely is tilted: headings,
+  body text, forms and buttons stay straight. Everything straightens on hover
+  and `:focus-within`.
+- **Motion:** only under `prefers-reduced-motion: no-preference` and without
+  `data-motion="reduced"` (a test checks every rule). Without motion the tape
+  is a static, wrapping list and the copies are hidden; stickers don't move.
+- **Tape only for tickers**, at most one per page, always with a pause button
+  (`aria-pressed`, sets `data-paused`); hover and keyboard focus pause it too
+  (WCAG 2.2.2). Never tape as decoration on cards.
+- **CSP:** a page sets `--tilt` through CSSOM (`el.style.setProperty`), never
+  through a `style` attribute or an inline script.
+- **Contrast:** tape text, chips and the mark are tested pairs in every theme.
+  In high contrast stickers get a hard outline instead of a soft shadow and
+  the tape an ink edge.
 
 ## Do's and Don'ts
 
@@ -1237,7 +1290,7 @@ or UwU website.
 
    ```jsonc
    // package.json
-   "@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.9.0/uwusuite-design-1.9.0.tgz"
+   "@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.10.0/uwusuite-design-1.10.0.tgz"
    ```
 
    ```css
@@ -1267,7 +1320,7 @@ or UwU website.
    GDPR-compliant without a cookie banner, and uwu.minifyx.de has a strict CSP
    (`script-src`/`font-src 'self'`, so no inline scripts; ship `bootScript`
    as a file).
-4. **WCAG 2.1 AA, always.** Use tested token pairs, keep the focus ring, give
+4. **WCAG 2.2 AA, always.** Use tested token pairs, keep the focus ring, give
    every icon-only control a name, keep targets at 32 px or more (44 px on
    touch), never signal state by colour alone, let layouts grow with the text.
    If you add a token, add its pairs to `tests/contrast.test.ts`.
