@@ -15,6 +15,7 @@ import {
 } from "../src";
 import { version } from "../package.json";
 import { Colors } from "./sections/Colors";
+import { CommandPaletteSection } from "./sections/CommandPalette";
 import { Components } from "./sections/Components";
 import { AppIcons, Icons } from "./sections/Icons";
 import { Intro, Usage } from "./sections/Intro";
@@ -51,6 +52,7 @@ const SECTIONS = [
   ["app-icons", "App-Icons"],
   ["nyu", "Nyu"],
   ["komponenten", "Komponenten"],
+  ["befehlspalette", "Befehlspalette"],
   ["mobil", "Mobil"],
   ["stickerbogen", "Stickerbogen"],
   ["fenster", "Fenster"],
@@ -148,6 +150,7 @@ function App() {
           <AppIcons />
           <NyuSection />
           <Components />
+          <CommandPaletteSection />
           <Mobile />
           <Sticker />
           <Window />
