@@ -13,6 +13,8 @@ export { Dialog } from "./components/Dialog.js";
 export type { DialogProps } from "./components/Dialog.js";
 export { Menu } from "./components/Menu.js";
 export type { MenuEntry, MenuHeading, MenuItem, MenuProps } from "./components/Menu.js";
+export { CommandPalette, filterCommands } from "./components/CommandPalette.js";
+export type { CommandGroup, CommandItem, CommandPaletteProps } from "./components/CommandPalette.js";
 export { Toaster, createToasts } from "./components/Toaster.js";
 export type { Toast, ToastStore, ToastTone } from "./components/Toaster.js";
 export { Tooltip } from "./components/Tooltip.js";

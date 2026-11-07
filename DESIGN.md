@@ -423,6 +423,16 @@ components:
     width: 860px
   dialog-viewer:
     width: 1200px
+  command-palette:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.border}"
+    rounded: "{rounded.card}"
+    width: 620px
+  command-palette-row-active:
+    backgroundColor: "{colors.pink-tint}"
+    textColor: "{colors.pink-ink}"
+    rounded: "{rounded.xl}"
   toast:
     backgroundColor: "{colors.toast}"
     textColor: "{colors.toast-ink}"
@@ -467,7 +477,7 @@ components:
 This file describes the UwUSuite look for coding agents and design tools, in
 the [DESIGN.md format](https://github.com/google-labs-code/design.md). The
 tokens above are a snapshot of `src/css/tokens.css` and the components in
-`src/components/` at version 1.10.0. **The package is the source of truth:** if
+`src/components/` at version 1.11.0. **The package is the source of truth:** if
 this file and the code disagree, the code wins. Build UI by importing
 `@uwusuite/design`, not by copying these values (see [For agents](#for-agents)).
 
@@ -996,6 +1006,25 @@ and the tooltip.
   above a `hairline`. `tone="warning"` adds a 4 px `warning` top border and a
   `warning-ink` title for destructive questions. Full screen on phones except
   `sm`.
+- **`CommandPalette`** (with `filterCommands`): the Ctrl+K / ⌘K search over
+  everything an app can do (hosts, open tabs, actions). Not for forms or
+  questions; those are dialogs. A modal `<dialog>` 12vh from the top,
+  `min(620px, 100vw - 32px)` wide, `surface`, 1 px `border`, `rounded-card`,
+  `shadow-float`, `scrim` behind, `animate-pop` (motion-safe). Anatomy: a 52 px
+  header (search icon, a boxless `text-reading` field with a pink caret, an
+  `Esc` hint; the palette carries the focus ring), a `hairline`, the list (8 px
+  padding, at most `min(420px, 60svh)`, scrolls the active row into view) with
+  `text-caption` bold uppercase `muted` group titles and 40 px `rounded-xl`
+  rows (icon, label, `muted` detail, trailing hint, shortcut or status with
+  text), and a footer of keyboard hints on `elevated`. The active row is
+  `pink-tint` with `pink-ink` (an ink outline in high contrast). ARIA combobox:
+  focus stays in the field; ↑ ↓ (wrapping, across groups), Home and End move,
+  Enter runs and Ctrl/Cmd+Enter or Ctrl/Cmd+click passes `modifier`, Esc and a
+  click beside it close, and focus goes back where it was unless the app moved
+  it. `onSelect` does not close the palette: call `onClose` from it.
+  `filterCommands` matches every word against `text` and `keywords` (case and
+  accents ignored, prefix and word starts first); `filter={false}` takes the
+  app's own groups, e.g. a "Befehl aus Worten" row built from the query.
 - **`Toaster`** (`createToasts()`): bottom centre (top on phones), at most
   440 px wide, inverted `toast` colours, `rounded-2xl`, `shadow-float`,
   `animate-slide-up`. 5 s for info, 9 s for errors, at most 4, one optional
@@ -1290,7 +1319,7 @@ or UwU website.
 
    ```jsonc
    // package.json
-   "@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.10.0/uwusuite-design-1.10.0.tgz"
+   "@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.11.0/uwusuite-design-1.11.0.tgz"
    ```
 
    ```css

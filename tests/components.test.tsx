@@ -4,6 +4,7 @@ import { useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Avatar, avatarColor, initials } from "../src/components/Avatar";
 import { Button, IconButton } from "../src/components/Button";
+import { CommandPalette } from "../src/components/CommandPalette";
 import { Dialog } from "../src/components/Dialog";
 import { Field, TextInput } from "../src/components/Field";
 import { Menu } from "../src/components/Menu";
@@ -322,5 +323,99 @@ describe("toast store", () => {
     store.show("a");
     store.show("b");
     expect(store.get().map((t) => t.message)).toEqual(["b"]);
+  });
+});
+
+describe("CommandPalette", () => {
+  // jsdom has no showModal(): the <dialog> stays closed, so role queries need `hidden: true`.
+  function Harness({
+    onSelect = () => {},
+    onClose = () => {},
+  }: {
+    onSelect?: (id: string, m: boolean) => void;
+    onClose?: () => void;
+  }) {
+    const [query, setQuery] = useState("");
+    const row = (id: string, text: string, disabled?: boolean) => ({
+      id,
+      text,
+      label: text,
+      disabled,
+      onSelect: ({ modifier }: { modifier: boolean }) => onSelect(id, modifier),
+    });
+    return (
+      <CommandPalette
+        open
+        onClose={onClose}
+        query={query}
+        onQueryChange={setQuery}
+        groups={[
+          { id: "hosts", title: "Hosts", items: [row("off", "Alt", true), row("nas", "NAS"), row("pi", "Pi")] },
+          { id: "actions", title: "Aktionen", items: [row("tab", "Neuer Tab", false)] },
+        ]}
+      />
+    );
+  }
+  const active = () =>
+    document.getElementById(screen.getByRole("combobox", { hidden: true }).getAttribute("aria-activedescendant")!);
+
+  it("is a labelled combobox that starts on the first enabled row", () => {
+    render(<Harness />);
+    const input = screen.getByRole("combobox", { name: "Befehle", hidden: true });
+    expect(screen.getByRole("listbox", { hidden: true }).id).toBe(input.getAttribute("aria-controls"));
+    expect(screen.getAllByRole("group", { hidden: true })[0]!.getAttribute("aria-labelledby")).toBeTruthy();
+    expect(active()?.textContent).toBe("NAS");
+    expect(active()?.getAttribute("aria-selected")).toBe("true");
+  });
+
+  it("moves with the arrows across groups, wraps and skips disabled rows", () => {
+    render(<Harness />);
+    const input = screen.getByRole("combobox", { hidden: true });
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    expect(active()?.textContent).toBe("Neuer Tab");
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    expect(active()?.textContent).toBe("NAS");
+    fireEvent.keyDown(input, { key: "ArrowUp" });
+    expect(active()?.textContent).toBe("Neuer Tab");
+    fireEvent.keyDown(input, { key: "Home" });
+    expect(active()?.textContent).toBe("NAS");
+  });
+
+  it("runs the active row on Enter, with the modifier on Ctrl+Enter and Ctrl+click", () => {
+    const onSelect = vi.fn();
+    render(<Harness onSelect={onSelect} />);
+    const input = screen.getByRole("combobox", { hidden: true });
+    fireEvent.keyDown(input, { key: "Enter" });
+    fireEvent.keyDown(input, { key: "End" });
+    fireEvent.keyDown(input, { key: "Enter", ctrlKey: true });
+    fireEvent.click(screen.getByRole("option", { name: "Pi", hidden: true }), { metaKey: true });
+    fireEvent.click(screen.getByRole("option", { name: "Alt", hidden: true }));
+    expect(onSelect.mock.calls).toEqual([
+      ["nas", false],
+      ["tab", true],
+      ["pi", true],
+    ]);
+  });
+
+  it("filters while typing, starts again at the top and says when nothing matches", () => {
+    render(<Harness />);
+    const input = screen.getByRole("combobox", { hidden: true });
+    fireEvent.keyDown(input, { key: "End" });
+    fireEvent.change(input, { target: { value: "p" } });
+    expect(screen.getAllByRole("option", { hidden: true }).map((o) => o.textContent)).toEqual(["Pi"]);
+    expect(active()?.textContent).toBe("Pi");
+    fireEvent.change(input, { target: { value: "zzz" } });
+    expect(screen.getByText("Keine Treffer")).toBeTruthy();
+    expect(input.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  it("closes on Escape (cancel) and on a click beside it", () => {
+    const onClose = vi.fn();
+    render(<Harness onClose={onClose} />);
+    const dialog = screen.getByRole("combobox", { hidden: true }).closest("dialog")!;
+    fireEvent(dialog, new Event("cancel", { cancelable: true }));
+    fireEvent.click(dialog);
+    expect(onClose).toHaveBeenCalledTimes(2);
   });
 });

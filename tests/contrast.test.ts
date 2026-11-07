@@ -12,6 +12,7 @@ const TEXT: [string, string][] = [
   ),
   ["--uwu-pink-ink", "--uwu-pink-tint"],
   ["--uwu-ink", "--uwu-pink-tint"],
+  ["--uwu-muted", "--uwu-pink-tint"], // CommandPalette: detail and trailing text in the active row
   ["--uwu-on-pink", "--uwu-pink-solid"],
   ["--uwu-on-pink", "--uwu-pink-solid-hover"],
   ["--uwu-danger-ink", "--uwu-danger-tint"],

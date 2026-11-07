@@ -25,6 +25,12 @@ export interface Labels {
   actions: string;
   /** Read after a tap-to-copy row (ListRow `onCopy`): "Passwort, kopieren". */
   copy: string;
+  /** CommandPalette: the dialog's name, the field's placeholder, no matches, the live count ("{count}"), the footer. */
+  commands: string;
+  commandPlaceholder: string;
+  noResults: string;
+  resultCount: string;
+  commandHints: string;
 }
 
 export const LABELS_DE: Labels = {
@@ -46,6 +52,11 @@ export const LABELS_DE: Labels = {
   sidebar: "Seitenleiste",
   actions: "Aktionen",
   copy: "kopieren",
+  commands: "Befehle",
+  commandPlaceholder: "Suchen …",
+  noResults: "Keine Treffer",
+  resultCount: "Treffer: {count}",
+  commandHints: "↑ ↓ wählen · Enter ausführen · Esc schließen",
 };
 
 export const LABELS_EN: Labels = {
@@ -67,6 +78,11 @@ export const LABELS_EN: Labels = {
   sidebar: "Sidebar",
   actions: "Actions",
   copy: "copy",
+  commands: "Commands",
+  commandPlaceholder: "Search…",
+  noResults: "No results",
+  resultCount: "Results: {count}",
+  commandHints: "↑ ↓ choose · Enter run · Esc close",
 };
 
 const LabelsContext = createContext<Labels>(LABELS_DE);

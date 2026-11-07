@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.11.0
+
+Command palette for UwUSSH first (Ctrl+Shift+K / ⌘K), later Mail and Lock.
+
+- **`CommandPalette`**: grouped commands in a modal `<dialog>` 12vh from the
+  top, built as an ARIA combobox (`role="combobox"` field, `listbox` with
+  labelled `group`s and `option`s). Arrows wrap across groups, Home/End,
+  Enter runs, Ctrl/Cmd+Enter or Ctrl/Cmd+click passes `{ modifier: true }`,
+  Esc and a click beside it close (only the innermost dialog), focus goes back
+  unless the app moved it, a polite live region counts the results. Rows take
+  an icon, a label, a muted detail and a trailing node; the active row is
+  `pink-tint` / `pink-ink` with an outline in high contrast. `held`,
+  `filter={false}` for app-built groups, `footer`, `emptyText`, `className`.
+- **`filterCommands(groups, query)`**: every word must match `text` or
+  `keywords`, ignoring case and accents; prefix and word-start matches first;
+  empty groups go.
+- **Labels:** `commands`, `commandPlaceholder`, `noResults`, `resultCount`
+  (`{count}`), `commandHints` in German and English.
+- **Tests:** combobox behaviour, `filterCommands`, contrast pair `muted` on
+  `pink-tint` (detail text in the active row).
+- **Styleguide:** new section „Befehlspalette“ with a live example (Strg+K).
+- **Docs:** `DESIGN.md` overlays: `CommandPalette`.
+
 ## 1.10.0
 
 Stickerbogen: the look of the new uwu.minifyx.de, as plain CSS for marketing
