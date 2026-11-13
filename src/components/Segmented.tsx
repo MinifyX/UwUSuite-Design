@@ -14,6 +14,8 @@ export interface SegmentedProps<T extends string> {
   options: SegmentedOption<T>[];
   /** Name of the group for screen readers. */
   label: string;
+  /** Id of a hint or an error that describes the group (e.g. Field's `describedBy`). */
+  describedBy?: string;
   /** The whole control is greyed out and can't be changed, e.g. while a request runs. */
   disabled?: boolean;
   className?: string;
@@ -25,6 +27,7 @@ export function Segmented<T extends string>({
   onChange,
   options,
   label,
+  describedBy,
   disabled = false,
   className,
 }: SegmentedProps<T>) {
@@ -57,6 +60,7 @@ export function Segmented<T extends string>({
     <div
       role="radiogroup"
       aria-label={label}
+      aria-describedby={describedBy}
       aria-disabled={disabled || undefined}
       onKeyDown={onKeyDown}
       className={clsx("inline-flex self-start rounded-full bg-canvas p-1", disabled && "opacity-55", className)}

@@ -4,13 +4,16 @@ import { useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Avatar, avatarColor, initials } from "../src/components/Avatar";
 import { Button, IconButton } from "../src/components/Button";
+import { SettingRow } from "../src/components/Card";
 import { CommandPalette } from "../src/components/CommandPalette";
 import { Dialog } from "../src/components/Dialog";
 import { Field, TextInput } from "../src/components/Field";
 import { Menu } from "../src/components/Menu";
 import { Badge } from "../src/components/Pill";
+import { ProgressBar } from "../src/components/ProgressBar";
+import { ResizeHandle } from "../src/components/ResizeHandle";
 import { Segmented } from "../src/components/Segmented";
-import { Toggle } from "../src/components/Switch";
+import { Switch, Toggle } from "../src/components/Switch";
 import { detectPlatform, TitleBar } from "../src/components/TitleBar";
 import { createToasts, Toaster } from "../src/components/Toaster";
 import { Wordmark } from "../src/components/Wordmark";
@@ -263,6 +266,85 @@ describe("Dialog", () => {
     );
     fireEvent.click(dialog);
     expect(close).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Dialog names", () => {
+  it("is named by its title, or by a heading of its own through labelledBy", () => {
+    const { rerender } = render(
+      <Dialog open onClose={() => {}} title="Neu">
+        <p>Inhalt</p>
+      </Dialog>,
+    );
+    const name = () => {
+      const dialog = screen.getByText("Inhalt").closest("dialog")!;
+      return document.getElementById(dialog.getAttribute("aria-labelledby")!)?.textContent;
+    };
+    expect(name()).toBe("Neu");
+    rerender(
+      <Dialog open onClose={() => {}} labelledBy="own">
+        <h2 id="own">Verwerfen?</h2>
+        <p>Inhalt</p>
+      </Dialog>,
+    );
+    expect(name()).toBe("Verwerfen?");
+  });
+});
+
+describe("SettingRow", () => {
+  it("hands a function child the ids of its label and description", () => {
+    render(
+      <SettingRow label="Animationen" description="Nur auf diesem Gerät.">
+        {({ id, describedBy }) => <Switch id={id} describedBy={describedBy} checked onChange={() => {}} />}
+      </SettingRow>,
+    );
+    const toggle = screen.getByRole("switch", { name: "Animationen" });
+    expect(document.getElementById(toggle.getAttribute("aria-describedby")!)?.textContent).toBe(
+      "Nur auf diesem Gerät.",
+    );
+  });
+});
+
+describe("ProgressBar", () => {
+  it("clamps the share, reports it when labelled and turns red when nearly full", () => {
+    const { rerender, container } = render(<ProgressBar share={1.4} label="Import" />);
+    expect(screen.getByRole("progressbar", { name: "Import" }).getAttribute("aria-valuenow")).toBe("100");
+    rerender(<ProgressBar share={0.95} kind="usage" />);
+    const track = container.firstElementChild as HTMLElement;
+    expect(track.getAttribute("aria-hidden")).toBe("true");
+    const fill = track.firstElementChild as HTMLElement;
+    expect(fill.className).toContain("bg-danger");
+    expect(fill.style.width).toBe("95%");
+    rerender(<ProgressBar share={0.001} kind="usage" />);
+    expect(fill.style.width).toBe("2%");
+  });
+});
+
+describe("ResizeHandle", () => {
+  it("moves by steps within the limits, jumps with Home and End and resets on Enter", () => {
+    const resize = vi.fn();
+    const commit = vi.fn();
+    const reset = vi.fn();
+    render(
+      <ResizeHandle
+        label="Breite"
+        width={200}
+        min={180}
+        max={400}
+        onResize={resize}
+        onCommit={commit}
+        onReset={reset}
+      />,
+    );
+    const handle = screen.getByRole("separator", { name: "Breite" });
+    fireEvent.keyDown(handle, { key: "ArrowRight" });
+    fireEvent.keyDown(handle, { key: "ArrowLeft", shiftKey: true });
+    fireEvent.keyDown(handle, { key: "End" });
+    fireEvent.keyDown(handle, { key: "a" });
+    expect(resize.mock.calls.map(([width]) => width)).toEqual([216, 180, 400]);
+    expect(commit).toHaveBeenCalledTimes(3);
+    fireEvent.keyDown(handle, { key: "Enter" });
+    expect(reset).toHaveBeenCalledOnce();
   });
 });
 

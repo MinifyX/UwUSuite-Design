@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.14.0
+
+The last pieces UwUMail's portal and webmail still drew themselves.
+
+- **`Dialog`**: new `labelledBy` for dialogs that draw their own heading; a
+  `title` now names the dialog for screen readers.
+- **`StatusDot`, `StatusLine`**: new `danger` state (red: broken).
+- **`Segmented`, `Switch`**: new `describedBy` for a hint below them.
+- **`Toggle`** no longer shrinks in narrow rows.
+- **`SettingRow`**: a function child gets the ids for its control; new
+  `disabled`, `wrap` and `className`.
+- **`StatTile`**: a figure with a label, an icon and a note.
+- **`ProgressBar`**: work in progress or a fill level (amber above 75 %, red
+  above 90 %), CSP-safe.
+- **`ResizeHandle`**: drags a column wider or narrower, with the keyboard too
+  (arrows, Shift, Home/End, Enter resets).
+- `ICONS` has 25 new meanings from the UwUMail portal.
+
 ## 1.13.0
 
 Avatars without a picture show a blobatar instead of initials.
