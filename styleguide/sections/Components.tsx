@@ -2,7 +2,6 @@ import { Smartphone } from "lucide-react";
 import { useState } from "react";
 import {
   Avatar,
-  AVATAR_COLORS,
   Badge,
   Button,
   Card,
@@ -161,12 +160,15 @@ export function Components() {
             <Tag tone="danger">Abgelaufen</Tag>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            {AVATAR_COLORS.map((color, index) => (
-              <Avatar
-                key={color}
-                name={["Nyu Katz", "Ada Lovelace", "Kim Lee", "Max Muster", "Jo Beispiel", "Sam Test"][index]!}
-                color={color}
-              />
+            {[
+              "nyu@example.com",
+              "ada@example.com",
+              "kim@example.org",
+              "max@example.net",
+              "jo@example.com",
+              "sam@example.org",
+            ].map((seed) => (
+              <Avatar key={seed} name={seed} seed={seed} />
             ))}
             <Avatar name="Nyu" size="lg" />
             <Avatar name="Nyu" size="sm" />

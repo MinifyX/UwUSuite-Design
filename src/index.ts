@@ -25,7 +25,7 @@ export { Card, SettingRow, Hint } from "./components/Card.js";
 export type { CardProps, HintTone, SettingRowProps } from "./components/Card.js";
 export { StatusDot, StatusLine } from "./components/Status.js";
 export type { StatusState } from "./components/Status.js";
-export { Avatar, AVATAR_COLORS, avatarColor, initials } from "./components/Avatar.js";
+export { Avatar, AvatarBlob, AVATAR_COLORS, avatarColor, initials } from "./components/Avatar.js";
 export type { AvatarColor, AvatarProps } from "./components/Avatar.js";
 export { Wordmark } from "./components/Wordmark.js";
 export type { WordmarkProps } from "./components/Wordmark.js";

@@ -1,6 +1,6 @@
 {
   "name": "@uwusuite/design",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "The UwUSuite design package: tokens, Tailwind theme, UwU Sans, icon rules, React components, Nyu and the app icon tool.",
   "license": "MIT",
   "type": "module",
@@ -78,10 +78,12 @@
     }
   },
   "dependencies": {
+    "@blobatar/react": "2.7.0",
     "@fontsource-variable/dm-sans": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "@fontsource-variable/manrope": "^5.3.0",
     "@fontsource-variable/rubik": "^5.3.0",
+    "blobatar": "2.7.0",
     "clsx": "^2.1.1"
   },
   "devDependencies": {

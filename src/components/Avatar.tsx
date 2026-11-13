@@ -1,19 +1,10 @@
+import { Blobatar } from "@blobatar/react";
 import { clsx } from "clsx";
 
 export const AVATAR_COLORS = ["pink", "violet", "sky", "mint", "amber", "coral"] as const;
 export type AvatarColor = (typeof AVATAR_COLORS)[number];
 
-const COLOR_CLASSES: Record<AvatarColor, string> = {
-  pink: "bg-avatar-pink text-avatar-pink-ink",
-  violet: "bg-avatar-violet text-avatar-violet-ink",
-  sky: "bg-avatar-sky text-avatar-sky-ink",
-  mint: "bg-avatar-mint text-avatar-mint-ink",
-  amber: "bg-avatar-amber text-avatar-amber-ink",
-  coral: "bg-avatar-coral text-avatar-coral-ink",
-};
-
-/** The initials keep their size with the circle: they don't follow the text size. */
-const SIZES = { sm: "size-7 text-[11px]", md: "size-9 text-[13px]", lg: "size-12 text-[17px]" } as const;
+const SIZES = { sm: "size-7", md: "size-9", lg: "size-12" } as const;
 
 /** A stable colour for a name or address, so the same person always looks the same. */
 export function avatarColor(seed: string): AvatarColor {
@@ -34,27 +25,43 @@ export function initials(name: string) {
     .join("");
 }
 
+/**
+ * The face of someone without a picture: a blobatar (blobatar.dev) drawn from the seed, the same
+ * seed always the same blob. It fills its parent and brings no backdrop of its own.
+ * Moves on hover, still under reduced motion; needs the package's CSS (tailwind.css or plain.css).
+ */
+export function AvatarBlob({ seed, className }: { seed: string; className?: string }) {
+  return (
+    <Blobatar
+      aria-hidden="true"
+      animate="hover"
+      className={clsx("size-full", className)}
+      name={seed.trim().toLowerCase()}
+    />
+  );
+}
+
 export interface AvatarProps {
   name: string;
-  /** A picture; initials are the fallback. */
+  /** A picture; a blob is the fallback. */
   src?: string;
-  color?: AvatarColor;
+  /** What the blob grows from, e.g. the e-mail address. Defaults to `name`. */
+  seed?: string;
   size?: keyof typeof SIZES;
   className?: string;
 }
 
-export function Avatar({ name, src, color, size = "md", className }: AvatarProps) {
+export function Avatar({ name, src, seed, size = "md", className }: AvatarProps) {
   return (
     <span
       className={clsx(
-        "inline-grid shrink-0 place-items-center overflow-hidden rounded-full font-bold select-none",
+        "inline-grid shrink-0 place-items-center overflow-hidden rounded-full select-none",
         SIZES[size],
-        !src && COLOR_CLASSES[color ?? avatarColor(name)],
         className,
       )}
       aria-hidden
     >
-      {src ? <img src={src} alt="" className="size-full object-cover" /> : initials(name)}
+      {src ? <img src={src} alt="" className="size-full object-cover" /> : <AvatarBlob seed={seed ?? name} />}
     </span>
   );
 }

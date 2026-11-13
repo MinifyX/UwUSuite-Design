@@ -327,12 +327,18 @@ describe("TitleBar", () => {
 });
 
 describe("Avatar", () => {
-  it("shows initials in a stable colour", () => {
+  it("keeps the initials and colour helpers stable", () => {
     expect(initials("Lorin Example")).toBe("LE");
     expect(initials("nyu@example.com")).toBe("NE");
     expect(avatarColor("a@example.com")).toBe(avatarColor("A@example.com"));
-    const { container } = render(<Avatar name="Nyu Cat" />);
-    expect(container.textContent).toBe("NC");
+  });
+
+  it("draws the same blob for the same seed, whatever the case", () => {
+    const blob = (seed: string) =>
+      render(<Avatar name="Nyu Cat" seed={seed} />).container.querySelector("svg")?.outerHTML;
+    expect(blob("nyu@example.com")).toBeTruthy();
+    expect(blob(" Nyu@Example.com")).toBe(blob("nyu@example.com"));
+    expect(blob("mika@example.com")).not.toBe(blob("nyu@example.com"));
   });
 });
 
