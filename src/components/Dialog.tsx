@@ -16,8 +16,8 @@ export interface DialogProps {
   footer?: ReactNode;
   className?: string;
   /**
-   * False while a form inside has unsaved input: a click beside the window leaves it open. Escape
-   * and the X still close on purpose. Defaults to true.
+   * True lets a click beside the window close it. Off by default, so a stray click never throws
+   * input away: the X, Escape and the dialog's own buttons close on purpose.
    */
   closeOnOutsideClick?: boolean;
   /** Keeps the dialog from opening, e.g. while the app lock covers the window. */
@@ -37,7 +37,7 @@ export function Dialog({
   tone = "default",
   footer,
   className,
-  closeOnOutsideClick = true,
+  closeOnOutsideClick = false,
   held = false,
 }: DialogProps) {
   const ref = useRef<HTMLDialogElement>(null);

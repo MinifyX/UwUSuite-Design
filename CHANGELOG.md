@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.12.0
+
+Overlays with content no longer close on a stray click.
+
+- **`Dialog`**: `closeOnOutsideClick` now defaults to `false`. The X, Escape and
+  the dialog's own buttons close it. Pass `closeOnOutsideClick` to get the old
+  behaviour for a dialog without input.
+- **`Sheet`**: tapping beside a sheet no longer closes it. Dragging down
+  (unless `dismissible={false}`), Escape and the leading button still do.
+- Menus, the context menu and the command palette are unchanged.
+
 ## 1.11.0
 
 Command palette for UwUSSH first (Ctrl+Shift+K / ⌘K), later Mail and Lock.
