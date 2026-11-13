@@ -30,6 +30,13 @@ comes from. It is never the point, and it can always be turned off.
 Pressed buttons use `active:scale-[0.97]`. For Nyu's motion, see
 [nyu.md](nyu.md).
 
+## Principles
+
+The twelve motion principles (squash and stretch, anticipation, staging,
+follow through, timing …) and the UX laws (Fitts, Hick, Miller, Doherty,
+Postel, Jakob) are in [DESIGN.md → Motion principles](../DESIGN.md#motion-principles)
+and [Interaction](../DESIGN.md#interaction).
+
 ## Reduced motion
 
 Darstellung → Animationen: System · An · Aus resolves against

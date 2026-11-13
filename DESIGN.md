@@ -855,6 +855,29 @@ from; it is never the point, and it can always be turned off.
 
 Pressed buttons scale to 0.97 (`active:scale-[0.97]`).
 
+### Motion principles
+
+Twelve rules from animation, translated into the tokens above. They make
+motion feel physical without making it longer.
+
+| Principle            | In UwUSuite                                                                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Squash and stretch   | Things give a little on contact: pressed buttons `active:scale-[0.97]`, a toggled chip pops back with `ease-pop`. Never deform text or Nyu.             |
+| Anticipation         | A tiny wind-up before a big move, only where the move is the message (sending, Nyu jumping): 2–4 px or 0.98 back, inside the same duration.             |
+| Staging              | One thing moves at a time, and it is the thing the user should look at. The rest stays still; a dialog's backdrop fades, it doesn't move.               |
+| Pose to pose         | Define start and end state (and at most one key pose in between) as keyframes; let the curve fill the rest. No hand-tuned frame chains.                 |
+| Follow through       | Things that arrive settle: `ease-pop` and `ease-spring` overshoot a little instead of stopping dead.                                                    |
+| Slow in and slow out | Always an easing token, never `linear`; only spinners, progress bars and the pulse run linear.                                                          |
+| Arcs                 | Something that travels to a target (an item to a folder, the flying Nyu) moves on a curve, not a straight diagonal. Short UI moves stay straight.       |
+| Secondary action     | A small flourish may back the main change (the check in "Gespeichert" draws in), never compete with it and never be the only signal.                    |
+| Timing               | Snappy: `fast` for feedback, `base` for state, `enter` for arrivals. Leaving is faster than arriving.                                                   |
+| Exaggerated feedback | Make the moment land: a wrong password wiggles (`animate-wiggle`), a success shows its state change clearly. Always with text, never motion alone.      |
+| Depth                | Floating things (popovers, sheets, toasts) get `shadow-float` and may scale from their origin; cards stay flat. 3D tilt only on the website's stickers. |
+| Overall appeal       | The sum of every detail: a press state, a loading state and a done state for every action that takes time. "Works" is not finished; "feels good" is.    |
+
+All of it collapses under `data-motion="reduced"`: the state change stays,
+the movement goes.
+
 **Platform motion (the exception).** The mobile components copy the system's
 own timing, which is slower than the desktop tokens. They live in `mobile.css`
 with two curves, `--uwu-ease-sheet` `cubic-bezier(0.2, 0.9, 0.25, 1)` and
@@ -880,6 +903,39 @@ With `data-motion="reduced"` every animation and transition collapses to 1 ms
 and runs once, Nyu holds still, the flying Nyu is hidden and gestures finish
 without animating. Nothing ever waits for an animation before it accepts
 input.
+
+## Interaction
+
+Eight UX laws every screen is checked against.
+
+- **Fitts's law: bigger and closer is faster.** Primary actions are large and
+  near where the eye and pointer already are (dialog footer, end of a form).
+  Destructive actions sit apart from the primary one.
+- **Hit areas can be bigger than they look.** A 16 or 20 px icon keeps a 32 px
+  hit area on the desktop and 44 px on touch (padding or a `::before`
+  overlay), without changing the look. Hit areas of neighbours never overlap.
+- **Hick's law: fewer choices, faster decisions.** One primary button per
+  view; rare options go into a menu, "Erweitert" or settings. Long lists get
+  search or grouping, not more top-level buttons.
+- **Miller's law: chunk what people must hold in mind.** About seven items at
+  once. Long numbers and codes are grouped for reading: card numbers 4-4-4-4,
+  IBANs in fours, TOTP codes 3-3, phone numbers by their parts, keys and
+  fingerprints in blocks (`tabular-nums` or mono). Copying always copies the
+  raw value without spaces; inputs accept it with or without them.
+- **Doherty threshold: answer within 400 ms.** Visible feedback within 100 ms
+  (pressed state, optimistic update). If the result takes longer than 400 ms,
+  show progress in place (spinner in the button, skeleton, progress bar), and
+  keep the button's width so nothing jumps.
+- **Postel's law: be liberal in what you accept.** Inputs take pasted values
+  with spaces, dashes, a leading `mailto:`, upper or lower case, and normalise
+  them; errors say what to change, not just that something is wrong.
+- **Jakob's law: work like the apps people know.** Platform conventions win
+  over cleverness: native title bar and menus on macOS, cart top right, search
+  top, settings under the usual shortcut (⌘, / Ctrl+,), standard gestures on
+  phones. Don't invent a layout where a familiar one exists.
+- **Frequency of use: put the frequent thing first.** Order menus, toolbars
+  and settings by how often they are used, not by how they are built; the
+  daily action is one click away, the yearly one may take three.
 
 ## Iconography
 
@@ -1279,6 +1335,8 @@ Rules:
 - Do use `canvas` behind, `surface` cards with a `hairline` on top, `elevated`
   for hover rows and popovers.
 - Do pick icons by meaning from `ICONS`, at the `<Icon>` sizes.
+- Do give every action that takes time a pressed, a working and a done
+  state, and answer within 400 ms (see [Interaction](#interaction)).
 - Do check every new screen in light, dark, high contrast, reduced motion, a
   phone width and with a larger text size.
 - Do write every string in neutral first, in German and English.
