@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import type { LucideIcon } from "lucide-react";
-import type { HTMLAttributes, ReactNode } from "react";
+import { useId, type HTMLAttributes, type ReactNode } from "react";
 import { Icon } from "../icons/Icon.js";
 
 export interface CardProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
@@ -46,22 +46,89 @@ export function Card({ title, subtitle, icon, aside, className, children, ...res
 export interface SettingRowProps {
   label: ReactNode;
   description?: ReactNode;
-  /** The control: Switch, Segmented, Select, a button. */
-  children: ReactNode;
+  /**
+   * The control: Switch, Segmented, Select, a button. As a function it gets the ids that tie it to
+   * the label and the description (`<Switch id={id} aria-describedby={describedBy} />`).
+   */
+  children: ReactNode | ((ids: { id: string; describedBy?: string }) => ReactNode);
+  /** Ties the label to a control that brings its own id; not needed with a function child. */
   htmlFor?: string;
+  /** Fades the whole row; disable the control itself too. */
+  disabled?: boolean;
+  /** False keeps the control beside the text on narrow screens (a switch); default true. */
+  wrap?: boolean;
+  className?: string;
 }
 
 /** One line in a settings page: what it is on the left, the control on the right. From UwUMirror. */
-export function SettingRow({ label, description, children, htmlFor }: SettingRowProps) {
+export function SettingRow({
+  label,
+  description,
+  children,
+  htmlFor,
+  disabled = false,
+  wrap = true,
+  className,
+}: SettingRowProps) {
+  const id = useId();
+  const descriptionId = description ? `${id}-description` : undefined;
+  const ids = typeof children === "function";
   return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-hairline py-3.5 last:border-b-0">
-      <div className="flex min-w-[220px] flex-1 flex-col gap-0.5">
-        <label htmlFor={htmlFor} className="text-body font-semibold">
+    <div
+      className={clsx(
+        "flex items-center gap-x-6 gap-y-2 border-b border-hairline py-3.5 last:border-b-0",
+        wrap && "flex-wrap",
+        disabled && "opacity-60",
+        className,
+      )}
+    >
+      <div className={clsx("flex flex-1 flex-col gap-0.5", wrap ? "min-w-[min(220px,100%)]" : "min-w-0")}>
+        <label htmlFor={ids ? id : htmlFor} className="text-body font-semibold">
           {label}
         </label>
-        {description && <p className="text-[calc(var(--uwu-text-caption)+0.5px)] text-muted">{description}</p>}
+        {description && (
+          <p id={descriptionId} className="text-[calc(var(--uwu-text-caption)+0.5px)] text-muted">
+            {description}
+          </p>
+        )}
       </div>
-      <div className="shrink-0">{children}</div>
+      <div className={clsx("max-w-full shrink-0", !wrap && "self-start pt-0.5")}>
+        {typeof children === "function" ? children({ id, describedBy: descriptionId }) : children}
+      </div>
+    </div>
+  );
+}
+
+export type StatTone = "normal" | "warning" | "danger";
+
+const STAT_TONES: Record<StatTone, string> = {
+  normal: "text-pink-ink",
+  warning: "text-warning-ink",
+  danger: "text-danger-ink",
+};
+
+export interface StatTileProps {
+  label: ReactNode;
+  value: ReactNode;
+  icon?: LucideIcon;
+  /** A line under it that says in words what is wrong, so colour is never the only hint. */
+  note?: ReactNode;
+  /** Colours only the icon. */
+  tone?: StatTone;
+  /** Something under the value, such as a `ProgressBar kind="usage"`. */
+  children?: ReactNode;
+  className?: string;
+}
+
+/** One number on an overview: the icon, the value big, what it is below. From UwUMail's portal. */
+export function StatTile({ label, value, icon, note, tone = "normal", children, className }: StatTileProps) {
+  return (
+    <div className={clsx("flex min-w-0 flex-col rounded-card border border-hairline bg-surface p-4", className)}>
+      {icon && <Icon icon={icon} size="lg" className={clsx("mb-2", STAT_TONES[tone])} />}
+      <p className="truncate text-section leading-tight font-bold tabular-nums">{value}</p>
+      <p className="mt-0.5 truncate text-meta text-muted">{label}</p>
+      {children && <div className="mt-2">{children}</div>}
+      {note && <p className="mt-1 text-caption text-muted">{note}</p>}
     </div>
   );
 }

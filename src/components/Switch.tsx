@@ -7,12 +7,14 @@ export interface SwitchProps {
   /** Name for screen readers when no visible label points at the switch. */
   label?: string;
   id?: string;
+  /** Id of a description, e.g. the one SettingRow hands its function child. */
+  describedBy?: string;
   disabled?: boolean;
   size?: "sm" | "md";
 }
 
 /** The bare on/off switch: pink when on, the control outline colour when off. */
-export function Switch({ checked, onChange, label, id, disabled, size = "md" }: SwitchProps) {
+export function Switch({ checked, onChange, label, id, describedBy, disabled, size = "md" }: SwitchProps) {
   return (
     <button
       id={id}
@@ -20,6 +22,7 @@ export function Switch({ checked, onChange, label, id, disabled, size = "md" }: 
       role="switch"
       aria-checked={checked}
       aria-label={label}
+      aria-describedby={describedBy}
       disabled={disabled}
       onClick={() => onChange(!checked)}
       className={clsx(
@@ -39,7 +42,7 @@ export function Switch({ checked, onChange, label, id, disabled, size = "md" }: 
   );
 }
 
-export interface ToggleProps extends Omit<SwitchProps, "label" | "id"> {
+export interface ToggleProps extends Omit<SwitchProps, "label" | "id" | "describedBy"> {
   label: ReactNode;
   description?: ReactNode;
 }
@@ -53,7 +56,7 @@ export function Toggle({ label, description, ...rest }: ToggleProps) {
         <span className="text-body font-semibold">{label}</span>
         {description && <span className="text-meta text-muted">{description}</span>}
       </label>
-      <span className="mt-0.5">
+      <span className="mt-0.5 shrink-0">
         <Switch id={id} {...rest} />
       </span>
     </div>

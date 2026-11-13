@@ -16,9 +16,12 @@ import {
   Menu,
   Nyu,
   Pill,
+  ProgressBar,
+  ResizeHandle,
   Segmented,
   Select,
   SettingRow,
+  StatTile,
   StatusLine,
   Switch,
   Tag,
@@ -35,7 +38,8 @@ export function Components() {
   const [airplay, setAirplay] = useState(true);
   const [tone, setTone] = useState<"playful" | "neutral">("playful");
   const [filter, setFilter] = useState("alle");
-  const [dialog, setDialog] = useState<"none" | "form" | "warning" | "three">("none");
+  const [dialog, setDialog] = useState<"none" | "form" | "warning" | "three" | "own">("none");
+  const [column, setColumn] = useState(200);
   const [name, setName] = useState("Wohnzimmer");
 
   return (
@@ -125,6 +129,7 @@ export function Components() {
             />
             <Segmented
               label="Qualität"
+              describedBy="sg-quality-hint"
               value="auto"
               onChange={() => {}}
               options={[
@@ -133,6 +138,9 @@ export function Components() {
                 { value: "4k", label: "4K", disabled: true },
               ]}
             />
+            <p id="sg-quality-hint" className="-mt-2 text-meta text-muted">
+              4K braucht eine schnellere Verbindung.
+            </p>
           </div>
         </Panel>
       </Sub>
@@ -188,6 +196,7 @@ export function Components() {
             </StatusLine>
             <StatusLine state="connecting">Verbinde mit „Pixel 8“ …</StatusLine>
             <StatusLine state="error">Die Firewall blockiert Port 7000.</StatusLine>
+            <StatusLine state="danger">Der Spamfilter läuft nicht.</StatusLine>
             <Hint tone="warning">Für Ton fehlt FFmpeg. Bild geht trotzdem.</Hint>
           </Card>
           <Card title="Darstellung">
@@ -204,13 +213,48 @@ export function Components() {
                   ]}
                 />
               </SettingRow>
-              <SettingRow label="Animationen">
-                <Switch checked onChange={() => {}} label="Animationen" />
+              <SettingRow label="Animationen" description="Bewegung beim Öffnen und Schließen." wrap={false}>
+                {({ id, describedBy }) => <Switch id={id} describedBy={describedBy} checked onChange={() => {}} />}
+              </SettingRow>
+              <SettingRow label="Töne" description="Gibt es erst mit FFmpeg." wrap={false} disabled>
+                {({ id, describedBy }) => (
+                  <Switch id={id} describedBy={describedBy} checked={false} onChange={() => {}} disabled />
+                )}
               </SettingRow>
             </div>
             <Hint>Gilt nur für dieses Gerät.</Hint>
           </Card>
         </div>
+      </Sub>
+      <Sub title="Fortschritt und Kennzahlen">
+        <div className="grid gap-3 sm:grid-cols-3">
+          <StatTile icon={ICONS.mail} label="Postfächer" value="42" />
+          <StatTile icon={ICONS.drive} label="Speicher" value="9,4 von 10 GB" tone="danger" note="Fast voll.">
+            <ProgressBar share={0.94} kind="usage" />
+          </StatTile>
+          <Card title="Umzug von „Altmail“">
+            <ProgressBar share={0.6} label="Umzug" />
+            <p className="text-meta text-muted">1.200 von 2.000 Mails</p>
+          </Card>
+        </div>
+      </Sub>
+      <Sub title="Spaltenbreite">
+        <Panel className="flex h-32 overflow-hidden p-0">
+          <div ref={(el) => el?.style.setProperty("width", `${column}px`)} className="shrink-0 bg-canvas p-3 text-meta">
+            Ordner ({column} px)
+          </div>
+          <ResizeHandle
+            label="Breite der Ordner"
+            width={column}
+            min={140}
+            max={320}
+            onResize={setColumn}
+            onReset={() => setColumn(200)}
+          />
+          <div className="min-w-0 flex-1 p-3 text-meta text-muted">
+            Ziehen, oder mit ← → (Umschalt für große Schritte), Pos1, Ende; Enter oder Doppelklick setzt zurück.
+          </div>
+        </Panel>
       </Sub>
       <Sub title="Menü, Dialog, Toast, Tooltip">
         <Panel className="flex flex-wrap items-center gap-3">
@@ -246,6 +290,7 @@ export function Components() {
           />
           <Button onClick={() => setDialog("form")}>Dialog</Button>
           <Button onClick={() => setDialog("three")}>Dialog mit drei Buttons</Button>
+          <Button onClick={() => setDialog("own")}>Dialog mit eigener Überschrift</Button>
           <Button
             onClick={() =>
               toasts.show("Nachricht gesendet ✉︎ ~", { tone: "success", action: { label: "Rückgängig", run: () => {} } })
@@ -328,6 +373,25 @@ export function Components() {
             Auf dem Handy teilen sich die Buttons die Zeile. Was nicht passt, bekommt eine eigene Zeile in voller
             Breite, der Haupt-Button steht zuletzt.
           </p>
+        </Dialog>
+        <Dialog
+          open={dialog === "own"}
+          onClose={() => setDialog("none")}
+          labelledBy="sg-own-title"
+          width="sm"
+          footer={
+            <Button variant="primary" onClick={() => setDialog("none")}>
+              Weiter
+            </Button>
+          }
+        >
+          <div className="flex flex-col items-center gap-2 px-6 pt-6 pb-4 text-center">
+            <Nyu shell="mail" mood="happy" size={96} title="" />
+            <h2 id="sg-own-title" className="text-section font-bold">
+              Alles eingerichtet
+            </h2>
+            <p className="text-body text-muted">Ohne Titelzeile benennt die eigene Überschrift den Dialog.</p>
+          </div>
         </Dialog>
         <Toaster store={toasts} />
       </Sub>

@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import { X } from "lucide-react";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, type ReactNode } from "react";
 import { useLabels } from "../lib/labels.js";
 import { IconButton } from "./Button.js";
 
@@ -8,6 +8,8 @@ export interface DialogProps {
   open: boolean;
   onClose: () => void;
   title?: ReactNode;
+  /** Id of a heading inside `children` that names the dialog, for dialogs without a `title`. */
+  labelledBy?: string;
   children: ReactNode;
   /** sm 420 confirmations · md 560 forms · lg 860 settings · viewer 1200 full height. */
   width?: "sm" | "md" | "lg" | "viewer";
@@ -32,6 +34,7 @@ export function Dialog({
   open,
   onClose,
   title,
+  labelledBy,
   children,
   width = "md",
   tone = "default",
@@ -42,6 +45,7 @@ export function Dialog({
 }: DialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const labels = useLabels();
+  const titleId = useId();
   const shown = open && !held;
 
   useEffect(() => {
@@ -54,6 +58,7 @@ export function Dialog({
   return (
     <dialog
       ref={ref}
+      aria-labelledby={title !== undefined ? titleId : labelledBy}
       onCancel={(event) => {
         // The browser fires `cancel` only at the topmost modal, but React hands it on up the
         // component tree, so a dialog opened from inside another would close both. Only the
@@ -86,7 +91,9 @@ export function Dialog({
         <div className="flex min-h-0 flex-auto flex-col">
           {title !== undefined && (
             <header className="flex items-center justify-between gap-4 px-6 pt-5 pb-2">
-              <h2 className={clsx("text-section font-bold", tone === "warning" && "text-warning-ink")}>{title}</h2>
+              <h2 id={titleId} className={clsx("text-section font-bold", tone === "warning" && "text-warning-ink")}>
+                {title}
+              </h2>
               <IconButton icon={X} label={labels.close} onClick={onClose} />
             </header>
           )}
