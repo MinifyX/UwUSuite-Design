@@ -34,7 +34,7 @@ package stays the source of truth.
 
 ```jsonc
 // package.json: the release tarball, no registry needed
-"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.12.0/uwusuite-design-1.12.0.tgz"
+"@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.14.0/uwusuite-design-1.14.0.tgz"
 ```
 
 ```css
