@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.13.0
+
+Avatars without a picture show a blobatar instead of initials.
+
+- **`Avatar`**: the fallback is a deterministic blob (blobatar, MIT) with its
+  own colour per person. It moves on hover and holds still under reduced
+  motion. New `seed` prop (e.g. the e-mail address, trimmed and lower-cased);
+  without it the blob comes from `name`.
+- **Breaking**: the `color` prop and the coloured initials circle are gone.
+  `AVATAR_COLORS`, `avatarColor` and `initials` stay exported.
+- **`AvatarBlob`**: the blob alone, filling its parent, for apps with their own
+  avatar circle (sender pictures in Mail).
+- `tailwind.css` and `plain.css` now import `blobatar/motion.css`.
+
 ## 1.12.0
 
 Overlays with content no longer close on a stray click.
