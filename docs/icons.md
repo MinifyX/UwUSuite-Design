@@ -104,6 +104,22 @@ the past ("first seen"). `share` is the action, `people` who it is shared
 with. `delete` is also "empty the bin". `warning` covers security warnings
 (an unconfirmed sender, a dangerous attachment); `spam` is only spam.
 
+Server portal (from UwUMail's admin and account portal): `pause` (the
+counterpart of `start`), `turnOn` and `turnOff` (switch a feature or a
+service on or off), `collapse` (the counterpart of `expand`), `switcher`
+(pick one of several: the account switcher), `testConnection` (try the
+settings before saving), `backup`, `updates` (software updates), `migrate`
+(move a mailbox from another provider), `mailFlow` (mail in and out),
+`stats`, `alias` (an extra address), `pattern` (a match rule: a hash, a
+pattern list), `feed` (subscribe to a calendar or a list by URL),
+`removePerson` (the counterpart of `addContact`: unshare, remove a member),
+`bot` (a service account), `devices` (signed-in devices and sessions), `app`
+(a connected app, OAuth), `cloud` (a cloud gateway), `vpn`, `vacation` (the
+auto reply), `securityOff` (reset or turn off a second factor), `guide`
+(how-to text, docs), `tip` (a hint worth knowing) and `learn` (train the
+spam filter). Close neighbours: a retry is `refresh`, uploading a file into
+something is `import` or `addImage`, a failed check is `error`.
+
 `secret` (the round key) is a password or a secret value. A key that is a
 file or a format, like an SSH key, is `sshKey`.
 
