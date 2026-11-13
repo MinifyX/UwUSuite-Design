@@ -477,7 +477,7 @@ components:
 This file describes the UwUSuite look for coding agents and design tools, in
 the [DESIGN.md format](https://github.com/google-labs-code/design.md). The
 tokens above are a snapshot of `src/css/tokens.css` and the components in
-`src/components/` at version 1.11.0. **The package is the source of truth:** if
+`src/components/` at version 1.12.0. **The package is the source of truth:** if
 this file and the code disagree, the code wins. Build UI by importing
 `@uwusuite/design`, not by copying these values (see [For agents](#for-agents)).
 
@@ -1319,7 +1319,7 @@ or UwU website.
 
    ```jsonc
    // package.json
-   "@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.11.0/uwusuite-design-1.11.0.tgz"
+   "@uwusuite/design": "https://github.com/MinifyX/UwUSuite-Design/releases/download/v1.12.0/uwusuite-design-1.12.0.tgz"
    ```
 
    ```css

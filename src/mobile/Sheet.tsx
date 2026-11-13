@@ -29,8 +29,8 @@ export interface SheetProps {
   detents?: readonly Detent[];
   initialDetent?: Detent;
   /**
-   * False while the sheet holds unsaved input: dragging down and tapping beside it do nothing.
-   * Escape and the leading "Abbrechen" still close on purpose.
+   * False while the sheet holds unsaved input: dragging down does nothing. Tapping beside a
+   * sheet never closes it. Escape and the leading "Abbrechen" still close on purpose.
    */
   dismissible?: boolean;
   /** iOS sheet with detents · Android M3 bottom sheet · iPad centred form sheet. */
@@ -107,7 +107,7 @@ export function Sheet({
   return (
     <ShellPortal>
       <div className="uwu-sheet-layer" data-closing={closing ? "" : undefined}>
-        <div className="uwu-scrim" onClick={dismissible ? onClose : undefined} aria-hidden />
+        <div className="uwu-scrim" aria-hidden />
         <div
           ref={sheet}
           role="dialog"

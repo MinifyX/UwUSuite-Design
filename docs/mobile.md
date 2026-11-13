@@ -63,8 +63,8 @@ render.
   sentence case above, footnotes below, hairlines that start where the text
   starts, chevrons on rows that open something.
 - **Sheets:** from the bottom with a grabber, `large` or `medium` detent;
-  "Abbrechen" left, the action right. A sheet with unsaved input is not
-  `dismissible` (no drag-down, no tap beside it).
+  "Abbrechen" left, the action right. Tapping beside a sheet never closes
+  it. A sheet with unsaved input is not `dismissible` (no drag-down either).
 - **Toasts:** glass, dropping in at the top: a round tone icon, a title, a
   detail line ("Wird in 30 s geleert").
 - **Back:** swipe from the left edge. Past 110 px (or a flick) it goes back.

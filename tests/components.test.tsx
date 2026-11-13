@@ -245,6 +245,25 @@ describe("Dialog", () => {
     fireEvent(innerDialog.parentElement!.closest("dialog")!, new Event("cancel", { cancelable: true }));
     expect(outer).toHaveBeenCalledOnce();
   });
+
+  it("stays open on a click beside it unless asked to close", () => {
+    const close = vi.fn();
+    const { rerender } = render(
+      <Dialog open onClose={close} title="Neu">
+        <p>Inhalt</p>
+      </Dialog>,
+    );
+    const dialog = screen.getByText("Inhalt").closest("dialog")!;
+    fireEvent.click(dialog);
+    expect(close).not.toHaveBeenCalled();
+    rerender(
+      <Dialog open onClose={close} title="Neu" closeOnOutsideClick>
+        <p>Inhalt</p>
+      </Dialog>,
+    );
+    fireEvent.click(dialog);
+    expect(close).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("toasts", () => {
