@@ -19,7 +19,7 @@ Two fixes for apps that use `Dialog`. Apps need no changes.
 
 ## 1.16.0
 
-Keyboard and screen reader fixes. Apps need no changes.
+Keyboard and screen reader fixes. Apps with their own `ToastStore` must add `pause` and `resume`; all other apps need no changes.
 
 - **Focus ring** stays visible in forced-colors mode (transparent outline instead of `none`).
 - **`Field`** links its hint and error to `TextInput`/`TextArea`/`Select` (`aria-describedby`) and
