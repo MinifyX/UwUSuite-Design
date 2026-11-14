@@ -113,13 +113,21 @@
   --uwu-i: 8;
 }
 
-/* Unlayered on purpose: beats the rows' own bg-* utility while the pill draws it. */
+/* The pill's containing block. Layered and without specificity, so a nav that is fixed or
+   sticky (e.g. a drawer below a breakpoint) keeps its own position. */
+@layer components {
+  :where([data-uwu-indicator]) {
+    position: relative;
+  }
+}
+
 [data-uwu-indicator] {
   isolation: isolate;
 }
 
+/* !important: beats the row's own bg-* utility and any :hover background while the pill draws it. */
 [data-uwu-indicator] [data-uwu-indicated] {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .uwu-nav-indicator {

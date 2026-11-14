@@ -22,9 +22,6 @@ export function NavIndicator({ className }: NavIndicatorProps) {
     const nav = bar?.parentElement;
     if (!bar || !nav) return;
     nav.setAttribute("data-uwu-indicator", "");
-    // CSP: positions go through CSSOM. Only a static nav gets relative, fixed/sticky ones stay.
-    const positioned = getComputedStyle(nav).position === "static";
-    if (positioned) nav.style.setProperty("position", "relative");
     const sizes = typeof ResizeObserver === "function" ? new ResizeObserver(() => place()) : undefined;
     let marked: HTMLElement | null = null;
 
@@ -68,7 +65,6 @@ export function NavIndicator({ className }: NavIndicatorProps) {
       sizes?.disconnect();
       marked?.removeAttribute("data-uwu-indicated");
       nav.removeAttribute("data-uwu-indicator");
-      if (positioned) nav.style.removeProperty("position");
     };
   }, []);
 
