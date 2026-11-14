@@ -80,3 +80,83 @@
     transform: rotate(360deg);
   }
 }
+
+/*
+ * Page change, staggered cards, the sliding nav pill and the reveal stage (docs/motion.md).
+ * Everything is static by default; motion only runs under no-preference and without
+ * data-motion="reduced", so nothing waits on a delay that the 1 ms collapse would keep.
+ */
+
+/* Steps for engines without sibling-index(). Capped at 8, later cards come in together. */
+.uwu-stagger > :nth-child(2) {
+  --uwu-i: 1;
+}
+.uwu-stagger > :nth-child(3) {
+  --uwu-i: 2;
+}
+.uwu-stagger > :nth-child(4) {
+  --uwu-i: 3;
+}
+.uwu-stagger > :nth-child(5) {
+  --uwu-i: 4;
+}
+.uwu-stagger > :nth-child(6) {
+  --uwu-i: 5;
+}
+.uwu-stagger > :nth-child(7) {
+  --uwu-i: 6;
+}
+.uwu-stagger > :nth-child(8) {
+  --uwu-i: 7;
+}
+.uwu-stagger > :nth-child(n + 9) {
+  --uwu-i: 8;
+}
+
+/* Unlayered on purpose: beats the rows' own bg-* utility while the pill draws it. */
+[data-uwu-indicator] {
+  isolation: isolate;
+}
+
+[data-uwu-indicator] [data-uwu-indicated] {
+  background-color: transparent;
+}
+
+.uwu-nav-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.uwu-nav-indicator[data-on] {
+  opacity: 1;
+}
+
+:root.uwu-revealing,
+:root.uwu-revealing body {
+  background-color: var(--uwu-reveal-backdrop);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Put it on the element that changes per page, keyed by the route, so it remounts. */
+  :root:not([data-motion="reduced"]) .uwu-page {
+    animation: uwu-fade var(--uwu-duration-enter) var(--uwu-ease-out) both;
+  }
+
+  :root:not([data-motion="reduced"]) .uwu-stagger > * {
+    animation: uwu-slide-up var(--uwu-duration-enter) var(--uwu-ease-out) both;
+    animation-delay: calc(var(--uwu-i, 0) * var(--uwu-stagger-step));
+    animation-delay: calc(min(sibling-index() - 1, 8) * var(--uwu-stagger-step));
+  }
+
+  :root:not([data-motion="reduced"]) .uwu-nav-indicator[data-ready] {
+    transition:
+      translate var(--uwu-duration-enter) var(--uwu-ease-pop),
+      width var(--uwu-duration-enter) var(--uwu-ease-out),
+      height var(--uwu-duration-enter) var(--uwu-ease-out),
+      opacity var(--uwu-duration-fast) var(--uwu-ease-out);
+  }
+}

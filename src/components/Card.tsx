@@ -2,6 +2,7 @@ import { clsx } from "clsx";
 import type { LucideIcon } from "lucide-react";
 import { useId, type HTMLAttributes, type ReactNode } from "react";
 import { Icon } from "../icons/Icon.js";
+import { CountUp } from "./CountUp.js";
 
 export interface CardProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
   title?: ReactNode;
@@ -109,7 +110,10 @@ const STAT_TONES: Record<StatTone, string> = {
 
 export interface StatTileProps {
   label: ReactNode;
+  /** A number counts up when the tile appears (`CountUp`); text shows as it is. */
   value: ReactNode;
+  /** Formats a numeric `value`. */
+  format?: (n: number) => string;
   icon?: LucideIcon;
   /** A line under it that says in words what is wrong, so colour is never the only hint. */
   note?: ReactNode;
@@ -121,11 +125,13 @@ export interface StatTileProps {
 }
 
 /** One number on an overview: the icon, the value big, what it is below. From UwUMail's portal. */
-export function StatTile({ label, value, icon, note, tone = "normal", children, className }: StatTileProps) {
+export function StatTile({ label, value, format, icon, note, tone = "normal", children, className }: StatTileProps) {
   return (
     <div className={clsx("flex min-w-0 flex-col rounded-card border border-hairline bg-surface p-4", className)}>
       {icon && <Icon icon={icon} size="lg" className={clsx("mb-2", STAT_TONES[tone])} />}
-      <p className="truncate text-section leading-tight font-bold tabular-nums">{value}</p>
+      <p className="truncate text-section leading-tight font-bold tabular-nums">
+        {typeof value === "number" ? <CountUp value={value} format={format} /> : value}
+      </p>
       <p className="mt-0.5 truncate text-meta text-muted">{label}</p>
       {children && <div className="mt-2">{children}</div>}
       {note && <p className="mt-1 text-caption text-muted">{note}</p>}

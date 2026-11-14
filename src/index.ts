@@ -24,6 +24,10 @@ export type { EmptyStateProps } from "./components/EmptyState.js";
 export { Card, SettingRow, StatTile, Hint } from "./components/Card.js";
 export type { CardProps, HintTone, SettingRowProps, StatTileProps, StatTone } from "./components/Card.js";
 export { ProgressBar } from "./components/ProgressBar.js";
+export { CountUp } from "./components/CountUp.js";
+export type { CountUpProps } from "./components/CountUp.js";
+export { NavIndicator } from "./components/NavIndicator.js";
+export type { NavIndicatorProps } from "./components/NavIndicator.js";
 export type { ProgressBarProps } from "./components/ProgressBar.js";
 export { ResizeHandle, keyedWidth } from "./components/ResizeHandle.js";
 export type { ResizeHandleProps } from "./components/ResizeHandle.js";
@@ -50,6 +54,10 @@ export type { SuiteIconName } from "./icons/suite.js";
 // Nyu
 export { Nyu, NyuEars, NyuFace, Paw as NyuPaw, Sticker, NYU, MOODS, SHELLS, VIEWBOX } from "./nyu/Nyu.js";
 export type { NyuFaceProps, NyuMood, NyuProps, NyuShell } from "./nyu/Nyu.js";
+
+// Motion (docs/motion.md)
+export { motionAllowed, revealFrom, tokenMs } from "./lib/motion.js";
+export type { RevealOrigin } from "./lib/motion.js";
 
 // Settings
 export { applyAppearance, bootScript, resolveAppearance, useAppearance, QUERIES } from "./lib/appearance.js";

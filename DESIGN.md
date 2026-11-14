@@ -833,14 +833,17 @@ radius, the Android navigation indicator a 64 × 32 pill.
 Short and soft, with a little spring. Motion explains where something comes
 from; it is never the point, and it can always be turned off.
 
-| Token                  | Value                               | Use                              |
-| ---------------------- | ----------------------------------- | -------------------------------- |
-| `--uwu-duration-fast`  | 150ms                               | Colour changes, hover, buttons   |
-| `--uwu-duration-base`  | 200ms                               | Switches, avatars fading in      |
-| `--uwu-duration-enter` | 220ms                               | Things coming in (toast, drawer) |
-| `--uwu-ease-out`       | `cubic-bezier(0.2, 0.9, 0.3, 1)`    | Default (`ease-uwu`)             |
-| `--uwu-ease-pop`       | `cubic-bezier(0.2, 0.9, 0.3, 1.3)`  | Popups with a little overshoot   |
-| `--uwu-ease-spring`    | `cubic-bezier(0.34, 1.56, 0.64, 1)` | Website, installer, Nyu          |
+| Token                   | Value                               | Use                              |
+| ----------------------- | ----------------------------------- | -------------------------------- |
+| `--uwu-duration-fast`   | 150ms                               | Colour changes, hover, buttons   |
+| `--uwu-duration-base`   | 200ms                               | Switches, avatars fading in      |
+| `--uwu-duration-enter`  | 220ms                               | Things coming in (toast, drawer) |
+| `--uwu-duration-count`  | 600ms                               | Count-up, bars filling           |
+| `--uwu-duration-reveal` | 480ms                               | Circle reveal                    |
+| `--uwu-stagger-step`    | 40ms                                | Between staggered cards          |
+| `--uwu-ease-out`        | `cubic-bezier(0.2, 0.9, 0.3, 1)`    | Default (`ease-uwu`)             |
+| `--uwu-ease-pop`        | `cubic-bezier(0.2, 0.9, 0.3, 1.3)`  | Popups with a little overshoot   |
+| `--uwu-ease-spring`     | `cubic-bezier(0.34, 1.56, 0.64, 1)` | Website, installer, Nyu          |
 
 | Utility              | Keyframes                                       | Use                                |
 | -------------------- | ----------------------------------------------- | ---------------------------------- |
@@ -854,6 +857,12 @@ from; it is never the point, and it can always be turned off.
 | `animate-spin`       | `uwu-spin`                                      | Spinners                           |
 
 Pressed buttons scale to 0.97 (`active:scale-[0.97]`).
+
+**Page and dashboard motion.** A circle reveal once at start or unlock
+(`revealFrom`), numbers that count up (`StatTile`, `CountUp`) and bars that fill,
+page changes that fade with staggered cards (`uwu-page`, `uwu-stagger`) and a
+nav pill that slides to the active row (`NavIndicator`). Details in
+[motion](docs/motion.md).
 
 **Platform motion (the exception).** The mobile components copy the system's
 own timing, which is slower than the desktop tokens. They live in `mobile.css`
