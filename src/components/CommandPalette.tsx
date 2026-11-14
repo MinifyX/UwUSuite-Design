@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Icon } from "../icons/Icon.js";
 import { useLabels } from "../lib/labels.js";
+import { closeModal, showModal } from "../lib/modal.js";
 
 export interface CommandItem {
   id: string;
@@ -130,11 +131,11 @@ export function CommandPalette({
     const dialog = ref.current;
     if (!dialog || !shown) return;
     const previous = document.activeElement as HTMLElement | null;
-    if (!dialog.open) dialog.showModal?.();
+    if (!dialog.open) showModal(dialog);
     setActive(null);
     input.current?.focus();
     return () => {
-      if (dialog.open) dialog.close?.();
+      closeModal(dialog);
       // An app that moved focus on its own (a terminal, a dialog opened from a command) keeps it.
       const now = document.activeElement;
       if (!now || now === document.body || dialog.contains(now)) previous?.focus?.();

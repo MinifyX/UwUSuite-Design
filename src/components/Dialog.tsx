@@ -1,7 +1,8 @@
 import { clsx } from "clsx";
 import { X } from "lucide-react";
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useId, useLayoutEffect, useRef, type ReactNode } from "react";
 import { useLabels } from "../lib/labels.js";
+import { closeModal, showModal } from "../lib/modal.js";
 import { IconButton } from "./Button.js";
 
 const FOCUSABLE =
@@ -52,12 +53,14 @@ export function Dialog({
   const titleId = useId();
   const shown = open && !held;
 
-  useEffect(() => {
+  // A layout effect, so an unmount closes the <dialog> while it is still in the document: a
+  // removed one gives focus back to nobody.
+  useLayoutEffect(() => {
     const dialog = ref.current;
-    if (!dialog) return;
-    if (shown && !dialog.open) {
-      const before = document.activeElement as HTMLElement | null;
-      dialog.showModal?.();
+    if (!dialog || !shown) return;
+    const before = document.activeElement as HTMLElement | null;
+    if (!dialog.open) {
+      showModal(dialog);
       // showModal() starts on the X in the header. Start on what the caller focused (autoFocus),
       // on [data-autofocus], or on the first control instead.
       const start = dialog.contains(before)
@@ -66,7 +69,13 @@ export function Dialog({
           [...dialog.querySelectorAll<HTMLElement>(FOCUSABLE)].find((el) => !header.current?.contains(el)));
       start?.focus();
     }
-    if (!shown && dialog.open) dialog.close?.();
+    return () => {
+      closeModal(dialog);
+      // The browser returns focus on close(); this covers one that didn't.
+      const now = document.activeElement;
+      if (before && !dialog.contains(before) && (!now || now === document.body || dialog.contains(now)))
+        before.focus?.();
+    };
   }, [shown]);
 
   return (
@@ -83,7 +92,8 @@ export function Dialog({
       }}
       onClose={(event) => {
         // The browser can close it on its own (e.g. the Android back gesture); tell the caller.
-        if (event.target === ref.current && shown) onClose();
+        // A late event from a close before a reopen (StrictMode) finds it open again: ignored.
+        if (event.target === ref.current && shown && !ref.current.open) onClose();
       }}
       onClick={(event) => {
         if (closeOnOutsideClick && event.target === ref.current) onClose();

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.16.1
+
+Two fixes for apps that use `Dialog`. Apps need no changes.
+
+- **Toasts** show above an open modal dialog (`Dialog`, `CommandPalette`) and can be read and
+  clicked there: the toast stack moves into the topmost open dialog and back out when it closes.
+  Before, they sat behind the backdrop and were inert.
+- **`Dialog`** closes itself when it is unmounted while open, so focus goes back to where it was
+  before the dialog opened instead of to nobody. A late `close` event after a reopen (React
+  StrictMode) no longer calls `onClose`.
+
 ## 1.16.0
 
 Keyboard and screen reader fixes. Apps need no changes.

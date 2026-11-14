@@ -312,8 +312,41 @@ describe("Dialog", () => {
     );
     delete proto.showModal;
     expect(document.activeElement).toBe(screen.getByLabelText("Name"));
-    fireEvent(screen.getByLabelText("Name").closest("dialog")!, new Event("close"));
+    const dialog = screen.getByLabelText("Name").closest("dialog")!;
+    fireEvent(dialog, new Event("close"));
+    expect(close).not.toHaveBeenCalled(); // still open: a late event from before a reopen
+    dialog.removeAttribute("open");
+    fireEvent(dialog, new Event("close"));
     expect(close).toHaveBeenCalledOnce();
+  });
+
+  it("closes itself on unmount and gives focus back to the opener", () => {
+    const proto = HTMLDialogElement.prototype as { showModal?: () => void; close?: () => void };
+    proto.showModal = function (this: HTMLDialogElement) {
+      this.setAttribute("open", "");
+    };
+    proto.close = function (this: HTMLDialogElement) {
+      this.removeAttribute("open");
+    };
+    const { rerender } = render(<button>Öffnen</button>);
+    screen.getByText("Öffnen").focus();
+    const view = (open: boolean) => (
+      <>
+        <button>Öffnen</button>
+        {open && (
+          <Dialog open onClose={() => {}} title="Neu">
+            <input aria-label="Name" />
+          </Dialog>
+        )}
+      </>
+    );
+    rerender(view(true));
+    const dialog = screen.getByLabelText("Name").closest("dialog")!;
+    rerender(view(false));
+    delete proto.showModal;
+    delete proto.close;
+    expect(dialog.open).toBe(false);
+    expect(document.activeElement).toBe(screen.getByText("Öffnen"));
   });
 
   it("stays open on a click beside it unless asked to close", () => {
@@ -416,6 +449,31 @@ describe("ResizeHandle", () => {
 });
 
 describe("toasts", () => {
+  it("move into an open modal dialog and back out after it closes", () => {
+    const proto = HTMLDialogElement.prototype as { showModal?: () => void };
+    proto.showModal = function (this: HTMLDialogElement) {
+      this.setAttribute("open", "");
+    };
+    const store = createToasts();
+    const view = (open: boolean) => (
+      <>
+        <Toaster store={store} />
+        <Dialog open={open} onClose={() => {}} title="Neu">
+          <p>Inhalt</p>
+        </Dialog>
+      </>
+    );
+    const { rerender } = render(view(true));
+    delete proto.showModal;
+    act(() => void store.show("Kopiert"));
+    const toast = screen.getByRole("status");
+    expect(toast.closest("dialog")).toBe(screen.getByText("Inhalt").closest("dialog"));
+    expect(toast.closest("[aria-live]")).not.toBeNull();
+    rerender(view(false));
+    expect(screen.getByRole("status").closest("dialog")).toBeNull();
+    store.dismiss(1);
+  });
+
   it("keeps four at most and lets them go after their time", () => {
     vi.useFakeTimers();
     const store = createToasts();

@@ -1,7 +1,9 @@
 import { clsx } from "clsx";
 import { CircleAlert, CircleCheck, Info, X } from "lucide-react";
 import { useSyncExternalStore, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { useLabels } from "../lib/labels.js";
+import { topModal } from "../lib/modal.js";
 
 export type ToastTone = "info" | "success" | "error";
 
@@ -88,7 +90,9 @@ const ICONS = { info: Info, success: CircleCheck, error: CircleAlert } as const;
 export function Toaster({ store }: { store: ToastStore }) {
   const toasts = useSyncExternalStore(store.subscribe, store.get, store.get);
   const labels = useLabels();
-  return (
+  // Inside the topmost open modal dialog, the stack is in its top layer and not inert.
+  const host = useSyncExternalStore(topModal.subscribe, topModal.get, () => null);
+  const stack = (
     <div
       aria-live="polite"
       className="pointer-events-none fixed bottom-5 left-1/2 z-[var(--uwu-z-toast)] flex w-[min(440px,calc(100vw-32px))] -translate-x-1/2 flex-col items-center gap-2 phone:top-2 phone:bottom-auto"
@@ -149,4 +153,5 @@ export function Toaster({ store }: { store: ToastStore }) {
       })}
     </div>
   );
+  return host ? createPortal(stack, host) : stack;
 }
