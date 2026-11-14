@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.15.2
+
+- **`uwu-page`, `uwu-stagger`**: the animation no longer stays applied after it ends (fill
+  `backwards` instead of `both`). Before, the page and every card kept a stacking context and, for
+  the cards, a containing block for `position: fixed` children, so unportaled popovers could layer
+  or position wrongly.
+
 ## 1.15.1
 
 - **`NavIndicator`**: no longer sets an inline `position: relative` on the nav, which overrode a

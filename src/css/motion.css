@@ -151,11 +151,11 @@
 @media (prefers-reduced-motion: no-preference) {
   /* Put it on the element that changes per page, keyed by the route, so it remounts. */
   :root:not([data-motion="reduced"]) .uwu-page {
-    animation: uwu-fade var(--uwu-duration-enter) var(--uwu-ease-out) both;
+    animation: uwu-fade var(--uwu-duration-enter) var(--uwu-ease-out) backwards;
   }
 
   :root:not([data-motion="reduced"]) .uwu-stagger > * {
-    animation: uwu-slide-up var(--uwu-duration-enter) var(--uwu-ease-out) both;
+    animation: uwu-slide-up var(--uwu-duration-enter) var(--uwu-ease-out) backwards;
     animation-delay: calc(var(--uwu-i, 0) * var(--uwu-stagger-step));
     animation-delay: calc(min(sibling-index() - 1, 8) * var(--uwu-stagger-step));
   }
