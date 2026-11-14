@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.16.0
+
+Keyboard and screen reader fixes. Apps need no changes.
+
+- **Focus ring** stays visible in forced-colors mode (transparent outline instead of `none`).
+- **`Field`** links its hint and error to `TextInput`/`TextArea`/`Select` (`aria-describedby`) and
+  sets `aria-invalid` on error, so the field also gets its error border. Explicit props win.
+- **`Dialog`** starts on the first control (or `[data-autofocus]`/`autoFocus`) instead of the X,
+  calls `onClose` when the browser closes it itself, and the page underneath no longer scrolls.
+- **`Menu`**: Tab closes it, focus returns to the trigger after Escape or a selection, Home/End.
+- **Toasts** stay while hovered or focused (new store methods `pause`/`resume`).
+- **Mobile `Sheet`/`FullScreenDialog`/`ContextMenu`** make the background `inert` while open.
+
 ## 1.15.2
 
 - **`uwu-page`, `uwu-stagger`**: the animation no longer stays applied after it ends (fill
