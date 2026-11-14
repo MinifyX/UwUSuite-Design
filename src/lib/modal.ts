@@ -1,7 +1,7 @@
 /**
- * The open modal dialogs, so the Toaster can move into the topmost one: a modal makes everything
- * outside it inert and covers it with its backdrop, and popover="manual" is not Baseline widely
- * available yet (and would still be inert).
+ * The open modal dialogs (Dialog, CommandPalette), so a toast stack can move into the topmost
+ * one: a modal makes everything outside it inert and covers it with its backdrop, and
+ * popover="manual" is not Baseline widely available yet (and would still be inert).
  */
 
 let stack: HTMLDialogElement[] = [];

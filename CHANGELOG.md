@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.16.2
+
+- **`topModal`** (new export): the topmost modal opened by `Dialog` or `CommandPalette`, as a
+  `useSyncExternalStore` source (`subscribe`, `get`). An app with its own toast stack portals it
+  there, as `Toaster` does, so its toasts stay visible and usable over a dialog.
+
 ## 1.16.1
 
 Two fixes for apps that use `Dialog`. Apps need no changes.

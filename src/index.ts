@@ -11,6 +11,7 @@ export { Pill, Badge, Tag } from "./components/Pill.js";
 export type { PillProps, TagTone } from "./components/Pill.js";
 export { Dialog } from "./components/Dialog.js";
 export type { DialogProps } from "./components/Dialog.js";
+export { topModal } from "./lib/modal.js";
 export { Menu } from "./components/Menu.js";
 export type { MenuEntry, MenuHeading, MenuItem, MenuProps } from "./components/Menu.js";
 export { CommandPalette, filterCommands } from "./components/CommandPalette.js";
