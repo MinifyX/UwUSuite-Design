@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.15.1
+
+- **`NavIndicator`**: no longer sets an inline `position: relative` on the nav, which overrode a
+  drawer that turns `fixed` below a breakpoint after the window was resized. The nav gets it from
+  a layered, zero-specificity rule instead, so the app's own `fixed`/`sticky` wins.
+- **`NavIndicator`**: a general `:hover` background (e.g. `button:hover`) no longer covers the pill
+  on the active row.
+
 ## 1.15.0
 
 Motion for overviews and page changes. Everything stays still under reduced motion.
