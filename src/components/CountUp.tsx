@@ -28,8 +28,10 @@ export function CountUp({ value, format = defaultFormat, className }: CountUpPro
       return;
     }
     const duration = tokenMs("--uwu-duration-count", 600);
-    const t0 = performance.now();
+    // The first frame is the start: a frame's timestamp can lie before performance.now().
+    let t0: number | undefined;
     let frame = requestAnimationFrame(function step(now) {
+      t0 ??= now;
       const t = Math.min(1, (now - t0) / duration);
       const v = t >= 1 ? target : start + (target - start) * (1 - (1 - t) ** 3); // ease-out cubic
       from.current = v;

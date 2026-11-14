@@ -12,6 +12,7 @@ Keyboard and screen reader fixes. Apps need no changes.
 - **`Menu`**: Tab closes it, focus returns to the trigger after Escape or a selection, Home/End.
 - **Toasts** stay while hovered or focused (new store methods `pause`/`resume`).
 - **Mobile `Sheet`/`FullScreenDialog`/`ContextMenu`** make the background `inert` while open.
+- **`CountUp`** can no longer flash a wrong number in its first frame.
 
 ## 1.15.2
 
