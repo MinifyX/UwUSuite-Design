@@ -4,6 +4,9 @@ import { useEffect, useId, useRef, type ReactNode } from "react";
 import { useLabels } from "../lib/labels.js";
 import { IconButton } from "./Button.js";
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export interface DialogProps {
   open: boolean;
   onClose: () => void;
@@ -44,6 +47,7 @@ export function Dialog({
   held = false,
 }: DialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
+  const header = useRef<HTMLElement>(null);
   const labels = useLabels();
   const titleId = useId();
   const shown = open && !held;
@@ -51,7 +55,17 @@ export function Dialog({
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (shown && !dialog.open) dialog.showModal?.();
+    if (shown && !dialog.open) {
+      const before = document.activeElement as HTMLElement | null;
+      dialog.showModal?.();
+      // showModal() starts on the X in the header. Start on what the caller focused (autoFocus),
+      // on [data-autofocus], or on the first control instead.
+      const start = dialog.contains(before)
+        ? before
+        : (dialog.querySelector<HTMLElement>("[data-autofocus]") ??
+          [...dialog.querySelectorAll<HTMLElement>(FOCUSABLE)].find((el) => !header.current?.contains(el)));
+      start?.focus();
+    }
     if (!shown && dialog.open) dialog.close?.();
   }, [shown]);
 
@@ -67,11 +81,15 @@ export function Dialog({
         event.preventDefault();
         onClose();
       }}
+      onClose={(event) => {
+        // The browser can close it on its own (e.g. the Android back gesture); tell the caller.
+        if (event.target === ref.current && shown) onClose();
+      }}
       onClick={(event) => {
         if (closeOnOutsideClick && event.target === ref.current) onClose();
       }}
       className={clsx(
-        "m-auto max-h-[min(720px,calc(100svh-48px))] w-[calc(100vw-48px)] overflow-hidden rounded-dialog border border-line bg-surface p-0 text-ink shadow-float backdrop:bg-[var(--uwu-backdrop)] backdrop:backdrop-blur-[2px] open:flex open:animate-pop open:flex-col",
+        "m-auto max-h-[min(720px,calc(100svh-48px))] w-[calc(100vw-48px)] overflow-hidden overscroll-contain rounded-dialog border border-line bg-surface p-0 text-ink shadow-float backdrop:overflow-hidden backdrop:overscroll-contain backdrop:bg-[var(--uwu-backdrop)] backdrop:backdrop-blur-[2px] open:flex open:animate-pop open:flex-col",
         tone === "warning" && "border-t-4 border-t-warning",
         width === "sm" && "max-w-[420px]",
         width === "md" && "max-w-[560px]",
@@ -90,7 +108,7 @@ export function Dialog({
       {open && (
         <div className="flex min-h-0 flex-auto flex-col">
           {title !== undefined && (
-            <header className="flex items-center justify-between gap-4 px-6 pt-5 pb-2">
+            <header ref={header} className="flex items-center justify-between gap-4 px-6 pt-5 pb-2">
               <h2 id={titleId} className={clsx("text-section font-bold", tone === "warning" && "text-warning-ink")}>
                 {title}
               </h2>

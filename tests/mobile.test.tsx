@@ -187,6 +187,7 @@ describe("Sheet", () => {
       const [open, setOpen] = useState(true);
       return (
         <MobileShell kind="phone-ios">
+          <button type="button">Hinter</button>
           <Sheet open={open} onClose={() => setOpen(false)} title="Neuer Eintrag" detents={["medium", "large"]}>
             <input aria-label="Name" />
           </Sheet>
@@ -197,9 +198,13 @@ describe("Sheet", () => {
     const dialog = screen.getByRole("dialog", { name: "Neuer Eintrag" });
     expect(dialog.dataset.detent).toBe("large");
     expect(dialog.closest(".uwu-mshell")).toBeTruthy();
+    const behind = screen.getByText("Hinter");
+    expect(behind.closest("[inert]")).toBeTruthy();
+    expect(dialog.closest("[inert]")).toBeNull();
     fireEvent.keyDown(dialog, { key: "Escape" });
     act(() => vi.advanceTimersByTime(400));
     expect(screen.queryByRole("dialog")).toBeNull();
+    expect(behind.closest("[inert]")).toBeNull();
   });
 
   it("is a centred form sheet on the iPad", () => {

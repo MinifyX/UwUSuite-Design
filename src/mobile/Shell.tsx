@@ -157,6 +157,16 @@ export function useModalFocus(ref: RefObject<HTMLElement | null>, active: boolea
     const el = ref.current;
     if (!active || !el) return;
     const before = document.activeElement as HTMLElement | null;
+    // Like showModal(): everything beside the overlay, up to <body>, is out of reach while it is
+    // open. Only what was not inert already is set and later freed, so stacked overlays nest.
+    const inerted: Element[] = [];
+    for (let node: Element | null = el; node?.parentElement && node !== document.body; node = node.parentElement) {
+      for (const sibling of node.parentElement.children) {
+        if (sibling === node || sibling.hasAttribute("inert")) continue;
+        sibling.setAttribute("inert", "");
+        inerted.push(sibling);
+      }
+    }
     const first = el.querySelector<HTMLElement>("[data-autofocus]") ?? el;
     first.focus({ preventScroll: true });
     const onKey = (event: KeyboardEvent) => {
@@ -184,6 +194,7 @@ export function useModalFocus(ref: RefObject<HTMLElement | null>, active: boolea
     el.addEventListener("keydown", onKey);
     return () => {
       el.removeEventListener("keydown", onKey);
+      for (const node of inerted) node.removeAttribute("inert");
       before?.focus?.({ preventScroll: true });
     };
   }, [ref, active]);

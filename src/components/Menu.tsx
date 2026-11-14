@@ -78,6 +78,11 @@ export function Menu({
   useLayoutEffect(() => {
     closeRef.current = () => setOpen(false);
   });
+  /** Closes and puts focus back on the button that opened it, instead of losing it to <body>. */
+  const closeToTrigger = () => {
+    root.current?.querySelector<HTMLElement>("[aria-haspopup]")?.focus();
+    closeRef.current();
+  };
   const id = useId();
   const root = useRef<HTMLDivElement>(null);
   const list = useRef<HTMLDivElement>(null);
@@ -92,8 +97,7 @@ export function Menu({
       if (event.key !== "Escape") return;
       // Only the menu closes, not the dialog behind it.
       event.stopPropagation();
-      closeRef.current();
-      root.current?.querySelector<HTMLButtonElement>("[aria-haspopup]")?.focus();
+      closeToTrigger();
     };
     document.addEventListener("pointerdown", onPointer);
     document.addEventListener("keydown", onKey, true);
@@ -103,10 +107,11 @@ export function Menu({
     };
   }, [open]);
 
-  const moveFocus = (step: number) => {
+  const moveFocus = (key: string) => {
     const buttons = [...(list.current?.querySelectorAll<HTMLButtonElement>("[role=menuitem]:not(:disabled)") ?? [])];
     const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
-    buttons[(index + step + buttons.length) % buttons.length]?.focus();
+    const next = { Home: 0, End: buttons.length - 1, ArrowDown: index + 1, ArrowUp: index - 1 }[key]!;
+    buttons[(next + buttons.length) % buttons.length]?.focus();
   };
 
   return (
@@ -124,10 +129,12 @@ export function Menu({
           id={id}
           role="menu"
           onKeyDown={(event) => {
-            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+            if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
               event.preventDefault();
-              moveFocus(event.key === "ArrowDown" ? 1 : -1);
+              moveFocus(event.key);
             }
+            // Tab leaves the menu: it closes, and Tab carries on from the button that opened it.
+            if (event.key === "Tab") closeToTrigger();
           }}
           className={clsx(
             "absolute z-[var(--uwu-z-menu)] flex max-h-[min(75vh,520px)] w-max max-w-[min(360px,calc(100vw-48px))] min-w-[200px] animate-pop flex-col overflow-y-auto overscroll-contain rounded-2xl border border-line bg-surface p-1.5 text-ink shadow-float",
@@ -137,7 +144,7 @@ export function Menu({
         >
           {sections(items).map((section, sectionIndex) =>
             section.heading === undefined ? (
-              <Entries key={sectionIndex} entries={section.entries} close={() => setOpen(false)} />
+              <Entries key={sectionIndex} entries={section.entries} close={closeToTrigger} />
             ) : (
               <div
                 key={sectionIndex}
@@ -152,7 +159,7 @@ export function Menu({
                 >
                   {section.heading}
                 </p>
-                <Entries entries={section.entries} close={() => setOpen(false)} />
+                <Entries entries={section.entries} close={closeToTrigger} />
               </div>
             ),
           )}
@@ -177,7 +184,7 @@ function Entries({ entries, close }: { entries: (MenuItem | "separator")[]; clos
           item.onSelect();
         }}
         className={clsx(
-          "flex shrink-0 items-center gap-2.5 rounded-xl px-3 py-2 text-left text-meta font-medium break-words hover:bg-pink-tint/60 focus:bg-pink-tint/60 focus:outline-none disabled:opacity-50",
+          "flex shrink-0 items-center gap-2.5 rounded-xl px-3 py-2 text-left text-meta font-medium break-words hover:bg-pink-tint/60 focus:bg-pink-tint/60 focus:outline-hidden disabled:opacity-50",
           item.danger && "text-danger-ink",
         )}
       >

@@ -36,6 +36,12 @@ export function createToasts({ infoMs = 5000, errorMs = 9000, max = 4 } = {}) {
     emit();
   };
 
+  const arm = (item: Toast) =>
+    timers.set(
+      item.id,
+      setTimeout(() => dismiss(item.id), item.tone === "error" ? errorMs : infoMs),
+    );
+
   const show = (message: ReactNode, options: Partial<Omit<Toast, "id" | "message">> = {}) => {
     const item: Toast = {
       id: next++,
@@ -48,10 +54,7 @@ export function createToasts({ infoMs = 5000, errorMs = 9000, max = 4 } = {}) {
     const drop = Math.max(0, list.length - (max - 1));
     list.slice(0, drop).forEach((old) => clearTimeout(timers.get(old.id)));
     list = [...list.slice(drop), item];
-    timers.set(
-      item.id,
-      setTimeout(() => dismiss(item.id), item.tone === "error" ? errorMs : infoMs),
-    );
+    arm(item);
     emit();
     return item.id;
   };
@@ -59,6 +62,16 @@ export function createToasts({ infoMs = 5000, errorMs = 9000, max = 4 } = {}) {
   return {
     show,
     dismiss,
+    /** Holds a toast while the pointer or focus is on it (WCAG 2.2.1). */
+    pause(id: number) {
+      clearTimeout(timers.get(id));
+      timers.delete(id);
+    },
+    /** Gives a held toast its full time again. */
+    resume(id: number) {
+      const item = list.find((toast) => toast.id === id);
+      if (item && !timers.has(id)) arm(item);
+    },
     subscribe(listener: Listener) {
       listeners.add(listener);
       return () => listeners.delete(listener);
@@ -86,6 +99,16 @@ export function Toaster({ store }: { store: ToastStore }) {
           <div
             key={item.id}
             role={item.tone === "error" ? "alert" : "status"}
+            onPointerEnter={() => store.pause(item.id)}
+            onFocus={() => store.pause(item.id)}
+            onPointerLeave={(event) => {
+              if (!event.currentTarget.contains(document.activeElement)) store.resume(item.id);
+            }}
+            onBlur={(event) => {
+              const toast = event.currentTarget;
+              if (!toast.contains(event.relatedTarget as Node | null) && !toast.matches(":hover"))
+                store.resume(item.id);
+            }}
             className="pointer-events-auto flex w-full animate-slide-up items-center gap-3 rounded-2xl bg-toast py-2.5 pr-2 pl-4 text-meta font-medium text-toast-ink shadow-float"
           >
             <span className="relative shrink-0">

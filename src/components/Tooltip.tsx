@@ -48,7 +48,7 @@ export function Tooltip({ content, children, className, onActivate }: TooltipPro
         }}
         // Text from outside (a sender's name) keeps its direction marks to itself.
         className={clsx(
-          "rounded outline-none [unicode-bidi:isolate] focus-visible:shadow-focus",
+          "rounded outline-hidden [unicode-bidi:isolate] focus-visible:shadow-focus",
           onActivate && "cursor-pointer",
           className,
         )}

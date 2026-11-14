@@ -394,7 +394,7 @@
   .uwu-stepper button:focus-visible,
   .uwu-swipe-action:focus-visible,
   .uwu-menu-item:focus-visible {
-    outline: none;
+    outline: 2px solid transparent;
     box-shadow: var(--uwu-focus);
   }
 
@@ -563,7 +563,7 @@
     flex: 1;
     min-width: 0;
     border: 0;
-    outline: none;
+    outline: 2px solid transparent;
     background: none;
     font-size: max(16px, var(--uwu-type-body));
   }
@@ -1634,7 +1634,7 @@
     flex: 1;
     min-width: 0;
     border: 0;
-    outline: none;
+    outline: 2px solid transparent;
     background: none;
     color: var(--uwu-ink);
     font-size: max(16px, var(--uwu-type-body));
@@ -1773,7 +1773,7 @@
   }
 
   .uwu-sidebar-row:focus-visible {
-    outline: none;
+    outline: 2px solid transparent;
     box-shadow: var(--uwu-focus);
   }
 

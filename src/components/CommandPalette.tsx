@@ -215,7 +215,7 @@ export function CommandPalette({
                   run(current, event.ctrlKey || event.metaKey);
                 }
               }}
-              className="h-full min-w-0 flex-auto bg-transparent text-reading text-ink caret-pink placeholder:text-muted focus:outline-none focus-visible:shadow-none"
+              className="h-full min-w-0 flex-auto bg-transparent text-reading text-ink caret-pink placeholder:text-muted focus:outline-hidden focus-visible:shadow-none"
             />
             <kbd aria-hidden className="rounded-small border border-line px-1.5 py-0.5 text-caption text-muted">
               Esc

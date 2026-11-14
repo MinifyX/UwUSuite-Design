@@ -51,6 +51,24 @@ describe("Field", () => {
     );
   });
 
+  it("links its note and error state to the control without the render prop's help", () => {
+    const { rerender } = render(
+      <Field label="Port" hint="Meist 7000" error="Nur Zahlen">
+        {(id) => <TextInput id={id} />}
+      </Field>,
+    );
+    const input = screen.getByLabelText("Port");
+    expect(document.getElementById(input.getAttribute("aria-describedby")!)?.textContent).toBe("Nur Zahlen");
+    expect(input.getAttribute("aria-invalid")).toBe("true");
+    rerender(
+      <Field label="Port" error="Nur Zahlen">
+        {(id) => <TextInput id={id} aria-describedby="eigene" aria-invalid={false} />}
+      </Field>,
+    );
+    expect(input.getAttribute("aria-describedby")).toBe("eigene");
+    expect(input.getAttribute("aria-invalid")).toBe("false");
+  });
+
   it("shows the error instead of the hint", () => {
     render(
       <Field label="Port" hint="Meist 7000" error="Nur Zahlen">
@@ -196,6 +214,36 @@ describe("Menu", () => {
     expect(onSelect).toHaveBeenCalledOnce();
     expect(screen.queryByRole("menu")).toBeNull();
   });
+  it("moves with Home/End, closes on Tab and gives focus back to its button", () => {
+    render(
+      <Menu
+        trigger={({ toggle, ...props }) => (
+          <button type="button" onClick={toggle} {...props}>
+            Mehr
+          </button>
+        )}
+        items={[
+          { label: "Eins", onSelect: () => {} },
+          { label: "Zwei", onSelect: () => {} },
+          { label: "Drei", onSelect: () => {} },
+        ]}
+      />,
+    );
+    const button = screen.getByRole("button", { name: "Mehr" });
+    fireEvent.click(button);
+    const menu = screen.getByRole("menu");
+    fireEvent.keyDown(menu, { key: "End" });
+    expect(document.activeElement?.textContent).toBe("Drei");
+    fireEvent.keyDown(menu, { key: "Home" });
+    expect(document.activeElement?.textContent).toBe("Eins");
+    fireEvent.keyDown(menu, { key: "Tab" });
+    expect(screen.queryByRole("menu")).toBeNull();
+    expect(document.activeElement).toBe(button);
+    fireEvent.click(button);
+    fireEvent.click(screen.getByRole("menuitem", { name: "Zwei" }));
+    expect(document.activeElement).toBe(button);
+  });
+
   it("labels its sections with headings and scrolls when long", () => {
     render(
       <Menu
@@ -247,6 +295,25 @@ describe("Dialog", () => {
     expect(outer).not.toHaveBeenCalled();
     fireEvent(innerDialog.parentElement!.closest("dialog")!, new Event("cancel", { cancelable: true }));
     expect(outer).toHaveBeenCalledOnce();
+  });
+
+  it("starts on the first control, not the X, and follows a close by the browser", () => {
+    // jsdom has no showModal(); this one opens and focuses the first button, like the browser.
+    const proto = HTMLDialogElement.prototype as { showModal?: () => void };
+    proto.showModal = function (this: HTMLDialogElement) {
+      this.setAttribute("open", "");
+      this.querySelector("button")?.focus();
+    };
+    const close = vi.fn();
+    render(
+      <Dialog open onClose={close} title="Neu">
+        <input aria-label="Name" />
+      </Dialog>,
+    );
+    delete proto.showModal;
+    expect(document.activeElement).toBe(screen.getByLabelText("Name"));
+    fireEvent(screen.getByLabelText("Name").closest("dialog")!, new Event("close"));
+    expect(close).toHaveBeenCalledOnce();
   });
 
   it("stays open on a click beside it unless asked to close", () => {
@@ -366,6 +433,19 @@ describe("toasts", () => {
     expect(screen.getByRole("alert").textContent).toContain("Kaputt");
     act(() => vi.advanceTimersByTime(4000));
     expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("holds a toast while the pointer is on it", () => {
+    vi.useFakeTimers();
+    const store = createToasts();
+    render(<Toaster store={store} />);
+    act(() => void store.show("Gespeichert"));
+    fireEvent.pointerEnter(screen.getByRole("status"));
+    act(() => vi.advanceTimersByTime(6000));
+    expect(screen.getByRole("status")).toBeTruthy();
+    fireEvent.pointerLeave(screen.getByRole("status"));
+    act(() => vi.advanceTimersByTime(5000));
+    expect(screen.queryByRole("status")).toBeNull();
   });
 });
 
