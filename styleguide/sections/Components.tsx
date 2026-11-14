@@ -1,5 +1,5 @@
 import { Smartphone } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Avatar,
   Badge,
@@ -14,9 +14,11 @@ import {
   keepKaomojiTogether,
   IconButton,
   Menu,
+  NavIndicator,
   Nyu,
   Pill,
   ProgressBar,
+  revealFrom,
   ResizeHandle,
   Segmented,
   Select,
@@ -228,7 +230,7 @@ export function Components() {
       </Sub>
       <Sub title="Fortschritt und Kennzahlen">
         <div className="grid gap-3 sm:grid-cols-3">
-          <StatTile icon={ICONS.mail} label="Postfächer" value="42" />
+          <StatTile icon={ICONS.mail} label="Postfächer" value={42} />
           <StatTile icon={ICONS.drive} label="Speicher" value="9,4 von 10 GB" tone="danger" note="Fast voll.">
             <ProgressBar share={0.94} kind="usage" />
           </StatTile>
@@ -237,6 +239,9 @@ export function Components() {
             <p className="text-meta text-muted">1.200 von 2.000 Mails</p>
           </Card>
         </div>
+      </Sub>
+      <Sub title="Bewegung">
+        <MotionDemo />
       </Sub>
       <Sub title="Spaltenbreite">
         <Panel className="flex h-32 overflow-hidden p-0">
@@ -416,5 +421,58 @@ export function Components() {
         ]}
       />
     </Section>
+  );
+}
+
+const DEMO_PAGES = [
+  { id: "start", label: "Start", stats: [12480, 318, 27] },
+  { id: "aufgaben", label: "Aufgaben", stats: [5, 2, 14] },
+  { id: "nachrichten", label: "Nachrichten", stats: [96, 3, 1204] },
+] as const;
+
+/** The four effects together: reveal, sliding pill, page change with stagger, numbers counting up. */
+function MotionDemo() {
+  const [page, setPage] = useState<(typeof DEMO_PAGES)[number]["id"]>("start");
+  const frame = useRef<HTMLDivElement>(null);
+  const logo = useRef<HTMLSpanElement>(null);
+  const current = DEMO_PAGES.find((p) => p.id === page)!;
+  return (
+    <div className="flex flex-col gap-3">
+      <div ref={frame} className="flex min-h-56 overflow-hidden rounded-card border border-hairline bg-canvas">
+        <nav
+          aria-label="Beispiel-Navigation"
+          className="flex w-40 shrink-0 flex-col gap-1 border-r border-hairline p-2"
+        >
+          <span ref={logo} className="mb-2 px-2.5 py-1 font-bold text-pink-ink">
+            uwu
+          </span>
+          <NavIndicator />
+          {DEMO_PAGES.map((p) => (
+            <button
+              key={p.id}
+              type="button"
+              aria-current={p.id === page ? "page" : undefined}
+              onClick={() => setPage(p.id)}
+              className="rounded-control px-2.5 py-1.5 text-left text-meta aria-[current=page]:font-semibold aria-[current=page]:text-pink-ink"
+            >
+              {p.label}
+            </button>
+          ))}
+        </nav>
+        <div key={page} className="uwu-page min-w-0 flex-1 p-4">
+          <h4 className="mb-3 text-title font-bold">{current.label}</h4>
+          <div className="uwu-stagger grid gap-3 sm:grid-cols-3">
+            <StatTile icon={ICONS.mail} label="Gesamt" value={current.stats[0]} />
+            <StatTile icon={ICONS.inbox} label="Offen" value={current.stats[1]} />
+            <StatTile icon={ICONS.archive} label="Erledigt" value={current.stats[2]}>
+              <ProgressBar share={current.stats[2] / (current.stats[2] + current.stats[1])} />
+            </StatTile>
+          </div>
+        </div>
+      </div>
+      <div>
+        <Button onClick={() => frame.current && revealFrom(frame.current, logo.current)}>Aufdecken</Button>
+      </div>
+    </div>
   );
 }

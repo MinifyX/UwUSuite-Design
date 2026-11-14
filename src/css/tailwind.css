@@ -30,6 +30,7 @@
   --font-mono: var(--uwu-mono);
 
   --color-canvas: var(--uwu-canvas);
+  --color-reveal-backdrop: var(--uwu-reveal-backdrop);
   --color-surface: var(--uwu-surface);
   --color-elevated: var(--uwu-elevated);
   --color-ink: var(--uwu-ink);

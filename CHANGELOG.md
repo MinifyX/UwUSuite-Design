@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.15.0
+
+Motion for overviews and page changes. Everything stays still under reduced motion.
+
+- **`revealFrom(target, origin?)`**: uncovers the app with a circle growing from the logo or
+  lock (start, unlock, sign-in). New token `--uwu-reveal-backdrop` (`bg-reveal-backdrop`).
+- **`CountUp`**: a number that counts up when it appears and from old to new when it
+  changes; screen readers only hear the final value. **`StatTile`** uses it for a numeric
+  `value` (new `format`); numbers are now grouped in the page's language (`<html lang>`),
+  e.g. 12480 shows as „12.480“ in German.
+- **`ProgressBar`** fills from 0 the first time it shows.
+- **`uwu-page`** fades a page in, **`uwu-stagger`** brings its cards in one after the other.
+- **`NavIndicator`**: the active nav row's background as one pill that slides to the row with
+  `aria-current` or `aria-selected`.
+- **`motionAllowed()`**, `tokenMs()`; tokens `--uwu-duration-count`, `--uwu-duration-reveal`,
+  `--uwu-stagger-step`.
+
 ## 1.14.0
 
 The last pieces UwUMail's portal and webmail still drew themselves.

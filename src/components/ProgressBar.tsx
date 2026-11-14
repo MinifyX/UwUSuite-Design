@@ -21,8 +21,10 @@ export function ProgressBar({ share, label, kind = "progress", className }: Prog
   const usage = kind === "usage";
   const width = usage && value > 0 ? Math.max(0.02, value) : value;
 
-  // CSP: the width goes through CSSOM, never a style attribute.
+  // CSP: the width goes through CSSOM, never a style attribute. Reading the layout first makes
+  // the browser commit w-0, so the first fill transitions from 0 like every later change.
   useLayoutEffect(() => {
+    fill.current?.getBoundingClientRect();
     fill.current?.style.setProperty("width", `${width * 100}%`);
   }, [width]);
 
@@ -39,7 +41,7 @@ export function ProgressBar({ share, label, kind = "progress", className }: Prog
       <div
         ref={fill}
         className={clsx(
-          "h-full w-0 rounded-full motion-safe:transition-[width]",
+          "h-full w-0 rounded-full motion-safe:transition-[width] motion-safe:duration-(--uwu-duration-count) motion-safe:ease-(--uwu-ease-out)",
           usage && value > 0.9 ? "bg-danger" : usage && value > 0.75 ? "bg-warning" : "bg-pink-solid",
         )}
       />
