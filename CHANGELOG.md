@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.17.0
+
+- **`ICONS.parcel`** (new meaning, lucide `Package`): a shipment in the Pakete view and the parcel chip
+  on a mail. Carriers get no icon of their own; their name stands next to it.
+
 ## 1.16.2
 
 - **`topModal`** (new export): the topmost modal opened by `Dialog` or `CommandPalette`, as a

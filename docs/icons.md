@@ -117,7 +117,10 @@ pattern list), `feed` (subscribe to a calendar or a list by URL),
 (a connected app, OAuth), `cloud` (a cloud gateway), `vpn`, `vacation` (the
 auto reply), `securityOff` (reset or turn off a second factor), `guide`
 (how-to text, docs), `tip` (a hint worth knowing) and `learn` (train the
-spam filter). Close neighbours: a retry is `refresh`, uploading a file into
+spam filter).
+
+`parcel` is a shipment: a parcel on its way or delivered (the Pakete view, a parcel chip on a mail).
+Carriers get no own icon; their name stands next to it. Close neighbours: a retry is `refresh`, uploading a file into
 something is `import` or `addImage`, a failed check is `error`.
 
 `secret` (the round key) is a password or a secret value. A key that is a

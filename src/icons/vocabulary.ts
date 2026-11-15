@@ -137,6 +137,7 @@ import {
   Moon,
   Network,
   NotebookText,
+  Package,
   Palette,
   PanelLeft,
   PanelLeftClose,
@@ -473,6 +474,7 @@ export const ICONS = {
   guide: BookOpen,
   tip: Lightbulb,
   learn: GraduationCap,
+  parcel: Package,
   // Suite icons (src/icons/suite.ts)
   android: Android,
   paw: Paw,
