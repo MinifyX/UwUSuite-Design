@@ -37,10 +37,12 @@ export function Segmented<T extends string>({
   const tabStop = chosen && usable(chosen) ? chosen : options.find(usable);
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+    // Up and down too, like every radio group (WAI-ARIA APG).
+    const forward = event.key === "ArrowRight" || event.key === "ArrowDown";
+    if (!forward && event.key !== "ArrowLeft" && event.key !== "ArrowUp") return;
     event.preventDefault();
     if (disabled) return;
-    const step = event.key === "ArrowRight" ? 1 : -1;
+    const step = forward ? 1 : -1;
     const start = Math.max(
       options.findIndex((option) => option.value === value),
       0,

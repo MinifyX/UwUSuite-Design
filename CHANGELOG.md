@@ -11,6 +11,9 @@ Two components that the server web UIs each built for themselves. Apps need no c
 - **`Section`** (new): a part of a page or settings page with an uppercase group title (`h3`, or
   `h2` with `level={2}`) that names it, an optional `lead` line and `actions`, then the content
   with an even gap.
+- **`Card`**: `level` (2, 3 or 4) for the title's heading, for cards inside a `Section`. Default `h2`
+  as before.
+- **`Segmented`**: the up and down arrow keys move the choice too, like in every radio group.
 
 ## 1.17.0
 
