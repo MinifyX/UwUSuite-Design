@@ -12,10 +12,13 @@ export interface CardProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
   icon?: LucideIcon;
   /** A control on the right of the header: a switch, a button. */
   aside?: ReactNode;
+  /** The title's heading level: 2 (default) on a page, 3 or 4 inside a Section. */
+  level?: 2 | 3 | 4;
 }
 
 /** A white surface on the canvas with a hairline border. No shadow: cards don't float. */
-export function Card({ title, subtitle, icon, aside, className, children, ...rest }: CardProps) {
+export function Card({ title, subtitle, icon, aside, level = 2, className, children, ...rest }: CardProps) {
+  const Heading = `h${level}` as const;
   return (
     <section
       // Buttons keep their own width instead of stretching across the card.
@@ -33,7 +36,7 @@ export function Card({ title, subtitle, icon, aside, className, children, ...res
             </span>
           )}
           <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-            {title && <h2 className="text-[calc(var(--uwu-text-body)+1px)] font-bold">{title}</h2>}
+            {title && <Heading className="text-[calc(var(--uwu-text-body)+1px)] font-bold">{title}</Heading>}
             {subtitle && <span className="text-[calc(var(--uwu-text-caption)+0.5px)] text-muted">{subtitle}</span>}
           </span>
           {aside}

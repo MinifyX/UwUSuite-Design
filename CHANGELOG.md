@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.18.0
+
+Two components that the server web UIs each built for themselves. Apps need no changes.
+
+- **`Tabs`**, **`TabPanel`**, **`useTabsId`** (new): tabs for the parts of a page (`line`, pink
+  underline) or the views of a list (`segmented`, the `Segmented` look). WAI-ARIA tabs: arrow keys,
+  Home and End pick a tab, only the picked one is in the Tab order, disabled tabs are skipped. With
+  `idPrefix` (from `useTabsId`) each tab names its `TabPanel`. Tabs keep `data-tab={id}`.
+- **`Section`** (new): a part of a page or settings page with an uppercase group title (`h3`, or
+  `h2` with `level={2}`) that names it, an optional `lead` line and `actions`, then the content
+  with an even gap.
+- **`Card`**: `level` (2, 3 or 4) for the title's heading, for cards inside a `Section`. Default `h2`
+  as before.
+- **`Segmented`**: the up and down arrow keys move the choice too, like in every radio group.
+
 ## 1.17.0
 
 - **`ICONS.parcel`** (new meaning, lucide `Package`): a shipment in the Pakete view and the parcel chip

@@ -13,7 +13,9 @@ import { Badge } from "../src/components/Pill";
 import { ProgressBar } from "../src/components/ProgressBar";
 import { ResizeHandle } from "../src/components/ResizeHandle";
 import { Segmented } from "../src/components/Segmented";
+import { Section } from "../src/components/Section";
 import { Switch, Toggle } from "../src/components/Switch";
+import { TabPanel, Tabs, useTabsId } from "../src/components/Tabs";
 import { detectPlatform, TitleBar } from "../src/components/TitleBar";
 import { createToasts, Toaster } from "../src/components/Toaster";
 import { Wordmark } from "../src/components/Wordmark";
@@ -662,5 +664,59 @@ describe("CommandPalette", () => {
     fireEvent(dialog, new Event("cancel", { cancelable: true }));
     fireEvent.click(dialog);
     expect(onClose).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("Tabs and Section", () => {
+  it("ties tabs to panels and moves with the arrow keys, skipping disabled tabs", () => {
+    function Harness() {
+      const [tab, setTab] = useState<"a" | "b" | "c">("a");
+      const id = useTabsId();
+      return (
+        <>
+          <Tabs
+            label="Teile"
+            idPrefix={id}
+            value={tab}
+            onChange={setTab}
+            tabs={[
+              { id: "a", label: "Konto" },
+              { id: "b", label: "Geräte", disabled: true },
+              { id: "c", label: "Protokoll" },
+            ]}
+          />
+          <TabPanel idPrefix={id} tab={tab}>
+            Inhalt {tab}
+          </TabPanel>
+        </>
+      );
+    }
+    render(<Harness />);
+    const first = screen.getByRole("tab", { name: "Konto" });
+    expect(first.getAttribute("aria-selected")).toBe("true");
+    expect(first.getAttribute("data-tab")).toBe("a");
+    expect(first.tabIndex).toBe(0);
+    expect(screen.getByRole("tabpanel", { name: "Konto" }).id).toBe(first.getAttribute("aria-controls"));
+
+    fireEvent.keyDown(screen.getByRole("tablist", { name: "Teile" }), { key: "ArrowRight" });
+    const last = screen.getByRole("tab", { name: "Protokoll" });
+    expect(last.getAttribute("aria-selected")).toBe("true");
+    expect(document.activeElement).toBe(last);
+    expect(first.tabIndex).toBe(-1);
+    expect(screen.getByRole("tabpanel", { name: "Protokoll" }).textContent).toBe("Inhalt c");
+
+    fireEvent.keyDown(screen.getByRole("tablist"), { key: "Home" });
+    expect(first.getAttribute("aria-selected")).toBe("true");
+  });
+
+  it("names a section by its title", () => {
+    render(
+      <Section title="Anmeldung" lead="Wie du dich anmeldest." level={2}>
+        <p>Inhalt</p>
+      </Section>,
+    );
+    const region = screen.getByRole("region", { name: "Anmeldung" });
+    expect(region.querySelector("h2")?.textContent).toBe("Anmeldung");
+    expect(screen.getByText("Wie du dich anmeldest.")).toBeTruthy();
   });
 });

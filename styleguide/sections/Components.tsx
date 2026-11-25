@@ -21,16 +21,20 @@ import {
   revealFrom,
   ResizeHandle,
   Segmented,
+  Section as PageSection,
   Select,
   SettingRow,
   StatTile,
   StatusLine,
   Switch,
+  TabPanel,
+  Tabs,
   Tag,
   TextInput,
   Toaster,
   Toggle,
   Tooltip,
+  useTabsId,
 } from "../../src";
 import { Panel, Rules, Section, Sub } from "./ui";
 
@@ -43,6 +47,9 @@ export function Components() {
   const [dialog, setDialog] = useState<"none" | "form" | "warning" | "three" | "own">("none");
   const [column, setColumn] = useState(200);
   const [name, setName] = useState("Wohnzimmer");
+  const [tab, setTab] = useState<"konto" | "geraete" | "protokoll">("konto");
+  const [view, setView] = useState<"alle" | "offen">("alle");
+  const tabsId = useTabsId();
 
   return (
     <Section
@@ -227,6 +234,40 @@ export function Components() {
             <Hint>Gilt nur für dieses Gerät.</Hint>
           </Card>
         </div>
+      </Sub>
+      <Sub title="Tabs und Abschnitte">
+        <Panel className="flex flex-col gap-4">
+          <Tabs
+            label="Einstellungen"
+            idPrefix={tabsId}
+            value={tab}
+            onChange={setTab}
+            tabs={[
+              { id: "konto", label: "Konto" },
+              { id: "geraete", label: "Geräte", extra: <Badge count={2} /> },
+              { id: "protokoll", label: "Protokoll", disabled: true },
+            ]}
+          />
+          <TabPanel idPrefix={tabsId} tab={tab}>
+            <PageSection
+              title="Anmeldung"
+              lead="Wie du dich bei nyu@example.com anmeldest."
+              actions={<Button size="sm">Ändern</Button>}
+            >
+              <Hint>Passkey und Passwort sind eingerichtet.</Hint>
+            </PageSection>
+          </TabPanel>
+          <Tabs
+            label="Ansicht"
+            variant="segmented"
+            value={view}
+            onChange={setView}
+            tabs={[
+              { id: "alle", label: "Alle" },
+              { id: "offen", label: "Offen", extra: <Badge count={4} /> },
+            ]}
+          />
+        </Panel>
       </Sub>
       <Sub title="Fortschritt und Kennzahlen">
         <div className="grid gap-3 sm:grid-cols-3">
